@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initProgressChart();
   initQuizPortal();
+  registerPWA();
   
+  // Check if session exists (default launch show login portal)
   const isLoggedIn = sessionStorage.getItem('nutriaware_logged_in');
   if (isLoggedIn === 'true') {
     showMainApp();
@@ -18,6 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+/* Service Worker Registration for PWA & Play Store / App Store Support */
+function registerPWA() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch((err) => console.log('SW Registration Failed:', err));
+    });
+  }
+}
+
+/* ==========================================================================
+   1. AUTHENTICATION & LOGIN PORTAL LOGIC
+   ========================================================================== */
 function showLoginPortal() {
   document.getElementById('loginPortal')?.classList.remove('hidden');
   document.getElementById('mainApp')?.classList.add('hidden');
@@ -57,6 +71,10 @@ function setLoggedInUser(name) {
   nameEls.forEach(el => el.textContent = name);
 }
 
+
+/* ==========================================================================
+   2. DEDICATED SEPARATE DASHBOARD TABS NAVIGATION
+   ========================================================================== */
 function switchTab(tabId) {
   const tabs = ['home', 'scanner', 'recipes', 'quizzes', 'tracker', 'dashboard'];
   
@@ -92,6 +110,10 @@ function initMobileMenu() {
   }
 }
 
+
+/* ==========================================================================
+   3. AI FOOD SCANNER MODAL & SIMULATION (100% Beef-Free Clean Food Options)
+   ========================================================================== */
 function openScannerModal() {
   const modal = document.getElementById('scannerModal');
   if (modal) {
@@ -132,6 +154,10 @@ function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
   }, 1200);
 }
 
+
+/* ==========================================================================
+   4. FLOATING AI CHATBOT WIDGET ("NutriAssist AI") - 15+ DIET RECIPES
+   ========================================================================== */
 let isChatOpen = false;
 
 function toggleChatWidget() {
