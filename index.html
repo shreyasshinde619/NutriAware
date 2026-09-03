@@ -50,7 +50,7 @@
   <!-- TOP ANNOUNCEMENT BANNER -->
   <div class="bg-brand-900 text-brand-100 py-2 px-4 text-xs md:text-sm text-center font-medium border-b border-brand-800 flex items-center justify-center gap-2">
     <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">New</span>
-    <span>AI Scanner v2.0 Released – Instant Food Recognition &amp; Micro-Nutrient Swaps</span>
+    <span>AI Scanner v2.0 Released – Instant Healthy Food Recognition &amp; 15+ Diet Recipes</span>
   </div>
 
   <!-- NAVIGATION HEADER -->
@@ -122,7 +122,7 @@
           </h1>
 
           <p class="text-slate-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            NutriAware empowers students and busy eaters to make instant, informed food choices. Upload meal photos, analyze macros with computer vision, and discover delicious healthy alternatives in seconds.
+            NutriAware empowers students and busy eaters to make instant, informed food choices. Upload meal photos, analyze macros with computer vision, and discover 15+ delicious healthy diet recipes in seconds.
           </p>
 
           <!-- Hero Buttons -->
@@ -145,8 +145,8 @@
               <p class="text-xs text-slate-500 font-medium">Food Recognition Accuracy</p>
             </div>
             <div>
-              <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">50K+</p>
-              <p class="text-xs text-slate-500 font-medium">Healthy Swaps Suggested</p>
+              <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">15+</p>
+              <p class="text-xs text-slate-500 font-medium">Diet Recipes in AI Chatbot</p>
             </div>
             <div>
               <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">&lt;2s</p>
@@ -206,10 +206,10 @@
               <div class="bg-brand-50 border border-brand-200 p-3 rounded-2xl flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <i class="fa-solid fa-lightbulb text-brand-600"></i>
-                  <span class="text-xs font-semibold text-brand-900">Smart Swap Option Available</span>
+                  <span class="text-xs font-semibold text-brand-900">Banana Shake Recipe Available</span>
                 </div>
-                <button onclick="openScannerModal()" class="text-xs text-white bg-brand-600 px-3 py-1 rounded-lg font-bold hover:bg-brand-700 transition">
-                  Swap
+                <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="text-xs text-white bg-brand-600 px-3 py-1 rounded-lg font-bold hover:bg-brand-700 transition">
+                  Recipe
                 </button>
               </div>
             </div>
@@ -285,13 +285,13 @@
           <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-teal-600 group-hover:text-white transition-all">
             <i class="fa-solid fa-utensils"></i>
           </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Healthy Alternatives</h3>
+          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">15+ Diet Recipes</h3>
           <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Swap high-calorie processed junk with budget-friendly, nutrient-rich substitutes tailored for busy student schedules and dorm cooking.
+            Get instant recipes for Banana Protein Shake, Moong Dal Chilla, Oats Porridge, Sprouted Salad &amp; Paneer Skewers via NutriAssist AI.
           </p>
-          <span class="text-brand-600 font-bold text-sm inline-flex items-center gap-2">
-            Smart Swaps <i class="fa-solid fa-check text-xs"></i>
-          </span>
+          <button onclick="sendQuickPrompt('Show all recipes')" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+            Get Recipe Book <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
         </div>
 
         <!-- Card 4: Interactive Quizzes -->
@@ -664,7 +664,7 @@
       <!-- Modal Body -->
       <div class="p-6 space-y-6 overflow-y-auto">
         
-        <!-- Sample Item Selector -->
+        <!-- Sample Item Selector (100% Beef-Free Clean Food Options) -->
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             Select Sample Dish or Upload Photo:
@@ -680,10 +680,10 @@
               <span class="font-bold text-xs text-slate-800 block">Quinoa Bowl</span>
               <span class="text-[10px] text-slate-500">High Protein</span>
             </button>
-            <button onclick="selectSampleFood('Double Cheeseburger', 780, '32g', '45g', '48g', 'D', 'Swap beef patty with Grilled Chicken or Black Bean patty')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
+            <button onclick="selectSampleFood('Veggie Cheeseburger', 490, '20g', '52g', '15g', 'B', 'Swap white bun for Whole Wheat or Oats bun')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
               <span class="text-2xl block mb-1">🍔</span>
-              <span class="font-bold text-xs text-slate-800 block">Cheeseburger</span>
-              <span class="text-[10px] text-slate-500">High Sodium &amp; Fats</span>
+              <span class="font-bold text-xs text-slate-800 block">Veggie Burger</span>
+              <span class="text-[10px] text-slate-500">High Fiber &amp; Plant Protein</span>
             </button>
             <button onclick="selectSampleFood('Berry Yogurt Parfait', 290, '14g', '36g', '6g', 'A', 'Greek yogurt base provides probiotics')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
               <span class="text-2xl block mb-1">🫐</span>
@@ -757,7 +757,7 @@
   <div id="chatWidget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
     
     <!-- Chat Window Container (Hidden by default) -->
-    <div id="chatBox" class="hidden w-[360px] sm:w-[400px] bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex-col mb-4 transition-all duration-300 transform scale-95 origin-bottom-right">
+    <div id="chatBox" class="hidden w-[360px] sm:w-[420px] bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex-col mb-4 transition-all duration-300 transform scale-95 origin-bottom-right">
       
       <!-- Chat Header -->
       <div class="bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 p-4 text-white flex justify-between items-center shadow-md">
@@ -771,7 +771,7 @@
           <div>
             <h4 class="font-bold text-sm tracking-wide">NutriAssist AI</h4>
             <p class="text-[10px] text-brand-100 flex items-center gap-1">
-              <span>● Online</span> | <span>Smart Nutrition Advisor</span>
+              <span>● Online</span> | <span>15+ Diet Recipes Loaded</span>
             </p>
           </div>
         </div>
@@ -785,13 +785,18 @@
       <div id="chatMessages" class="p-4 h-80 overflow-y-auto space-y-3 bg-slate-50 text-xs">
         
         <!-- Welcome Message Bubble -->
-        <div class="flex items-start gap-2 max-w-[85%]">
+        <div class="flex items-start gap-2 max-w-[90%]">
           <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
             <i class="fa-solid fa-leaf"></i>
           </div>
-          <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 space-y-1">
+          <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 space-y-2">
             <p class="font-bold text-brand-700">NutriAssist AI</p>
-            <p>Hello! I'm your AI nutrition assistant. Ask me anything about food macros, healthy dorm meal recipes, or budget-friendly student diets!</p>
+            <p>Hello! I'm your AI Nutritionist. I can provide 15+ healthy diet recipes including <strong>Banana Shake</strong>, <strong>Moong Dal Chilla</strong>, <strong>Oats Porridge</strong>, <strong>Sprouted Salad</strong>, <strong>Chia Pudding</strong> &amp; more!</p>
+            <div class="pt-1 border-t border-slate-100 flex flex-wrap gap-1 text-[10px]">
+              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🍌 Banana Shake</span>
+              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🥞 Moong Chilla</span>
+              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🥣 Oats</span>
+            </div>
             <span class="block text-[9px] text-slate-400 text-right">Just now</span>
           </div>
         </div>
@@ -800,11 +805,17 @@
 
       <!-- Chat Quick Prompt Chips -->
       <div class="p-2 bg-white border-t border-slate-100 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap">
-        <button onclick="sendQuickPrompt('Low budget healthy dorm snacks?')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
-          💡 Budget Dorm Snacks
+        <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
+          🍌 Banana Shake
         </button>
-        <button onclick="sendQuickPrompt('Is avocado toast high calorie?')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
-          🥑 Avocado Toast Macros
+        <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
+          🥞 Moong Dal Chilla
+        </button>
+        <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
+          🥣 Oats Porridge
+        </button>
+        <button onclick="sendQuickPrompt('Show all 15 recipes')" class="bg-brand-600 text-white font-semibold px-2.5 py-1 rounded-full transition">
+          📖 Full Recipe Book
         </button>
       </div>
 
@@ -813,7 +824,7 @@
         <input 
           type="text" 
           id="chatInput" 
-          placeholder="Ask NutriAssist a nutrition question..." 
+          placeholder="Ask for Banana Shake or diet recipes..." 
           class="flex-1 bg-slate-100 text-slate-800 text-xs px-4 py-2.5 rounded-xl border border-transparent focus:border-brand-500 focus:bg-white focus:outline-none transition"
           required
         />
@@ -832,11 +843,11 @@
     >
       <i class="fa-solid fa-comment-dots text-2xl"></i>
       <!-- Unread Indicator Badge -->
-      <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">1</span>
+      <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">15</span>
       
       <!-- Tooltip -->
       <span class="absolute right-16 bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        Chat with NutriAssist AI
+        15+ Diet Recipes in NutriAssist AI
       </span>
     </button>
 
