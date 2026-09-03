@@ -71,6 +71,7 @@
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
         <a href="#hero" class="hover:text-brand-600 transition-colors">Home</a>
         <a href="#features" class="hover:text-brand-600 transition-colors">Smart Features</a>
+        <a href="#recipes" class="hover:text-brand-600 transition-colors">Diet Recipes</a>
         <a href="#how-it-works" class="hover:text-brand-600 transition-colors">How It Works</a>
         <a href="#interactive-zone" class="hover:text-brand-600 transition-colors">Quizzes &amp; Tracker</a>
         <a href="#dashboard" class="hover:text-brand-600 transition-colors">Dashboard</a>
@@ -93,6 +94,7 @@
     <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-emerald-100 px-6 py-4 space-y-3">
       <a href="#hero" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Home</a>
       <a href="#features" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Smart Features</a>
+      <a href="#recipes" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Diet Recipes</a>
       <a href="#how-it-works" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">How It Works</a>
       <a href="#interactive-zone" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Quizzes &amp; Water Tracker</a>
       <a href="#dashboard" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Progress Dashboard</a>
@@ -289,9 +291,9 @@
           <p class="text-slate-600 text-sm leading-relaxed mb-4">
             Get instant recipes for Banana Protein Shake, Moong Dal Chilla, Oats Porridge, Sprouted Salad &amp; Paneer Skewers via NutriAssist AI.
           </p>
-          <button onclick="sendQuickPrompt('Show all recipes')" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Get Recipe Book <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
+          <a href="#recipes" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+            Explore Recipe Book <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
         </div>
 
         <!-- Card 4: Interactive Quizzes -->
@@ -337,6 +339,133 @@
         </div>
 
       </div>
+    </div>
+  </section>
+
+
+  <!-- FEATURED DIET RECIPES SECTION -->
+  <section id="recipes" class="py-20 bg-slate-50 border-y border-emerald-100/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-14 space-y-4">
+        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-white px-3 py-1 rounded-full border border-brand-200 shadow-sm">
+          NutriAssist Recipe Collection
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
+          Featured Healthy Student Diet Recipes
+        </h2>
+        <p class="text-slate-600 text-base sm:text-lg">
+          High protein, budget-friendly, and quick to prepare for busy study schedules.
+        </p>
+      </div>
+
+      <!-- Recipe Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Recipe Card 1 -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+              🍌
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Breakfast Shake</span>
+              <span class="text-slate-500 font-semibold">380 kcal</span>
+            </div>
+            <h3 class="font-display font-bold text-slate-900 text-lg">Banana Peanut Butter Shake</h3>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              Ripe bananas blended with oats, peanut butter & milk for instant sustained brain energy.
+            </p>
+            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 18g Protein</span>
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 3 Mins</span>
+            </div>
+          </div>
+          <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Recipe Card 2 -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+              🥞
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">High Fiber</span>
+              <span class="text-slate-500 font-semibold">220 kcal</span>
+            </div>
+            <h3 class="font-display font-bold text-slate-900 text-lg">Moong Dal Veggie Chilla</h3>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              Crispy yellow moong dal pancake stuffed with chopped spinach, onions & paneer.
+            </p>
+            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 14g Protein</span>
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 10 Mins</span>
+            </div>
+          </div>
+          <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Recipe Card 3 -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+              🥣
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Superfood</span>
+              <span class="text-slate-500 font-semibold">290 kcal</span>
+            </div>
+            <h3 class="font-display font-bold text-slate-900 text-lg">Protein Oats Porridge</h3>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              Warm rolled oats cooked in milk with chia seeds, cinnamon powder, and fresh berries.
+            </p>
+            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 12g Protein</span>
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 5 Mins</span>
+            </div>
+          </div>
+          <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Recipe Card 4 -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+              🥗
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Fresh Salad</span>
+              <span class="text-slate-500 font-semibold">190 kcal</span>
+            </div>
+            <h3 class="font-display font-bold text-slate-900 text-lg">Sprouted Moong Salad</h3>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              Green moong sprouts tossed with chickpeas, cucumber, lemon juice & chaat masala.
+            </p>
+            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 13g Protein</span>
+              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 3 Mins</span>
+            </div>
+          </div>
+          <button onclick="sendQuickPrompt('Sprouted Salad')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="mt-10 text-center">
+        <button onclick="sendQuickPrompt('Show all 15 recipes')" class="bg-white hover:bg-brand-50 text-brand-700 font-bold text-sm px-6 py-3 rounded-2xl border-2 border-brand-300 shadow-sm hover:border-brand-500 transition-all inline-flex items-center gap-2">
+          <i class="fa-solid fa-book-open text-brand-600"></i> Open Full 15 Recipe Book in NutriAssist AI
+        </button>
+      </div>
+
     </div>
   </section>
 
@@ -613,6 +742,7 @@
           <ul class="space-y-2.5 text-sm">
             <li><a href="#hero" class="hover:text-brand-400 transition">Home</a></li>
             <li><a href="#features" class="hover:text-brand-400 transition">AI Scanner</a></li>
+            <li><a href="#recipes" class="hover:text-brand-400 transition">Diet Recipes</a></li>
             <li><a href="#how-it-works" class="hover:text-brand-400 transition">How It Works</a></li>
             <li><a href="#interactive-zone" class="hover:text-brand-400 transition">Quizzes &amp; Tracker</a></li>
             <li><a href="#dashboard" class="hover:text-brand-400 transition">Analytics</a></li>
@@ -664,7 +794,7 @@
       <!-- Modal Body -->
       <div class="p-6 space-y-6 overflow-y-auto">
         
-        <!-- Sample Item Selector (100% Beef-Free Clean Food Options) -->
+        <!-- Sample Item Selector (100% Beef-Free Clean Healthy Options) -->
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             Select Sample Dish or Upload Photo:
@@ -680,7 +810,7 @@
               <span class="font-bold text-xs text-slate-800 block">Quinoa Bowl</span>
               <span class="text-[10px] text-slate-500">High Protein</span>
             </button>
-            <button onclick="selectSampleFood('Veggie Cheeseburger', 490, '20g', '52g', '15g', 'B', 'Swap white bun for Whole Wheat or Oats bun')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
+            <button onclick="selectSampleFood('Veggie Cheeseburger', 450, '18g', '48g', '14g', 'B', 'Swap refined flour bun with Whole Wheat or Oat Bun')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
               <span class="text-2xl block mb-1">🍔</span>
               <span class="font-bold text-xs text-slate-800 block">Veggie Burger</span>
               <span class="text-[10px] text-slate-500">High Fiber &amp; Plant Protein</span>
