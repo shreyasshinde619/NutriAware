@@ -1,19 +1,86 @@
 /**
  * NutriAware - Smart Nutrition Awareness Platform
- * Front-end Logic & Interactive Features
+ * Front-end Logic, Authentication Portal, Tab Navigation & 30-Question Quiz Engine
  * Presented by Integrated MTech AIML, Sanjivani University
- * Developer: @shreyasshinde619
- * UI/UX Design System strictly enforced (Green & White Theme)
+ * Lead Developer: @shreyasshinde619
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initProgressChart();
+  initQuizPortal();
+  
+  const isLoggedIn = sessionStorage.getItem('nutriaware_logged_in');
+  if (isLoggedIn === 'true') {
+    showMainApp();
+  } else {
+    showLoginPortal();
+  }
 });
 
-/* ==========================================================================
-   1. MOBILE MENU TOGGLE
-   ========================================================================== */
+function showLoginPortal() {
+  document.getElementById('loginPortal')?.classList.remove('hidden');
+  document.getElementById('mainApp')?.classList.add('hidden');
+}
+
+function showMainApp() {
+  document.getElementById('loginPortal')?.classList.add('hidden');
+  document.getElementById('mainApp')?.classList.remove('hidden');
+  sessionStorage.setItem('nutriaware_logged_in', 'true');
+  switchTab('home');
+}
+
+function handleLoginSubmit(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById('loginEmail')?.value || 'student@sanjivani.edu.in';
+  setLoggedInUser(emailInput.split('@')[0]);
+  showMainApp();
+}
+
+function handleGoogleLogin() {
+  setLoggedInUser('shreyasshinde619 (Google Account)');
+  showMainApp();
+}
+
+function handleGuestLogin() {
+  setLoggedInUser('Sanjivani Student (Guest)');
+  showMainApp();
+}
+
+function handleLogout() {
+  sessionStorage.removeItem('nutriaware_logged_in');
+  showLoginPortal();
+}
+
+function setLoggedInUser(name) {
+  const nameEls = document.querySelectorAll('.user-display-name');
+  nameEls.forEach(el => el.textContent = name);
+}
+
+function switchTab(tabId) {
+  const tabs = ['home', 'scanner', 'recipes', 'quizzes', 'tracker', 'dashboard'];
+  
+  tabs.forEach(t => {
+    const pageEl = document.getElementById(`view-${t}`);
+    const navBtn = document.getElementById(`nav-link-${t}`);
+    const mobileBtn = document.getElementById(`mobile-link-${t}`);
+
+    if (t === tabId) {
+      pageEl?.classList.remove('hidden');
+      navBtn?.classList.add('text-brand-600', 'border-b-2', 'border-brand-600', 'bg-brand-50/50');
+      navBtn?.classList.remove('text-slate-600');
+      mobileBtn?.classList.add('text-brand-600', 'font-bold', 'bg-brand-50');
+    } else {
+      pageEl?.classList.add('hidden');
+      navBtn?.classList.remove('text-brand-600', 'border-b-2', 'border-brand-600', 'bg-brand-50/50');
+      navBtn?.classList.add('text-slate-600');
+      mobileBtn?.classList.remove('text-brand-600', 'font-bold', 'bg-brand-50');
+    }
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function initMobileMenu() {
   const menuBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -25,10 +92,6 @@ function initMobileMenu() {
   }
 }
 
-
-/* ==========================================================================
-   2. AI FOOD SCANNER MODAL & SIMULATION (100% Beef-Free Clean Food Options)
-   ========================================================================== */
 function openScannerModal() {
   const modal = document.getElementById('scannerModal');
   if (modal) {
@@ -52,13 +115,8 @@ function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
 
   if (!initialState || !resultsState || !scanLine) return;
 
-  // Show scanline animation
   scanLine.classList.remove('hidden');
   initialState.classList.add('hidden');
-
-  /* BACKEND HANDOFF HOOK: 
-   * Integrate Python TensorFlow model endpoint here (e.g., fetch('http://localhost:5000/api/predict-image', { body: formData }))
-   */
 
   setTimeout(() => {
     scanLine.classList.add('hidden');
@@ -74,10 +132,6 @@ function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
   }, 1200);
 }
 
-
-/* ==========================================================================
-   3. FLOATING AI CHATBOT WIDGET ("NutriAssist AI") - 15+ DIET RECIPES
-   ========================================================================== */
 let isChatOpen = false;
 
 function toggleChatWidget() {
@@ -113,19 +167,16 @@ function handleChatSubmit(event) {
   const userQuery = input.value.trim();
   if (!userQuery) return;
 
-  // Append User Message Bubble
   appendChatMessage('user', userQuery);
   input.value = '';
 
-  // Append Typing Indicator
   const typingId = appendTypingIndicator();
 
-  // Simulate AI Response Engine with Recipe Database
   setTimeout(() => {
     removeTypingIndicator(typingId);
     const aiResponse = generateNutriAIResponse(userQuery);
     appendChatMessage('ai', aiResponse);
-  }, 900);
+  }, 800);
 }
 
 function appendChatMessage(sender, text) {
@@ -192,7 +243,6 @@ function removeTypingIndicator(id) {
   if (el) el.remove();
 }
 
-/* 15+ HEALTHY DIET RECIPE DATABASE FOR NUTRIASSIST AI */
 const dietRecipes = {
   banana_shake: `
     <div class="space-y-1.5">
@@ -253,170 +303,12 @@ const dietRecipes = {
       </div>
       <p class="text-xs"><strong>Steps:</strong> Toss all ingredients in a bowl. Refreshing, crisp, and loaded with digestive enzymes!</p>
     </div>
-  `,
-
-  avocado_salad: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🥑 Healthy Avocado & Quinoa Salad</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 350 kcal | Protein: 10g | Carbs: 38g | Fats: 18g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1/2 ripe diced avocado<br/>
-        • 1/2 cup cooked quinoa<br/>
-        • Cherry tomatoes & cucumber<br/>
-        • Lemon-olive oil dressing
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Combine cooked quinoa with fresh veggies & avocado. Drizzle lemon dressing for heart-healthy fats.</p>
-    </div>
-  `,
-
-  paneer_skewers: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍢 Grilled Paneer & Veggie Skewers</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 280 kcal | Protein: 20g | Carbs: 12g | Fats: 16g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 150g low-fat paneer cubes<br/>
-        • Bell peppers & onion wedges<br/>
-        • Marinate: Curd, turmeric, Kashmiri chili & kasuri methi
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Thread on wooden skewers and air-fry or grill for 10 minutes until charred.</p>
-    </div>
-  `,
-
-  chia_pudding: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍧 Overnight Chia Seed Berry Pudding</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 210 kcal | Protein: 7g | Carbs: 26g | Fats: 9g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 3 tbsp chia seeds<br/>
-        • 1 cup unsweetened almond milk<br/>
-        • 1 tsp honey or maple syrup<br/>
-        • Fresh berries for topping
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Mix chia seeds & milk in a jar. Chill overnight. Top with berries in the morning!</p>
-    </div>
-  `,
-
-  egg_white_omelette: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍳 Egg White & Spinach Muscle Omelette</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 160 kcal | Protein: 22g | Carbs: 4g | Fats: 5g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 3 egg whites + 1 whole egg<br/>
-        • 1/2 cup fresh baby spinach<br/>
-        • Diced tomatoes & green chilies
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Whisk eggs, pour into a lightly oiled pan with spinach. Cook 3 minutes until fluffy.</p>
-    </div>
-  `,
-
-  peanut_butter_toast: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍞 Whole Wheat Peanut Butter & Banana Toast</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 270 kcal | Protein: 10g | Carbs: 38g | Fats: 9g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 2 slices toasted whole wheat bread<br/>
-        • 1.5 tbsp unsweetened peanut butter<br/>
-        • 1/2 sliced banana & sprinkle of flaxseeds
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Spread peanut butter on warm toast, layer banana slices, top with flaxseeds.</p>
-    </div>
-  `,
-
-  dal_spinach_soup: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍲 High-Fiber Lentil & Spinach Soup (Dal)</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 200 kcal | Protein: 12g | Carbs: 34g | Fats: 3g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1/2 cup yellow/red lentils<br/>
-        • Chopped spinach, garlic & cumin<br/>
-        • Lemon squeeze
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Pressure cook lentils with turmeric. Temper with garlic & cumin in olive oil. Mix in spinach.</p>
-    </div>
-  `,
-
-  berry_smoothie: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🥤 Berry Antioxidant Almond Smoothie</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 220 kcal | Protein: 15g | Carbs: 28g | Fats: 4g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cup frozen strawberries/blueberries<br/>
-        • 1/2 cup Greek yogurt<br/>
-        • 1 cup almond milk<br/>
-        • 1 tbsp ground flaxseed
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Blend until smooth for a refreshing antioxidant boost!</p>
-    </div>
-  `,
-
-  quinoa_power_bowl: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍲 Quinoa & Black Bean Power Bowl</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 410 kcal | Protein: 16g | Carbs: 62g | Fats: 10g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 3/4 cup cooked quinoa<br/>
-        • 1/2 cup cooked black beans/rajma<br/>
-        • Sweet corn, guacamole & fresh salsa
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Layer warm quinoa, beans, corn & salsa. Excellent meal-prep option!</p>
-    </div>
-  `,
-
-  yogurt_parfait: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🫐 Greek Yogurt Honey & Walnut Parfait</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 240 kcal | Protein: 17g | Carbs: 24g | Fats: 8g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cup plain Greek yogurt<br/>
-        • 1 tbsp honey<br/>
-        • 4 crushed walnuts & fresh berries
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Layer yogurt, honey, walnuts, and berries in a glass. Probiotic rich!</p>
-    </div>
-  `,
-
-  roasted_chickpeas: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🧆 Crunch Oven-Roasted Garlic Chickpeas</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 190 kcal | Protein: 9g | Carbs: 30g | Fats: 4g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cup boiled chickpeas (dried)<br/>
-        • 1 tsp olive oil<br/>
-        • Garlic powder, cumin & sea salt
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Toss chickpeas in oil & spices. Roast at 200°C for 20 mins until crunchy.</p>
-    </div>
-  `,
-
-  green_detox: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍏 Refreshing Cucumber & Ginger Green Detox</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 120 kcal | Protein: 3g | Carbs: 26g | Fats: 0.5g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cucumber & 1 green apple<br/>
-        • Handful spinach leaves<br/>
-        • 1/2 inch ginger & lemon juice
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Juice or blend with coconut water. Serve chilled for digestion & detoxing.</p>
-    </div>
   `
 };
 
 function generateNutriAIResponse(query) {
   const q = query.toLowerCase();
 
-  // Recipe Matches
   if (q.includes('banana') || q.includes('shake')) {
     return dietRecipes.banana_shake;
   } else if (q.includes('oat') || q.includes('porridge')) {
@@ -425,57 +317,9 @@ function generateNutriAIResponse(query) {
     return dietRecipes.moong_chilla;
   } else if (q.includes('sprout') || q.includes('chickpea salad')) {
     return dietRecipes.sprouted_salad;
-  } else if (q.includes('avocado')) {
-    return dietRecipes.avocado_salad;
-  } else if (q.includes('paneer') || q.includes('skewer')) {
-    return dietRecipes.paneer_skewers;
-  } else if (q.includes('chia') || q.includes('pudding')) {
-    return dietRecipes.chia_pudding;
-  } else if (q.includes('egg') || q.includes('omelette')) {
-    return dietRecipes.egg_white_omelette;
-  } else if (q.includes('toast') || q.includes('peanut butter')) {
-    return dietRecipes.peanut_butter_toast;
-  } else if (q.includes('dal') || q.includes('soup')) {
-    return dietRecipes.dal_spinach_soup;
-  } else if (q.includes('berry') || q.includes('smoothie')) {
-    return dietRecipes.berry_smoothie;
-  } else if (q.includes('quinoa')) {
-    return dietRecipes.quinoa_power_bowl;
-  } else if (q.includes('yogurt') || q.includes('parfait')) {
-    return dietRecipes.yogurt_parfait;
-  } else if (q.includes('roasted') || q.includes('chana')) {
-    return dietRecipes.roasted_chickpeas;
-  } else if (q.includes('detox') || q.includes('green juice')) {
-    return dietRecipes.green_detox;
-  } else if (q.includes('all') || q.includes('list') || q.includes('recipe') || q.includes('book')) {
-    return `
-      <div class="space-y-2">
-        <h5 class="font-bold text-slate-900 text-sm">📖 NutriAssist AI 15 Diet Recipes Book</h5>
-        <p class="text-xs text-slate-600">Click or type any recipe name below to get full step-by-step ingredients &amp; macros:</p>
-        <div class="grid grid-cols-2 gap-1 text-[11px] font-medium">
-          <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">1. 🍌 Banana Shake</button>
-          <button onclick="sendQuickPrompt('Oats Porridge')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">2. 🥣 Oats Porridge</button>
-          <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">3. 🥞 Moong Chilla</button>
-          <button onclick="sendQuickPrompt('Sprouted Salad')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">4. 🥗 Sprouted Salad</button>
-          <button onclick="sendQuickPrompt('Avocado Salad')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">5. 🥑 Avocado Salad</button>
-          <button onclick="sendQuickPrompt('Paneer Skewers')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">6. 🍢 Paneer Skewers</button>
-          <button onclick="sendQuickPrompt('Chia Pudding')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">7. 🍧 Chia Pudding</button>
-          <button onclick="sendQuickPrompt('Egg White Omelette')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">8. 🍳 Egg Omelette</button>
-          <button onclick="sendQuickPrompt('Peanut Butter Toast')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">9. 🍞 PB Toast</button>
-          <button onclick="sendQuickPrompt('Lentil Spinach Soup')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">10. 🍲 Dal Spinach Soup</button>
-          <button onclick="sendQuickPrompt('Berry Smoothie')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">11. 🥤 Berry Smoothie</button>
-          <button onclick="sendQuickPrompt('Quinoa Power Bowl')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">12. 🍲 Quinoa Bowl</button>
-          <button onclick="sendQuickPrompt('Yogurt Parfait')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">13. 🫐 Yogurt Parfait</button>
-          <button onclick="sendQuickPrompt('Roasted Chickpeas')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">14. 🧆 Roasted Chana</button>
-          <button onclick="sendQuickPrompt('Green Detox Smoothie')" class="p-1 bg-slate-100 rounded text-left hover:bg-brand-50 hover:text-brand-700">15. 🍏 Green Detox</button>
-        </div>
-      </div>
-    `;
-  } else if (q.includes('dorm') || q.includes('budget') || q.includes('snack')) {
-    return dietRecipes.banana_shake + "<hr class='my-2 border-slate-200'/>" + dietRecipes.moong_chilla;
   } else {
     return `
-      <p>I can help you prepare healthy diet meals! Type <strong>"Banana Shake"</strong>, <strong>"Oats"</strong>, <strong>"Moong Chilla"</strong>, or ask for the <strong>"Full Recipe Book"</strong> to see all 15+ student diet recipes!</p>
+      <p>I can help you prepare healthy diet meals! Type <strong>"Banana Shake"</strong>, <strong>"Oats"</strong>, <strong>"Moong Chilla"</strong>, or explore our dedicated <strong>Diet Recipes Tab</strong>!</p>
     `;
   }
 }
@@ -486,116 +330,148 @@ function escapeHTML(str) {
   );
 }
 
-
-/* ==========================================================================
-   4. INTERACTIVE QUIZ LOGIC
-   ========================================================================== */
-const quizData = [
-  {
-    q: "Q1: Which macronutrient is the body's primary quick energy source?",
-    options: ["A) Proteins", "B) Carbohydrates", "C) Dietary Fats"],
-    answer: 1,
-    tip: "Correct! Carbohydrates break down into glucose, the primary fuel source for your brain and muscles."
-  },
-  {
-    q: "Q2: Which vitamin synthesized from sunlight is crucial for bone health and immunity?",
-    options: ["A) Vitamin D", "B) Vitamin C", "C) Vitamin B12"],
-    answer: 0,
-    tip: "Spot on! Vitamin D helps absorb calcium and supports immune system strength."
-  },
-  {
-    q: "Q3: What is the recommended minimum daily water intake for adults?",
-    options: ["A) 1.0 Liters", "B) 2.5 Liters", "C) 5.0 Liters"],
-    answer: 1,
-    tip: "Correct! 2.5L (approx 8-10 glasses) maintains optimal cognitive function and digestion."
-  }
+const quiz30Data = [
+  { q: "Q1: Which macronutrient is the body's primary quick energy source?", options: ["Proteins", "Carbohydrates", "Dietary Fats", "Vitamins"], answer: 1, tip: "Carbohydrates break down into glucose, fueling body & brain!" },
+  { q: "Q2: Which vitamin synthesized from sunlight is crucial for bone health?", options: ["Vitamin D", "Vitamin C", "Vitamin B12", "Vitamin E"], answer: 0, tip: "Vitamin D promotes calcium absorption in the gut." },
+  { q: "Q3: What is the recommended minimum daily water intake for adults?", options: ["1.0 Liters", "2.5 Liters", "5.0 Liters", "0.5 Liters"], answer: 1, tip: "2.5L (approx 8-10 glasses) maintains optimal hydration." },
+  { q: "Q4: Which macronutrient is essential for muscle repair and hormone synthesis?", options: ["Carbohydrates", "Proteins", "Fiber", "Sodium"], answer: 1, tip: "Proteins supply amino acids necessary for muscle tissue repair." },
+  { q: "Q5: Which of the following is a healthy source of monounsaturated fats?", options: ["Avocados & Olive Oil", "Deep fried chips", "Commercial margarine", "Trans fats"], answer: 0, tip: "Avocados and olive oil support cardiovascular health." },
+  { q: "Q6: How many calories are in 1 gram of Dietary Fat?", options: ["4 kcal", "7 kcal", "9 kcal", "12 kcal"], answer: 2, tip: "Fats provide 9 calories per gram, making them energy dense." },
+  { q: "Q7: How many calories are in 1 gram of Protein?", options: ["4 kcal", "9 kcal", "2 kcal", "6 kcal"], answer: 0, tip: "Protein provides 4 kcal per gram." },
+  { q: "Q8: How many calories are in 1 gram of Carbohydrate?", options: ["9 kcal", "4 kcal", "7 kcal", "5 kcal"], answer: 1, tip: "Carbohydrates yield 4 kcal per gram." },
+  { q: "Q9: Which essential mineral is required for hemoglobin to transport oxygen in blood?", options: ["Iron", "Zinc", "Calcium", "Magnesium"], answer: 0, tip: "Iron forms the core of hemoglobin in red blood cells." },
+  { q: "Q10: Deficiency of which vitamin causes Scurvy?", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], answer: 1, tip: "Vitamin C is essential for collagen synthesis." },
+  { q: "Q11: Which non-digestible plant component aids digestion and prevents constipation?", options: ["Dietary Fiber", "Starch", "Glucose", "Fructose"], answer: 0, tip: "Fiber promotes healthy gut motility." },
+  { q: "Q12: Which electrolyte helps regulate blood pressure and fluid balance?", options: ["Potassium", "Chlorine", "Sulfur", "Phosphorus"], answer: 0, tip: "Potassium counteracts excess sodium to maintain blood pressure." },
+  { q: "Q13: What color should healthy urine ideally be as a sign of proper hydration?", options: ["Dark Amber", "Pale Straw Yellow", "Bright Orange", "Clear Transparent"], answer: 1, tip: "Pale straw yellow indicates optimal hydration status." },
+  { q: "Q14: What does HDL stand for in cholesterol tests?", options: ["High Density Lipoprotein", "Heavy Diet Lipid", "Hyper Density Liver", "Hydro Level"], answer: 0, tip: "HDL is often called 'good' cholesterol." },
+  { q: "Q15: What does LDL stand for in cholesterol tests?", options: ["Low Density Lipoprotein", "Light Diet Lipid", "Low Level Liver", "Low Energy Lipid"], answer: 0, tip: "LDL is commonly referred to as 'bad' cholesterol." },
+  { q: "Q16: Which vitamin is essential for good night vision and eye health?", options: ["Vitamin A", "Vitamin B6", "Vitamin C", "Vitamin D"], answer: 0, tip: "Vitamin A (retinol) forms pigments in the retina." },
+  { q: "Q17: Which vitamin plays a critical role in blood coagulation (clotting)?", options: ["Vitamin K", "Vitamin E", "Vitamin B12", "Folic Acid"], answer: 0, tip: "Vitamin K is essential for synthesizing blood clotting proteins." },
+  { q: "Q18: Which Omega-3 fatty acids are abundant in flaxseeds, chia, and fatty fish?", options: ["EPA & DHA", "Trans fats", "Lauric acid", "Palmitic acid"], answer: 0, tip: "Omega-3 EPA & DHA reduce inflammation and support brain function." },
+  { q: "Q19: What effect do high Glycemic Index (GI) foods have on blood sugar?", options: ["Rapid blood sugar spike", "Slow gradual release", "No effect", "Decreases insulin"], answer: 0, tip: "High GI foods digest rapidly causing sharp spikes in blood glucose." },
+  { q: "Q20: What is the main benefit of choosing Complex Carbohydrates over Simple Sugars?", options: ["Sustained energy & fiber", "Instant sugar crash", "Higher sodium", "Zero nutrients"], answer: 0, tip: "Complex carbs release energy gradually over time." },
+  { q: "Q21: What is the recommended daily limit of sodium intake for adults by WHO?", options: ["2,000 mg (2g)", "5,000 mg", "10,000 mg", "500 mg"], answer: 0, tip: "Keeping sodium under 2,000 mg per day protects against hypertension." },
+  { q: "Q22: Which B-vitamin (B9) is crucial for cell division and fetal development?", options: ["Folate (Folic Acid)", "Thiamine", "Riboflavin", "Niacin"], answer: 0, tip: "Folate prevents neural tube defects during early pregnancy." },
+  { q: "Q23: What active anti-inflammatory compound is found in Turmeric?", options: ["Curcumin", "Capsaicin", "Allicin", "Gingerol"], answer: 0, tip: "Curcumin possesses potent antioxidant and anti-inflammatory properties." },
+  { q: "Q24: What is the optimal anabolic window for post-workout protein consumption?", options: ["30 to 60 Minutes", "5 Hours", "24 Hours", "12 Hours"], answer: 0, tip: "Consuming 20-30g protein within 30-60 mins maximizes muscle synthesis." },
+  { q: "Q25: Which mineral is essential for thyroid gland hormone production?", options: ["Iodine", "Copper", "Selenium", "Zinc"], answer: 0, tip: "Iodine is key for synthesizing T3 and T4 thyroid hormones." },
+  { q: "Q26: Which vitamin enhances the intestinal absorption of Calcium?", options: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin B12"], answer: 0, tip: "Vitamin D increases calcium transport protein synthesis." },
+  { q: "Q27: Which type of fat is typically solid at room temperature?", options: ["Saturated Fat", "Polyunsaturated Fat", "Monounsaturated Fat", "Omega-3"], answer: 0, tip: "Saturated fats (like butter/coconut oil) remain solid at room temp." },
+  { q: "Q28: What is the primary storage form of glucose in the human liver and muscles?", options: ["Glycogen", "Starch", "Glucagon", "Insulin"], answer: 0, tip: "Glycogen provides reserve glucose during exercise and fasting." },
+  { q: "Q29: What is the primary dietary source of artificial Trans Fats?", options: ["Partially Hydrogenated Oils", "Olive Oil", "Fresh Fruit", "Steamed Veggies"], answer: 0, tip: "Partially hydrogenated oils increase LDL and lower HDL." },
+  { q: "Q30: Why is drinking water before study sessions recommended for university students?", options: ["Enhances focus & memory", "Makes you sleepy", "Decreases metabolism", "Causes fatigue"], answer: 0, tip: "Even 1-2% dehydration impairs cognitive performance and focus!" }
 ];
 
-let currentQuizIndex = 0;
-let userQuizScore = 0;
+let quizCurrentIndex = 0;
+let quizUserScore = 0;
 
-function answerQuiz(optionIndex) {
-  const current = quizData[currentQuizIndex];
-  const feedbackEl = document.getElementById('quizFeedback');
-  const scoreEl = document.getElementById('quizScore');
+function initQuizPortal() {
+  quizCurrentIndex = 0;
+  quizUserScore = 0;
+  renderQuiz30Question();
+}
 
-  if (!feedbackEl || !scoreEl) return;
+function renderQuiz30Question() {
+  const container = document.getElementById('quiz30Container');
+  const counterEl = document.getElementById('quiz30Counter');
+  const progressEl = document.getElementById('quiz30ProgressBar');
+  const scoreEl = document.getElementById('quiz30ScoreDisplay');
 
-  if (optionIndex === current.answer) {
-    userQuizScore++;
-    feedbackEl.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300';
-    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> ${current.tip}`;
+  if (!container) return;
+
+  if (quizCurrentIndex >= quiz30Data.length) {
+    renderQuiz30Certificate();
+    return;
+  }
+
+  const current = quiz30Data[quizCurrentIndex];
+  const pct = Math.round(((quizCurrentIndex + 1) / 30) * 100);
+
+  if (counterEl) counterEl.textContent = `Question ${quizCurrentIndex + 1} of 30`;
+  if (progressEl) progressEl.style.width = `${pct}%`;
+  if (scoreEl) scoreEl.textContent = `Score: ${quizUserScore}/${quiz30Data.length}`;
+
+  container.innerHTML = `
+    <div class="space-y-4">
+      <div class="bg-brand-50/80 p-4 rounded-2xl border border-brand-200">
+        <h4 class="font-display font-extrabold text-slate-900 text-lg sm:text-xl">
+          ${current.q}
+        </h4>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        ${current.options.map((opt, idx) => `
+          <button onclick="handleAnswerQuiz30(${idx})" class="p-4 rounded-2xl border-2 border-slate-200 hover:border-brand-500 hover:bg-brand-50/60 text-left font-bold text-sm text-slate-800 transition flex items-center gap-3 group">
+            <span class="w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-brand-600 group-hover:text-white flex items-center justify-center text-xs font-black transition shrink-0">
+              ${String.fromCharCode(65 + idx)}
+            </span>
+            <span>${opt}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div id="quiz30Feedback" class="hidden p-4 rounded-2xl text-xs font-bold leading-relaxed transition-all"></div>
+    </div>
+  `;
+}
+
+function handleAnswerQuiz30(selectedIndex) {
+  const current = quiz30Data[quizCurrentIndex];
+  const feedbackEl = document.getElementById('quiz30Feedback');
+  if (!feedbackEl) return;
+
+  const isCorrect = selectedIndex === current.answer;
+  if (isCorrect) {
+    quizUserScore++;
+    feedbackEl.className = 'p-4 rounded-2xl text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300';
+    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-sm mr-1.5"></i> Correct! ${current.tip}`;
   } else {
-    feedbackEl.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300';
-    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-amber-600 mr-1"></i> Incorrect. ${current.tip}`;
+    feedbackEl.className = 'p-4 rounded-2xl text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300';
+    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-amber-600 text-sm mr-1.5"></i> Incorrect (Correct answer: ${current.options[current.answer]}). ${current.tip}`;
   }
 
   feedbackEl.classList.remove('hidden');
-  scoreEl.textContent = `Score: ${userQuizScore}/3`;
 
   setTimeout(() => {
-    currentQuizIndex++;
-    if (currentQuizIndex < quizData.length) {
-      renderQuizQuestion();
-    } else {
-      renderQuizFinish();
-    }
-  }, 2200);
+    quizCurrentIndex++;
+    renderQuiz30Question();
+  }, 1800);
 }
 
-function renderQuizQuestion() {
-  const qObj = quizData[currentQuizIndex];
-  const qText = document.getElementById('quizQuestion');
-  const optionsDiv = document.getElementById('quizOptions');
-  const feedbackEl = document.getElementById('quizFeedback');
+function renderQuiz30Certificate() {
+  const container = document.getElementById('quiz30Container');
+  if (!container) return;
 
-  if (!qText || !optionsDiv) return;
+  const pct = Math.round((quizUserScore / 30) * 100);
 
-  feedbackEl.classList.add('hidden');
-  qText.textContent = qObj.q;
-
-  optionsDiv.innerHTML = qObj.options.map((opt, i) => `
-    <button onclick="answerQuiz(${i})" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50 text-sm font-semibold transition">
-      ${opt}
-    </button>
-  `).join('');
-}
-
-function renderQuizFinish() {
-  const container = document.getElementById('quizContainer');
-  if (container) {
-    container.innerHTML = `
-      <div class="text-center py-6 space-y-3">
-        <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-3xl mx-auto">
-          🏆
-        </div>
-        <h4 class="font-bold text-lg text-slate-900">Quiz Completed!</h4>
-        <p class="text-xs text-slate-600">You scored <span class="font-bold text-brand-700 text-sm">${userQuizScore} out of 3</span> in Nutrition Literacy.</p>
-        <button onclick="resetQuiz()" class="bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-brand-700 transition">
-          Take Quiz Again
-        </button>
-      </div>
-    `;
-  }
-}
-
-function resetQuiz() {
-  currentQuizIndex = 0;
-  userQuizScore = 0;
-  document.getElementById('quizScore').textContent = 'Score: 0/3';
-  const container = document.getElementById('quizContainer');
   container.innerHTML = `
-    <p id="quizQuestion" class="font-bold text-slate-800 text-base"></p>
-    <div id="quizOptions" class="space-y-2"></div>
-    <div id="quizFeedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+    <div class="bg-gradient-to-b from-brand-50 via-white to-emerald-50 p-8 rounded-3xl border-2 border-brand-300 text-center space-y-6 shadow-xl">
+      <div class="w-20 h-20 bg-brand-600 text-white rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg shadow-brand-600/30">
+        🏆
+      </div>
+      <div class="space-y-2">
+        <span class="bg-brand-100 text-brand-800 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+          Nutrition Literacy Certificate
+        </span>
+        <h3 class="font-display text-3xl font-extrabold text-slate-900">Quiz Completed!</h3>
+        <p class="text-sm text-slate-600">
+          You scored <strong class="text-brand-700 text-lg">${quizUserScore} out of 30</strong> (${pct}% Accuracy).
+        </p>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 max-w-sm mx-auto text-xs space-y-1">
+        <p class="font-bold text-slate-800">Presented by Integrated MTech AIML</p>
+        <p class="text-slate-500">Sanjivani University | Lead: @shreyasshinde619</p>
+      </div>
+
+      <button onclick="initQuizPortal()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-lg transition">
+        Restart 30-Question Quiz
+      </button>
+    </div>
   `;
-  renderQuizQuestion();
 }
 
-
-/* ==========================================================================
-   5. WATER REMINDER / TRACKER LOGIC
-   ========================================================================== */
 let currentWaterIntake = 1250;
 const targetWaterIntake = 2500;
 
@@ -622,10 +498,6 @@ function updateWaterUI() {
   pctEl.textContent = `${pct}% Goal Reached`;
 }
 
-
-/* ==========================================================================
-   6. PROGRESS DASHBOARD CHART (Chart.js Integration)
-   ========================================================================== */
 function initProgressChart() {
   const canvas = document.getElementById('macroChart');
   if (!canvas) return;
@@ -637,54 +509,16 @@ function initProgressChart() {
     data: {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       datasets: [
-        {
-          label: 'Protein (g)',
-          data: [75, 82, 90, 88, 95, 100, 85],
-          backgroundColor: '#059669',
-          borderRadius: 8
-        },
-        {
-          label: 'Carbs (g)',
-          data: [210, 190, 230, 205, 220, 240, 200],
-          backgroundColor: '#34d399',
-          borderRadius: 8
-        },
-        {
-          label: 'Healthy Fats (g)',
-          data: [55, 60, 50, 65, 58, 62, 54],
-          backgroundColor: '#a7f3d0',
-          borderRadius: 8
-        }
+        { label: 'Protein (g)', data: [75, 82, 90, 88, 95, 100, 85], backgroundColor: '#059669', borderRadius: 8 },
+        { label: 'Carbs (g)', data: [210, 190, 230, 205, 220, 240, 200], backgroundColor: '#34d399', borderRadius: 8 },
+        { label: 'Healthy Fats (g)', data: [55, 60, 50, 65, 58, 62, 54], backgroundColor: '#a7f3d0', borderRadius: 8 }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
-            usePointStyle: true
-          }
-        },
-        tooltip: {
-          backgroundColor: '#064e3b',
-          titleFont: { family: 'Outfit', size: 14 },
-          bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
-          padding: 12,
-          cornerRadius: 12
-        }
-      },
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: { font: { family: 'Plus Jakarta Sans', weight: '600' } }
-        },
-        y: {
-          grid: { color: '#f1f5f9' },
-          ticks: { font: { family: 'Plus Jakarta Sans', weight: '600' } }
-        }
+        legend: { position: 'top', labels: { font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' }, usePointStyle: true } }
       }
     }
   });

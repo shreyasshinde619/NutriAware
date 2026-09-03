@@ -47,943 +47,508 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
 
-  <!-- TOP ANNOUNCEMENT BANNER -->
-  <div class="bg-brand-900 text-brand-100 py-2 px-4 text-xs md:text-sm text-center font-medium border-b border-brand-800 flex items-center justify-center gap-2">
-    <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">New</span>
-    <span>AI Scanner v2.0 Released – Instant Healthy Food Recognition &amp; 15+ Diet Recipes</span>
-  </div>
+  <!-- ==========================================================================
+       LOGIN PORTAL (LAUNCHES FIRST) - INSPIRED BY EVENTPULSE
+       ========================================================================== -->
+  <div id="loginPortal" class="fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl border border-emerald-100 space-y-6 text-center">
+      
+      <!-- Splash Animated Logo Icon -->
+      <div class="w-20 h-20 bg-gradient-to-tr from-brand-600 to-emerald-400 rounded-3xl mx-auto flex items-center justify-center text-white text-3xl shadow-xl shadow-brand-600/40 splash-logo-box">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
 
-  <!-- NAVIGATION HEADER -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-emerald-100 transition-all duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
-          <i class="fa-solid fa-leaf text-xl"></i>
+      <div class="space-y-1">
+        <span class="text-xs font-bold uppercase tracking-widest text-brand-600">⚡ Campus Health Pass</span>
+        <h2 class="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Welcome to NutriAware</h2>
+        <p class="text-xs text-slate-500">Integrated MTech AIML, Sanjivani University</p>
+      </div>
+
+      <!-- Google Authentication Button -->
+      <button onclick="handleGoogleLogin()" class="w-full google-btn py-3 px-4 rounded-2xl font-semibold text-sm flex items-center justify-center gap-3">
+        <svg class="w-5 h-5" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span>Continue with Google Account</span>
+      </button>
+
+      <div class="flex items-center gap-3 my-2">
+        <div class="h-px bg-slate-200 flex-1"></div>
+        <span class="text-[11px] font-bold text-slate-400 uppercase">Or Sign In</span>
+        <div class="h-px bg-slate-200 flex-1"></div>
+      </div>
+
+      <!-- Standard Login Form -->
+      <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">University Email</label>
+          <input type="email" id="loginEmail" required placeholder="shreyas619@sanjivani.edu.in" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
         </div>
         <div>
-          <span class="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Nutri<span class="text-brand-600">Aware</span></span>
-          <span class="block text-[10px] uppercase font-bold tracking-widest text-brand-600 -mt-1">Smart Health Tech</span>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+          <input type="password" required value="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
         </div>
-      </a>
-
-      <!-- Desktop Nav Links -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-        <a href="#hero" class="hover:text-brand-600 transition-colors">Home</a>
-        <a href="#features" class="hover:text-brand-600 transition-colors">Smart Features</a>
-        <a href="#recipes" class="hover:text-brand-600 transition-colors">Diet Recipes</a>
-        <a href="#how-it-works" class="hover:text-brand-600 transition-colors">How It Works</a>
-        <a href="#interactive-zone" class="hover:text-brand-600 transition-colors">Quizzes &amp; Tracker</a>
-        <a href="#dashboard" class="hover:text-brand-600 transition-colors">Dashboard</a>
-      </nav>
-
-      <!-- Nav CTA Button -->
-      <div class="flex items-center gap-3">
-        <button id="navScannerBtn" onclick="openScannerModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-md shadow-brand-600/25 hover:shadow-lg hover:shadow-brand-600/35 transition-all flex items-center gap-2">
-          <i class="fa-solid fa-expand text-xs"></i>
-          <span>Try AI Scanner</span>
+        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition">
+          Sign In to Portal
         </button>
-        <!-- Mobile Menu Toggle -->
-        <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-brand-600 p-2">
-          <i class="fa-solid fa-bars text-xl"></i>
-        </button>
-      </div>
-    </div>
+      </form>
 
-    <!-- Mobile Nav Dropdown -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-emerald-100 px-6 py-4 space-y-3">
-      <a href="#hero" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Home</a>
-      <a href="#features" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Smart Features</a>
-      <a href="#recipes" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Diet Recipes</a>
-      <a href="#how-it-works" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">How It Works</a>
-      <a href="#interactive-zone" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Quizzes &amp; Water Tracker</a>
-      <a href="#dashboard" class="block text-slate-700 font-semibold py-2 hover:text-brand-600">Progress Dashboard</a>
-    </div>
-  </header>
-
-  <!-- HERO SECTION -->
-  <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-brand-50/70 via-white to-slate-50 py-16 md:py-24">
-    <!-- Decorative background green elements -->
-    <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-200/40 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-1/2 -right-24 w-96 h-96 bg-brand-300/30 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-        <!-- Hero Content -->
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-          <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-800 px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold border border-brand-200 shadow-sm">
-            <i class="fa-solid fa-wand-magic-sparkles text-brand-600"></i>
-            <span>AI-Powered Meal Literacy Platform</span>
-          </div>
-
-          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
-            Eat Smart. <br class="hidden sm:inline" />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-emerald-500 to-teal-700">Learn Nutrition.</span> <br />
-            Live Better.
-          </h1>
-
-          <p class="text-slate-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            NutriAware empowers students and busy eaters to make instant, informed food choices. Upload meal photos, analyze macros with computer vision, and discover 15+ delicious healthy diet recipes in seconds.
-          </p>
-
-          <!-- Hero Buttons -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-            <button onclick="openScannerModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-base px-8 py-4 rounded-2xl shadow-xl shadow-brand-600/30 hover:shadow-2xl hover:shadow-brand-600/40 hover:-translate-y-0.5 transition-all flex items-center gap-3">
-              <i class="fa-solid fa-camera text-lg"></i>
-              <span>Try AI Scanner</span>
-            </button>
-
-            <button onclick="toggleChatWidget()" class="bg-white hover:bg-brand-50 text-slate-800 font-bold text-base px-7 py-4 rounded-2xl border-2 border-emerald-200 shadow-sm hover:border-brand-400 hover:-translate-y-0.5 transition-all flex items-center gap-3">
-              <i class="fa-solid fa-comments text-brand-600 text-lg"></i>
-              <span>Ask NutriAssist AI</span>
-            </button>
-          </div>
-
-          <!-- Hero Highlights / Stats -->
-          <div class="pt-8 border-t border-emerald-100/80 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
-            <div>
-              <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">98.4%</p>
-              <p class="text-xs text-slate-500 font-medium">Food Recognition Accuracy</p>
-            </div>
-            <div>
-              <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">15+</p>
-              <p class="text-xs text-slate-500 font-medium">Diet Recipes in AI Chatbot</p>
-            </div>
-            <div>
-              <p class="font-display text-2xl md:text-3xl font-extrabold text-brand-700">&lt;2s</p>
-              <p class="text-xs text-slate-500 font-medium">Instant AI Analysis</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hero Visual Illustration Card -->
-        <div class="lg:col-span-5 flex justify-center">
-          <div class="relative w-full max-w-md">
-            <!-- Glassmorphic Dashboard Widget Preview Card -->
-            <div class="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-emerald-100 shadow-2xl shadow-emerald-900/10 space-y-6 relative overflow-hidden">
-              <div class="absolute top-0 right-0 bg-brand-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
-                Live Scan Preview
-              </div>
-
-              <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center text-3xl shadow-inner">
-                  🥑
-                </div>
-                <div>
-                  <h4 class="font-bold text-slate-900 text-lg">Avocado Grain Salad</h4>
-                  <p class="text-xs text-brand-600 font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check"></i> High Protein &amp; Fiber
-                  </p>
-                </div>
-              </div>
-
-              <!-- Macros Breakdown Ring / Bars -->
-              <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                <div class="flex justify-between text-xs font-semibold text-slate-700">
-                  <span>Calories</span>
-                  <span class="text-brand-700 font-bold">420 kcal / serving</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-brand-500 to-emerald-400 h-full rounded-full w-[65%]"></div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 pt-2 text-center">
-                  <div class="bg-white p-2 rounded-xl border border-slate-100">
-                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Protein</span>
-                    <span class="text-xs font-bold text-slate-800">18g</span>
-                  </div>
-                  <div class="bg-white p-2 rounded-xl border border-slate-100">
-                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Carbs</span>
-                    <span class="text-xs font-bold text-slate-800">42g</span>
-                  </div>
-                  <div class="bg-white p-2 rounded-xl border border-slate-100">
-                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Fats</span>
-                    <span class="text-xs font-bold text-slate-800">16g</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Healthy Swap Recommendation Highlight -->
-              <div class="bg-brand-50 border border-brand-200 p-3 rounded-2xl flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-lightbulb text-brand-600"></i>
-                  <span class="text-xs font-semibold text-brand-900">Banana Shake Recipe Available</span>
-                </div>
-                <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="text-xs text-white bg-brand-600 px-3 py-1 rounded-lg font-bold hover:bg-brand-700 transition">
-                  Recipe
-                </button>
-              </div>
-            </div>
-
-            <!-- Floating Pill Badge -->
-            <div class="absolute -bottom-5 -left-5 bg-white p-3 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-3 animate-bounce">
-              <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-lg">
-                🌱
-              </div>
-              <div>
-                <p class="text-xs font-bold text-slate-800">NutriScore: Grade A</p>
-                <p class="text-[10px] text-slate-500">100% Student Friendly</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- FEATURES GRID SECTION -->
-  <section id="features" class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <!-- Section Header -->
-      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
-          Core Capabilities
-        </span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
-          Smart Features Designed for Healthy Living
-        </h2>
-        <p class="text-slate-600 text-base sm:text-lg">
-          NutriAware combines computer vision, nutritional science, and interactive habit builders to make wellness accessible for everyone.
-        </p>
-      </div>
-
-      <!-- Features Grid (6 Cards) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Card 1: AI Food Scanner -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-600 group-hover:text-white transition-all">
-            <i class="fa-solid fa-camera-retro"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">AI Food Scanner</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Point your camera or upload a dish photo. Computer vision models instantly recognize ingredients and estimate precise portions.
-          </p>
-          <button onclick="openScannerModal()" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Launch Camera Scanner <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
-        </div>
-
-        <!-- Card 2: Nutrition Information -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all">
-            <i class="fa-solid fa-chart-pie"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Nutrition Information</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Detailed breakdown of calories, proteins, carbohydrates, healthy fats, vitamins, and sodium levels formatted into clear visual cards.
-          </p>
-          <a href="#dashboard" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Explore Breakdown <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-
-        <!-- Card 3: Healthy Alternatives -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-teal-600 group-hover:text-white transition-all">
-            <i class="fa-solid fa-utensils"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">15+ Diet Recipes</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Get instant recipes for Banana Protein Shake, Moong Dal Chilla, Oats Porridge, Sprouted Salad &amp; Paneer Skewers via NutriAssist AI.
-          </p>
-          <a href="#recipes" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Explore Recipe Book <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-
-        <!-- Card 4: Interactive Quizzes -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Interactive Quizzes</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Test and level up your nutrition literacy with quick, engaging micro-quizzes. Earn health badges and bust popular dietary myths.
-          </p>
-          <a href="#interactive-zone" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Start Today's Quiz <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-
-        <!-- Card 5: Water Reminders -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition-all">
-            <i class="fa-solid fa-droplet"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Water Reminders</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Track daily hydration goals with an interactive liquid counter, automated reminders, and visual hydration streaks throughout study sessions.
-          </p>
-          <a href="#interactive-zone" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            Log Intake <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-
-        <!-- Card 6: Progress Dashboard -->
-        <div class="bg-slate-50/80 hover:bg-white p-8 rounded-3xl border border-slate-200/80 hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300 group">
-          <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-emerald-700 group-hover:text-white transition-all">
-            <i class="fa-solid fa-sliders"></i>
-          </div>
-          <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Progress Dashboard</h3>
-          <p class="text-slate-600 text-sm leading-relaxed mb-4">
-            Visualize your weekly caloric distribution, macro ratios, and healthy habit consistency via clean interactive charts and analytics.
-          </p>
-          <a href="#dashboard" class="text-brand-600 font-bold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-            View Analytics <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- FEATURED DIET RECIPES SECTION -->
-  <section id="recipes" class="py-20 bg-slate-50 border-y border-emerald-100/60">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-14 space-y-4">
-        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-white px-3 py-1 rounded-full border border-brand-200 shadow-sm">
-          NutriAssist Recipe Collection
-        </span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
-          Featured Healthy Student Diet Recipes
-        </h2>
-        <p class="text-slate-600 text-base sm:text-lg">
-          High protein, budget-friendly, and quick to prepare for busy study schedules.
-        </p>
-      </div>
-
-      <!-- Recipe Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        <!-- Recipe Card 1 -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
-          <div class="space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
-              🍌
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Breakfast Shake</span>
-              <span class="text-slate-500 font-semibold">380 kcal</span>
-            </div>
-            <h3 class="font-display font-bold text-slate-900 text-lg">Banana Peanut Butter Shake</h3>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Ripe bananas blended with oats, peanut butter & milk for instant sustained brain energy.
-            </p>
-            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 18g Protein</span>
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 3 Mins</span>
-            </div>
-          </div>
-          <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-        <!-- Recipe Card 2 -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
-          <div class="space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
-              🥞
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">High Fiber</span>
-              <span class="text-slate-500 font-semibold">220 kcal</span>
-            </div>
-            <h3 class="font-display font-bold text-slate-900 text-lg">Moong Dal Veggie Chilla</h3>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Crispy yellow moong dal pancake stuffed with chopped spinach, onions & paneer.
-            </p>
-            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 14g Protein</span>
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 10 Mins</span>
-            </div>
-          </div>
-          <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-        <!-- Recipe Card 3 -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
-          <div class="space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
-              🥣
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Superfood</span>
-              <span class="text-slate-500 font-semibold">290 kcal</span>
-            </div>
-            <h3 class="font-display font-bold text-slate-900 text-lg">Protein Oats Porridge</h3>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Warm rolled oats cooked in milk with chia seeds, cinnamon powder, and fresh berries.
-            </p>
-            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 12g Protein</span>
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 5 Mins</span>
-            </div>
-          </div>
-          <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-        <!-- Recipe Card 4 -->
-        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:border-brand-400 transition-all duration-300 flex flex-col justify-between group">
-          <div class="space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
-              🥗
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-full border border-brand-200">Fresh Salad</span>
-              <span class="text-slate-500 font-semibold">190 kcal</span>
-            </div>
-            <h3 class="font-display font-bold text-slate-900 text-lg">Sprouted Moong Salad</h3>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Green moong sprouts tossed with chickpeas, cucumber, lemon juice & chaat masala.
-            </p>
-            <div class="pt-2 flex gap-2 text-[10px] font-bold text-slate-500">
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">💪 13g Protein</span>
-              <span class="bg-slate-100 px-2 py-1 rounded-lg">⏱️ 3 Mins</span>
-            </div>
-          </div>
-          <button onclick="sendQuickPrompt('Sprouted Salad')" class="mt-6 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            View Full Recipe <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-      </div>
-
-      <div class="mt-10 text-center">
-        <button onclick="sendQuickPrompt('Show all 15 recipes')" class="bg-white hover:bg-brand-50 text-brand-700 font-bold text-sm px-6 py-3 rounded-2xl border-2 border-brand-300 shadow-sm hover:border-brand-500 transition-all inline-flex items-center gap-2">
-          <i class="fa-solid fa-book-open text-brand-600"></i> Open Full 15 Recipe Book in NutriAssist AI
+      <!-- Instant Guest Mode Button -->
+      <div class="pt-2 border-t border-slate-100">
+        <button onclick="handleGuestLogin()" class="text-xs font-bold text-brand-600 hover:underline">
+          🚀 Instant Demo Login as Guest / Student
         </button>
       </div>
 
+      <div class="text-[10px] text-slate-400">
+        Developer Handle: <span class="font-bold text-slate-600">@shreyasshinde619</span>
+      </div>
+
     </div>
-  </section>
+  </div>
 
 
-  <!-- HOW IT WORKS SECTION (TIMELINE) -->
-  <section id="how-it-works" class="py-20 bg-gradient-to-b from-slate-50 to-brand-50/40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- ==========================================================================
+       MAIN APPLICATION DASHBOARD (UNLOCKED AFTER LOGIN)
+       ========================================================================== -->
+  <div id="mainApp" class="hidden flex-1 flex flex-col">
 
-      <!-- Section Header -->
-      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-white px-3 py-1 rounded-full border border-brand-200 shadow-sm">
-          Seamless Workflow
-        </span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
-          How NutriAware Works
-        </h2>
-        <p class="text-slate-600 text-base sm:text-lg">
-          From snapshot to smart diet decisions in four intuitive steps.
-        </p>
-      </div>
-
-      <!-- Timeline Container -->
-      <div class="relative">
-        <!-- Connecting Line (Desktop) -->
-        <div class="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-emerald-600 -translate-y-6 z-0"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-
-          <!-- Step 1 -->
-          <div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-lg shadow-emerald-900/5 relative text-center space-y-4 hover:-translate-y-1 transition-transform">
-            <div class="w-12 h-12 bg-brand-600 text-white rounded-2xl font-display font-extrabold text-xl flex items-center justify-center mx-auto shadow-md shadow-brand-600/30">
-              1
-            </div>
-            <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 text-2xl mx-auto">
-              <i class="fa-solid fa-magnifying-glass font-black"></i>
-            </div>
-            <h4 class="font-display text-lg font-bold text-slate-900">Search / Scan Food</h4>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Snap a picture of your plate or type any food item into the search bar.
-            </p>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-lg shadow-emerald-900/5 relative text-center space-y-4 hover:-translate-y-1 transition-transform">
-            <div class="w-12 h-12 bg-brand-600 text-white rounded-2xl font-display font-extrabold text-xl flex items-center justify-center mx-auto shadow-md shadow-brand-600/30">
-              2
-            </div>
-            <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 text-2xl mx-auto">
-              <i class="fa-solid fa-brain"></i>
-            </div>
-            <h4 class="font-display text-lg font-bold text-slate-900">AI Food Recognition</h4>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              TensorFlow computer vision algorithms identify ingredients and portion size.
-            </p>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-lg shadow-emerald-900/5 relative text-center space-y-4 hover:-translate-y-1 transition-transform">
-            <div class="w-12 h-12 bg-brand-600 text-white rounded-2xl font-display font-extrabold text-xl flex items-center justify-center mx-auto shadow-md shadow-brand-600/30">
-              3
-            </div>
-            <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 text-2xl mx-auto">
-              <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <h4 class="font-display text-lg font-bold text-slate-900">View Nutrition Info</h4>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Get an instant breakdown of calories, macros, vitamins, and NutriScore rating.
-            </p>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="bg-white p-6 rounded-3xl border border-emerald-100 shadow-lg shadow-emerald-900/5 relative text-center space-y-4 hover:-translate-y-1 transition-transform">
-            <div class="w-12 h-12 bg-brand-600 text-white rounded-2xl font-display font-extrabold text-xl flex items-center justify-center mx-auto shadow-md shadow-brand-600/30">
-              4
-            </div>
-            <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 text-2xl mx-auto">
-              <i class="fa-solid fa-heart-circle-check"></i>
-            </div>
-            <h4 class="font-display text-lg font-bold text-slate-900">Choose Healthy Alternative</h4>
-            <p class="text-slate-600 text-xs leading-relaxed">
-              Explore lower-calorie, high-protein alternative recipes and smart swaps.
-            </p>
-          </div>
-
-        </div>
-      </div>
+    <!-- TOP ANNOUNCEMENT BANNER -->
+    <div class="bg-brand-900 text-brand-100 py-2 px-4 text-xs md:text-sm text-center font-medium border-b border-brand-800 flex items-center justify-center gap-2">
+      <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">New</span>
+      <span>AI Scanner v2.0 Released – 30-Q Nutrition Quiz &amp; Dedicated Feature Hubs</span>
     </div>
-  </section>
 
-
-  <!-- INTERACTIVE ZONE: QUIZ & WATER TRACKER -->
-  <section id="interactive-zone" class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
-          Hands-On Health Tools
-        </span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
-          Interactive Literacy &amp; Daily Habit Widgets
-        </h2>
-        <p class="text-slate-600 text-base sm:text-lg">
-          Practice nutrition awareness with live interactive exercises.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-        <!-- INTERACTIVE QUIZ WIDGET -->
-        <div class="bg-slate-50 p-8 rounded-3xl border border-emerald-100 shadow-sm flex flex-col justify-between">
+    <!-- NAVIGATION HEADER WITH SEPARATE TABS -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-emerald-100 transition-all duration-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" onclick="switchTab('home')" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-leaf text-xl"></i>
+          </div>
           <div>
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-question text-lg"></i>
-                </div>
-                <h3 class="font-display text-xl font-bold text-slate-900">Daily Nutrition Quiz</h3>
-              </div>
-              <span id="quizScore" class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full">Score: 0/3</span>
-            </div>
+            <span class="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Nutri<span class="text-brand-600">Aware</span></span>
+            <span class="block text-[10px] uppercase font-bold tracking-widest text-brand-600 -mt-1">Smart Health Tech</span>
+          </div>
+        </a>
 
-            <!-- Quiz Card Content -->
-            <div id="quizContainer" class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
-              <p id="quizQuestion" class="font-bold text-slate-800 text-base">
-                Q1: Which macronutrient is the body's primary quick energy source?
+        <!-- Desktop Nav Tabs -->
+        <nav class="hidden md:flex items-center gap-2 text-sm font-semibold">
+          <button id="nav-link-home" onclick="switchTab('home')" class="px-4 py-2 rounded-xl text-brand-600 font-bold border-b-2 border-brand-600 bg-brand-50/50 transition">
+            🏠 Home
+          </button>
+          <button id="nav-link-scanner" onclick="switchTab('scanner')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            📷 AI Scanner
+          </button>
+          <button id="nav-link-recipes" onclick="switchTab('recipes')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            🥗 Diet Recipes
+          </button>
+          <button id="nav-link-quizzes" onclick="switchTab('quizzes')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            🧠 30-Q Quiz
+          </button>
+          <button id="nav-link-tracker" onclick="switchTab('tracker')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            💧 Water Tracker
+          </button>
+          <button id="nav-link-dashboard" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            📊 Analytics
+          </button>
+        </nav>
+
+        <!-- Logged-in User Profile Dropdown -->
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl">
+            <div class="w-6 h-6 rounded-full bg-brand-600 text-white text-[10px] font-bold flex items-center justify-center">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <span class="user-display-name text-xs font-bold text-slate-800">shreyasshinde619</span>
+          </div>
+
+          <button onclick="handleLogout()" class="text-xs font-bold text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl border border-red-200 transition">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+
+          <!-- Mobile Menu Toggle -->
+          <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-brand-600 p-2">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Dropdown -->
+      <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-emerald-100 px-6 py-4 space-y-2 text-sm font-semibold">
+        <button id="mobile-link-home" onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🏠 Home</button>
+        <button id="mobile-link-scanner" onclick="switchTab('scanner'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">📷 AI Scanner Hub</button>
+        <button id="mobile-link-recipes" onclick="switchTab('recipes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🥗 Diet Recipes (15+)</button>
+        <button id="mobile-link-quizzes" onclick="switchTab('quizzes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🧠 30-Question Quiz</button>
+        <button id="mobile-link-tracker" onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">💧 Water Tracker</button>
+        <button id="mobile-link-dashboard" onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">📊 Analytics Dashboard</button>
+      </div>
+    </header>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 1: HOME HUB
+         ========================================================================== -->
+    <main id="view-home" class="tab-page flex-1">
+      
+      <!-- HERO BANNER -->
+      <section class="relative overflow-hidden bg-gradient-to-b from-brand-50/70 via-white to-slate-50 py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-800 px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold border border-brand-200">
+                <i class="fa-solid fa-graduation-cap text-brand-600"></i>
+                <span>Sanjivani University Student Portal</span>
+              </div>
+
+              <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
+                Eat Smart. <br class="hidden sm:inline" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-emerald-500 to-teal-700">Learn Nutrition.</span> <br />
+                Live Better.
+              </h1>
+
+              <p class="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                Welcome, <span class="user-display-name font-bold text-brand-700">Student</span>! Access your dedicated AI Food Scanner, 15+ healthy diet recipes, 30-question nutrition quiz, and personal hydration analytics.
               </p>
-              <div id="quizOptions" class="space-y-2">
-                <button onclick="answerQuiz(0)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50 text-sm font-semibold transition">
-                  A) Proteins
+
+              <!-- Quick Launch Cards -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+                <button onclick="switchTab('scanner')" class="p-4 bg-white border border-slate-200 hover:border-brand-500 rounded-2xl shadow-sm hover:shadow-md transition text-left">
+                  <span class="text-2xl block mb-1">📷</span>
+                  <span class="font-bold text-xs text-slate-800 block">AI Scanner</span>
+                  <span class="text-[10px] text-slate-500">Scan Meal</span>
                 </button>
-                <button onclick="answerQuiz(1)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50 text-sm font-semibold transition">
-                  B) Carbohydrates
+                <button onclick="switchTab('recipes')" class="p-4 bg-white border border-slate-200 hover:border-brand-500 rounded-2xl shadow-sm hover:shadow-md transition text-left">
+                  <span class="text-2xl block mb-1">🥗</span>
+                  <span class="font-bold text-xs text-slate-800 block">15+ Recipes</span>
+                  <span class="text-[10px] text-slate-500">Diet Meals</span>
                 </button>
-                <button onclick="answerQuiz(2)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50 text-sm font-semibold transition">
-                  C) Dietary Fats
+                <button onclick="switchTab('quizzes')" class="p-4 bg-white border border-slate-200 hover:border-brand-500 rounded-2xl shadow-sm hover:shadow-md transition text-left">
+                  <span class="text-2xl block mb-1">🧠</span>
+                  <span class="font-bold text-xs text-slate-800 block">30-Q Quiz</span>
+                  <span class="text-[10px] text-slate-500">Literacy</span>
+                </button>
+                <button onclick="switchTab('tracker')" class="p-4 bg-white border border-slate-200 hover:border-brand-500 rounded-2xl shadow-sm hover:shadow-md transition text-left">
+                  <span class="text-2xl block mb-1">💧</span>
+                  <span class="font-bold text-xs text-slate-800 block">Water Goal</span>
+                  <span class="text-[10px] text-slate-500">Hydration</span>
                 </button>
               </div>
-              <div id="quizFeedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
             </div>
-          </div>
 
-          <div class="mt-6 flex justify-between items-center pt-4 border-t border-slate-200">
-            <span class="text-xs text-slate-500">Test your nutrition IQ daily</span>
-            <button onclick="resetQuiz()" class="text-xs text-brand-600 font-bold hover:underline">
-              Restart Quiz <i class="fa-solid fa-rotate-right ml-1"></i>
-            </button>
+            <div class="lg:col-span-5 flex justify-center">
+              <div class="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-emerald-100 shadow-2xl space-y-6 max-w-md w-full">
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center text-3xl">🥑</div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-lg">Avocado Grain Salad</h4>
+                    <p class="text-xs text-brand-600 font-semibold">Grade A • Student Friendly</p>
+                  </div>
+                </div>
+                <div class="bg-brand-50 p-3 rounded-2xl border border-brand-200 text-xs text-brand-900">
+                  💡 <strong>Smart Swap:</strong> Add Chia seeds for extra Omega-3.
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
+      </section>
 
-        <!-- WATER REMINDER WIDGET -->
-        <div class="bg-slate-50 p-8 rounded-3xl border border-emerald-100 shadow-sm flex flex-col justify-between">
+    </main>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 2: SMART FEATURES & AI SCANNER HUB
+         ========================================================================== -->
+    <main id="view-scanner" class="tab-page hidden flex-1 py-12 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
+            Computer Vision Hub
+          </span>
+          <h2 class="font-display text-3xl font-extrabold text-slate-900">AI Food Recognition &amp; Portion Analyzer</h2>
+          <p class="text-slate-600 text-sm">Select sample dishes or upload meal photos for instant caloric breakdown.</p>
+        </div>
+
+        <div class="bg-slate-50 p-8 rounded-3xl border border-emerald-100 shadow-lg space-y-8 max-w-4xl mx-auto">
           <div>
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-glass-water text-lg"></i>
-                </div>
-                <h3 class="font-display text-xl font-bold text-slate-900">Water Tracker</h3>
-              </div>
-              <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Target: 2500 ml</span>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Select Sample Meal to Scan:</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <button onclick="selectSampleFood('Avocado Salad', 420, '18g', '42g', '16g', 'A', 'Add Chia seeds for extra Omega-3')" class="p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 text-left transition">
+                <span class="text-3xl block mb-1">🥑</span>
+                <span class="font-bold text-xs block text-slate-800">Avocado Salad</span>
+                <span class="text-[10px] text-slate-500">420 kcal</span>
+              </button>
+              <button onclick="selectSampleFood('Quinoa Protein Bowl', 510, '26g', '58g', '12g', 'A+', 'Perfect post-study energy meal!')" class="p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 text-left transition">
+                <span class="text-3xl block mb-1">🥗</span>
+                <span class="font-bold text-xs block text-slate-800">Quinoa Bowl</span>
+                <span class="text-[10px] text-slate-500">510 kcal</span>
+              </button>
+              <button onclick="selectSampleFood('Veggie Cheeseburger', 450, '18g', '48g', '14g', 'B', 'Swap refined flour bun with Whole Wheat or Oat Bun')" class="p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 text-left transition">
+                <span class="text-3xl block mb-1">🍔</span>
+                <span class="font-bold text-xs block text-slate-800">Veggie Burger</span>
+                <span class="text-[10px] text-slate-500">450 kcal</span>
+              </button>
+              <button onclick="selectSampleFood('Berry Yogurt Parfait', 290, '14g', '36g', '6g', 'A', 'Greek yogurt base provides probiotics')" class="p-4 bg-white border border-slate-200 rounded-2xl hover:border-brand-500 text-left transition">
+                <span class="text-3xl block mb-1">🫐</span>
+                <span class="font-bold text-xs block text-slate-800">Yogurt Parfait</span>
+                <span class="text-[10px] text-slate-500">290 kcal</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Viewport -->
+          <div id="scannerViewport" class="relative bg-slate-900 h-60 rounded-3xl overflow-hidden flex items-center justify-center text-white border-2 border-brand-500">
+            <div id="scanLine" class="hidden absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent shadow-[0_0_15px_#10b981] animate-scan"></div>
+            
+            <div id="scanInitialState" class="text-center p-4">
+              <i class="fa-solid fa-cloud-arrow-up text-5xl text-brand-400 mb-3"></i>
+              <p class="font-bold text-base">Click any dish above to trigger AI Scan</p>
+              <p class="text-xs text-slate-400">Supported formats: JPG, PNG, WEBP</p>
             </div>
 
-            <!-- Water Visual Progress -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-6">
-              <div class="flex justify-between items-end">
+            <div id="scanResultsState" class="hidden w-full h-full p-6 bg-slate-800/90 flex flex-col justify-between">
+              <div class="flex justify-between items-center">
                 <div>
-                  <span id="waterIntakeVal" class="font-display text-4xl font-extrabold text-sky-600">1250</span>
-                  <span class="text-slate-500 font-bold text-sm"> / 2500 ml</span>
+                  <span id="detectedFoodName" class="font-display font-bold text-xl text-brand-300">Avocado Salad</span>
+                  <span id="detectedGrade" class="ml-2 bg-brand-500 text-white text-xs font-bold px-2.5 py-1 rounded">Grade A</span>
                 </div>
-                <span id="waterPercentage" class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-1 rounded-lg">50% Goal Reached</span>
+                <span class="text-xs text-slate-400">Confidence: 99.2%</span>
               </div>
 
-              <!-- Animated Fill Gauge Bar -->
-              <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
-                <div id="waterProgressBar" class="bg-gradient-to-r from-sky-400 to-brand-500 h-full rounded-full transition-all duration-500 w-[50%]"></div>
+              <div class="grid grid-cols-4 gap-3 text-center my-2">
+                <div class="bg-slate-700/60 p-3 rounded-2xl border border-slate-600">
+                  <span class="block text-[10px] text-slate-400">Calories</span>
+                  <span id="detectedCals" class="font-bold text-sm text-white">420 kcal</span>
+                </div>
+                <div class="bg-slate-700/60 p-3 rounded-2xl border border-slate-600">
+                  <span class="block text-[10px] text-slate-400">Protein</span>
+                  <span id="detectedProt" class="font-bold text-sm text-white">18g</span>
+                </div>
+                <div class="bg-slate-700/60 p-3 rounded-2xl border border-slate-600">
+                  <span class="block text-[10px] text-slate-400">Carbs</span>
+                  <span id="detectedCarbs" class="font-bold text-sm text-white">42g</span>
+                </div>
+                <div class="bg-slate-700/60 p-3 rounded-2xl border border-slate-600">
+                  <span class="block text-[10px] text-slate-400">Fats</span>
+                  <span id="detectedFats" class="font-bold text-sm text-white">16g</span>
+                </div>
               </div>
 
-              <!-- Water Control Buttons -->
-              <div class="grid grid-cols-2 gap-3">
-                <button onclick="addWater(250)" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-3 px-4 rounded-xl border border-sky-200 flex items-center justify-center gap-2 transition">
-                  <i class="fa-solid fa-plus"></i> Add Glass (+250 ml)
-                </button>
-                <button onclick="addWater(500)" class="bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md shadow-sky-600/20 flex items-center justify-center gap-2 transition">
-                  <i class="fa-solid fa-bottle-water"></i> Add Bottle (+500 ml)
-                </button>
+              <div class="bg-brand-950/80 p-3 rounded-xl border border-brand-700/50 flex items-center gap-2 text-xs text-brand-200">
+                <i class="fa-solid fa-lightbulb text-brand-400"></i>
+                <span id="detectedTip">Smart Alternative Swap: Add Chia seeds for extra Omega-3.</span>
               </div>
             </div>
           </div>
 
-          <div class="mt-6 flex justify-between items-center pt-4 border-t border-slate-200">
-            <span class="text-xs text-slate-500">Stay hydrated to keep your mind sharp</span>
-            <button onclick="resetWater()" class="text-xs text-slate-500 font-bold hover:text-slate-800">
-              Reset Counter
-            </button>
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 3: DIET RECIPES COLLECTION (15+ RECIPES)
+         ========================================================================== -->
+    <main id="view-recipes" class="tab-page hidden flex-1 py-12 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-white px-3 py-1 rounded-full border border-brand-200 shadow-sm">
+            NutriAssist Recipe Book
+          </span>
+          <h2 class="font-display text-3xl font-extrabold text-slate-900">Featured Student Diet Recipes</h2>
+          <p class="text-slate-600 text-sm">15+ Healthy, high-protein recipes accessible via search or chat.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-3">
+            <div class="text-4xl">🍌</div>
+            <span class="bg-brand-50 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">380 kcal</span>
+            <h3 class="font-bold text-slate-900 text-base">Banana Peanut Butter Shake</h3>
+            <p class="text-xs text-slate-600">Bananas, milk, oats & peanut butter blended for brain power.</p>
+            <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="w-full bg-brand-600 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-3">
+            <div class="text-4xl">🥞</div>
+            <span class="bg-brand-50 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">220 kcal</span>
+            <h3 class="font-bold text-slate-900 text-base">Moong Dal Veggie Chilla</h3>
+            <p class="text-xs text-slate-600">Crispy moong dal pancake stuffed with spinach & paneer.</p>
+            <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="w-full bg-brand-600 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-3">
+            <div class="text-4xl">🥣</div>
+            <span class="bg-brand-50 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">290 kcal</span>
+            <h3 class="font-bold text-slate-900 text-base">Protein Oats Porridge</h3>
+            <p class="text-xs text-slate-600">Rolled oats cooked in milk with chia seeds & berries.</p>
+            <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="w-full bg-brand-600 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-3">
+            <div class="text-4xl">🥗</div>
+            <span class="bg-brand-50 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">190 kcal</span>
+            <h3 class="font-bold text-slate-900 text-base">Sprouted Moong Salad</h3>
+            <p class="text-xs text-slate-600">Sprouted moong with chickpeas, cucumber & lemon dressing.</p>
+            <button onclick="sendQuickPrompt('Sprouted Salad')" class="w-full bg-brand-600 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
           </div>
         </div>
 
       </div>
-
-    </div>
-  </section>
+    </main>
 
 
-  <!-- PROGRESS DASHBOARD SECTION -->
-  <section id="dashboard" class="py-20 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-white px-3 py-1 rounded-full border border-brand-200 shadow-sm">
-          Analytics Overview
-        </span>
-        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-slate-900">
-          Personal Progress Dashboard
-        </h2>
-        <p class="text-slate-600 text-base sm:text-lg">
-          Track caloric distribution, macro ratios, and healthy food swaps over time.
-        </p>
-      </div>
-
-      <div class="bg-white p-6 sm:p-10 rounded-3xl border border-emerald-100 shadow-xl space-y-8">
+    <!-- ==========================================================================
+         VIEW TAB 4: 30-QUESTION NUTRITION QUIZ PORTAL
+         ========================================================================== -->
+    <main id="view-quizzes" class="tab-page hidden flex-1 py-12 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-6">
           <div>
-            <h3 class="font-display text-xl font-bold text-slate-900">Weekly Macro &amp; Caloric Log</h3>
-            <p class="text-xs text-slate-500">Based on AI Scan History &amp; Meal Entries</p>
+            <span class="text-xs font-bold tracking-widest text-brand-600 uppercase bg-brand-50 px-3 py-1 rounded-full">
+              Nutrition Literacy Exam
+            </span>
+            <h2 class="font-display text-2xl font-extrabold text-slate-900 mt-2">30-Question Student Quiz Portal</h2>
           </div>
-          <div class="flex gap-2">
-            <span class="bg-brand-50 text-brand-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-brand-200">
-              <i class="fa-solid fa-fire text-brand-600 mr-1"></i> Avg: 2,150 kcal/day
+          <div class="flex items-center gap-3">
+            <span id="quiz30ScoreDisplay" class="bg-brand-100 text-brand-800 text-xs font-bold px-4 py-2 rounded-full border border-brand-200">
+              Score: 0/30
             </span>
           </div>
         </div>
 
-        <!-- Chart Canvas Container -->
-        <div class="w-full h-80 relative">
-          <canvas id="macroChart"></canvas>
+        <!-- Quiz Progress Bar -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-xs font-bold text-slate-600">
+            <span id="quiz30Counter">Question 1 of 30</span>
+            <span>Nutrition Certification</span>
+          </div>
+          <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200">
+            <div id="quiz30ProgressBar" class="bg-brand-600 h-full rounded-full transition-all duration-300 w-[3.33%]"></div>
+          </div>
         </div>
+
+        <!-- Quiz Container Card -->
+        <div id="quiz30Container" class="bg-slate-50 p-8 rounded-3xl border border-emerald-100 shadow-lg">
+          <!-- Populated dynamically via JS script -->
+        </div>
+
       </div>
-
-    </div>
-  </section>
+    </main>
 
 
-  <!-- FOOTER SECTION -->
-  <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-      
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <!-- ==========================================================================
+         VIEW TAB 5: WATER TRACKER
+         ========================================================================== -->
+    <main id="view-tracker" class="tab-page hidden flex-1 py-12 bg-slate-50">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        <!-- Brand & Attribution Column -->
-        <div class="md:col-span-2 space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white text-xl font-bold">
-              <i class="fa-solid fa-leaf"></i>
+        <div class="text-center space-y-2">
+          <h2 class="font-display text-3xl font-extrabold text-slate-900">Daily Hydration Goal</h2>
+          <p class="text-slate-600 text-xs">Maintain 2500 ml water intake for optimal study focus.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
+          <div class="flex justify-between items-end">
+            <div>
+              <span id="waterIntakeVal" class="font-display text-5xl font-extrabold text-sky-600">1250</span>
+              <span class="text-slate-500 font-bold text-sm"> / 2500 ml</span>
             </div>
-            <span class="font-display text-2xl font-bold text-white tracking-tight">Nutri<span class="text-brand-500">Aware</span></span>
+            <span id="waterPercentage" class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1.5 rounded-xl">50% Goal Reached</span>
           </div>
-          <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
-            Smart Nutrition Awareness Platform designed for students and busy eaters to make health-conscious dietary choices effortlessly.
-          </p>
 
-          <!-- REQUIRED PRESENTATION CREDIT & GITHUB AUTHOR -->
-          <div class="pt-4 space-y-2">
-            <div class="inline-block bg-slate-800/90 border border-brand-500/30 px-4 py-2.5 rounded-2xl text-xs text-slate-300">
-              <p class="font-bold text-brand-400 uppercase tracking-wider text-[10px]">Academic Presentation</p>
-              <p class="font-semibold text-white">Presented by Integrated MTech AIML, Sanjivani University</p>
-              <p class="text-slate-400 text-[11px] mt-1">Lead Developer: <a href="https://github.com/shreyasshinde619" target="_blank" class="text-brand-400 font-bold hover:underline">@shreyasshinde619</a></p>
-            </div>
+          <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+            <div id="waterProgressBar" class="bg-gradient-to-r from-sky-400 to-brand-500 h-full rounded-full transition-all duration-500 w-[50%]"></div>
           </div>
-        </div>
 
-        <!-- Quick Links -->
-        <div>
-          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Platform</h4>
-          <ul class="space-y-2.5 text-sm">
-            <li><a href="#hero" class="hover:text-brand-400 transition">Home</a></li>
-            <li><a href="#features" class="hover:text-brand-400 transition">AI Scanner</a></li>
-            <li><a href="#recipes" class="hover:text-brand-400 transition">Diet Recipes</a></li>
-            <li><a href="#how-it-works" class="hover:text-brand-400 transition">How It Works</a></li>
-            <li><a href="#interactive-zone" class="hover:text-brand-400 transition">Quizzes &amp; Tracker</a></li>
-            <li><a href="#dashboard" class="hover:text-brand-400 transition">Analytics</a></li>
-          </ul>
-        </div>
-
-        <!-- Design & Tech Stack -->
-        <div>
-          <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Tech Specs</h4>
-          <ul class="space-y-2 text-xs text-slate-400">
-            <li class="flex items-center gap-2"><i class="fa-brands fa-github text-brand-400"></i> GitHub: shreyasshinde619</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-palette text-brand-400"></i> UI/UX Enforced by Designer Kunal</li>
-            <li class="flex items-center gap-2"><i class="fa-brands fa-node-js text-brand-400"></i> Node.js &amp; Firebase Ready</li>
-            <li class="flex items-center gap-2"><i class="fa-brands fa-python text-brand-400"></i> TensorFlow Model Hook</li>
-          </ul>
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="addWater(250)" class="bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs py-4 px-4 rounded-2xl border border-sky-200 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-plus"></i> Add Glass (+250 ml)
+            </button>
+            <button onclick="addWater(500)" class="bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs py-4 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-bottle-water"></i> Add Bottle (+500 ml)
+            </button>
+          </div>
         </div>
 
       </div>
-
-      <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
-        <p>&copy; 2026 NutriAware Platform by <a href="https://github.com/shreyasshinde619" class="text-brand-400 font-bold hover:underline">shreyasshinde619</a>. All rights reserved.</p>
-        <p>Presented by Integrated MTech AIML, Sanjivani University</p>
-      </div>
-
-    </div>
-  </footer>
+    </main>
 
 
-  <!-- AI SCANNER SIMULATOR MODAL -->
-  <div id="scannerModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border border-emerald-100 flex flex-col max-h-[90vh]">
-      
-      <!-- Modal Header -->
-      <div class="bg-brand-900 text-white p-5 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
-            <i class="fa-solid fa-camera"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-lg">NutriAware AI Food Scanner</h3>
-            <p class="text-[11px] text-brand-300">TensorFlow Vision Recognition Engine</p>
-          </div>
-        </div>
-        <button onclick="closeScannerModal()" class="text-brand-200 hover:text-white text-xl p-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="p-6 space-y-6 overflow-y-auto">
+    <!-- ==========================================================================
+         VIEW TAB 6: PROGRESS DASHBOARD
+         ========================================================================== -->
+    <main id="view-dashboard" class="tab-page hidden flex-1 py-12 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        <!-- Sample Item Selector (100% Beef-Free Clean Healthy Options) -->
-        <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-            Select Sample Dish or Upload Photo:
-          </label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <button onclick="selectSampleFood('Avocado Salad', 420, '18g', '42g', '16g', 'A', 'Add Chia seeds for extra Omega-3')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
-              <span class="text-2xl block mb-1">🥑</span>
-              <span class="font-bold text-xs text-slate-800 block">Avocado Salad</span>
-              <span class="text-[10px] text-slate-500">Healthy Fat &amp; Fiber</span>
-            </button>
-            <button onclick="selectSampleFood('Quinoa Protein Bowl', 510, '26g', '58g', '12g', 'A+', 'Perfect post-study energy meal!')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
-              <span class="text-2xl block mb-1">🥗</span>
-              <span class="font-bold text-xs text-slate-800 block">Quinoa Bowl</span>
-              <span class="text-[10px] text-slate-500">High Protein</span>
-            </button>
-            <button onclick="selectSampleFood('Veggie Cheeseburger', 450, '18g', '48g', '14g', 'B', 'Swap refined flour bun with Whole Wheat or Oat Bun')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
-              <span class="text-2xl block mb-1">🍔</span>
-              <span class="font-bold text-xs text-slate-800 block">Veggie Burger</span>
-              <span class="text-[10px] text-slate-500">High Fiber &amp; Plant Protein</span>
-            </button>
-            <button onclick="selectSampleFood('Berry Yogurt Parfait', 290, '14g', '36g', '6g', 'A', 'Greek yogurt base provides probiotics')" class="p-3 border border-slate-200 rounded-2xl hover:border-brand-500 hover:bg-brand-50 text-left transition">
-              <span class="text-2xl block mb-1">🫐</span>
-              <span class="font-bold text-xs text-slate-800 block">Yogurt Parfait</span>
-              <span class="text-[10px] text-slate-500">Antioxidant Rich</span>
-            </button>
-          </div>
+        <div class="text-center max-w-3xl mx-auto space-y-2">
+          <h2 class="font-display text-3xl font-extrabold text-slate-900">Personal Health Analytics</h2>
+          <p class="text-slate-600 text-xs">Weekly caloric & macro breakdown</p>
         </div>
 
-        <!-- Scanner Viewport with Scanline Animation -->
-        <div id="scannerViewport" class="relative bg-slate-900 h-52 rounded-2xl overflow-hidden flex items-center justify-center text-white border-2 border-brand-500">
-          <!-- Animated Scanline -->
-          <div id="scanLine" class="hidden absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent shadow-[0_0_15px_#10b981] animate-scan"></div>
-          
-          <div id="scanInitialState" class="text-center p-4">
-            <i class="fa-solid fa-cloud-arrow-up text-4xl text-brand-400 mb-2"></i>
-            <p class="font-bold text-sm">Select a meal above or click to upload</p>
-            <p class="text-xs text-slate-400">Supported formats: JPG, PNG, WEBP</p>
-          </div>
-
-          <div id="scanResultsState" class="hidden w-full h-full p-4 bg-slate-800/90 flex flex-col justify-between">
-            <div class="flex justify-between items-center">
-              <div>
-                <span id="detectedFoodName" class="font-display font-bold text-lg text-brand-300">Avocado Salad</span>
-                <span id="detectedGrade" class="ml-2 bg-brand-500 text-white text-xs font-bold px-2 py-0.5 rounded">NutriScore: Grade A</span>
-              </div>
-              <span class="text-xs text-slate-400">Confidence: 99.2%</span>
-            </div>
-
-            <div class="grid grid-cols-4 gap-2 text-center my-2">
-              <div class="bg-slate-700/60 p-2 rounded-xl border border-slate-600">
-                <span class="block text-[10px] text-slate-400">Calories</span>
-                <span id="detectedCals" class="font-bold text-xs text-white">420 kcal</span>
-              </div>
-              <div class="bg-slate-700/60 p-2 rounded-xl border border-slate-600">
-                <span class="block text-[10px] text-slate-400">Protein</span>
-                <span id="detectedProt" class="font-bold text-xs text-white">18g</span>
-              </div>
-              <div class="bg-slate-700/60 p-2 rounded-xl border border-slate-600">
-                <span class="block text-[10px] text-slate-400">Carbs</span>
-                <span id="detectedCarbs" class="font-bold text-xs text-white">42g</span>
-              </div>
-              <div class="bg-slate-700/60 p-2 rounded-xl border border-slate-600">
-                <span class="block text-[10px] text-slate-400">Fats</span>
-                <span id="detectedFats" class="font-bold text-xs text-white">16g</span>
-              </div>
-            </div>
-
-            <div class="bg-brand-950/80 p-2.5 rounded-xl border border-brand-700/50 flex items-center gap-2 text-xs text-brand-200">
-              <i class="fa-solid fa-lightbulb text-brand-400"></i>
-              <span id="detectedTip">Smart Alternative Swap: Add Chia seeds for extra Omega-3.</span>
-            </div>
+        <div class="bg-slate-50 p-8 rounded-3xl border border-emerald-100 shadow-xl space-y-6">
+          <div class="w-full h-80 relative">
+            <canvas id="macroChart"></canvas>
           </div>
         </div>
 
       </div>
+    </main>
 
-      <!-- Modal Footer -->
-      <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-between items-center">
-        <span class="text-xs text-slate-500">TensorFlow Python Model API Target ready</span>
-        <button onclick="closeScannerModal()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition">
-          Done
-        </button>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-3">
+        <p>&copy; 2026 NutriAware Platform by <a href="https://github.com/shreyasshinde619" class="text-brand-400 font-bold hover:underline">@shreyasshinde619</a>.</p>
+        <p class="text-slate-500">Presented by Integrated MTech AIML, Sanjivani University</p>
       </div>
+    </footer>
 
-    </div>
   </div>
 
 
   <!-- CUSTOM INTERACTIVE ELEMENT: FLOATING AI CHATBOT WIDGET -->
   <div id="chatWidget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    
-    <!-- Chat Window Container (Hidden by default) -->
-    <div id="chatBox" class="hidden w-[360px] sm:w-[420px] bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex-col mb-4 transition-all duration-300 transform scale-95 origin-bottom-right">
-      
-      <!-- Chat Header -->
-      <div class="bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-600 p-4 text-white flex justify-between items-center shadow-md">
+    <div id="chatBox" class="hidden w-[360px] sm:w-[420px] bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex-col mb-4 transition-all">
+      <div class="bg-gradient-to-r from-brand-700 to-emerald-600 p-4 text-white flex justify-between items-center">
         <div class="flex items-center gap-3">
-          <div class="relative">
-            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-lg">
-              <i class="fa-solid fa-robot"></i>
-            </div>
-            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-brand-700 rounded-full"></span>
-          </div>
+          <i class="fa-solid fa-robot text-lg"></i>
           <div>
-            <h4 class="font-bold text-sm tracking-wide">NutriAssist AI</h4>
-            <p class="text-[10px] text-brand-100 flex items-center gap-1">
-              <span>● Online</span> | <span>15+ Diet Recipes Loaded</span>
-            </p>
+            <h4 class="font-bold text-sm">NutriAssist AI</h4>
+            <p class="text-[10px] text-brand-100">15+ Recipes Loaded</p>
           </div>
         </div>
-        
-        <button onclick="toggleChatWidget()" class="text-white/80 hover:text-white p-1 text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button onclick="toggleChatWidget()"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- Chat Messages Scroll Area -->
       <div id="chatMessages" class="p-4 h-80 overflow-y-auto space-y-3 bg-slate-50 text-xs">
-        
-        <!-- Welcome Message Bubble -->
-        <div class="flex items-start gap-2 max-w-[90%]">
-          <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
-            <i class="fa-solid fa-leaf"></i>
-          </div>
-          <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 space-y-2">
-            <p class="font-bold text-brand-700">NutriAssist AI</p>
-            <p>Hello! I'm your AI Nutritionist. I can provide 15+ healthy diet recipes including <strong>Banana Shake</strong>, <strong>Moong Dal Chilla</strong>, <strong>Oats Porridge</strong>, <strong>Sprouted Salad</strong>, <strong>Chia Pudding</strong> &amp; more!</p>
-            <div class="pt-1 border-t border-slate-100 flex flex-wrap gap-1 text-[10px]">
-              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🍌 Banana Shake</span>
-              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🥞 Moong Chilla</span>
-              <span class="bg-brand-50 text-brand-800 font-semibold px-2 py-0.5 rounded">🥣 Oats</span>
-            </div>
-            <span class="block text-[9px] text-slate-400 text-right">Just now</span>
-          </div>
+        <div class="bg-white p-3 rounded-2xl border border-slate-200">
+          <p class="font-bold text-brand-700">NutriAssist AI</p>
+          <p>Hi! Ask for <strong>Banana Shake</strong>, <strong>Oats</strong>, or <strong>Moong Chilla</strong> recipes!</p>
         </div>
-
       </div>
 
-      <!-- Chat Quick Prompt Chips -->
-      <div class="p-2 bg-white border-t border-slate-100 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap">
-        <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
-          🍌 Banana Shake
-        </button>
-        <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
-          🥞 Moong Dal Chilla
-        </button>
-        <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-semibold px-2.5 py-1 rounded-full border border-brand-200 transition">
-          🥣 Oats Porridge
-        </button>
-        <button onclick="sendQuickPrompt('Show all 15 recipes')" class="bg-brand-600 text-white font-semibold px-2.5 py-1 rounded-full transition">
-          📖 Full Recipe Book
-        </button>
-      </div>
-
-      <!-- Chat Input Form -->
-      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
-        <input 
-          type="text" 
-          id="chatInput" 
-          placeholder="Ask for Banana Shake or diet recipes..." 
-          class="flex-1 bg-slate-100 text-slate-800 text-xs px-4 py-2.5 rounded-xl border border-transparent focus:border-brand-500 focus:bg-white focus:outline-none transition"
-          required
-        />
-        <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-brand-600/30 transition shrink-0">
-          <i class="fa-solid fa-paper-plane text-xs"></i>
-        </button>
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-3 bg-white border-t flex gap-2">
+        <input type="text" id="chatInput" placeholder="Ask for recipes..." class="flex-1 bg-slate-100 text-xs px-3 py-2 rounded-xl" required />
+        <button type="submit" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl"><i class="fa-solid fa-paper-plane"></i></button>
       </form>
-
     </div>
 
-    <!-- Floating Toggle Button -->
-    <button 
-      id="chatToggleBtn"
-      onclick="toggleChatWidget()" 
-      class="bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-700 hover:to-emerald-600 text-white p-4 rounded-full shadow-2xl shadow-brand-600/40 hover:scale-105 active:scale-95 transition-all flex items-center justify-center relative group"
-    >
+    <button onclick="toggleChatWidget()" class="bg-brand-600 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition">
       <i class="fa-solid fa-comment-dots text-2xl"></i>
-      <!-- Unread Indicator Badge -->
-      <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">15</span>
-      
-      <!-- Tooltip -->
-      <span class="absolute right-16 bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        15+ Diet Recipes in NutriAssist AI
-      </span>
     </button>
-
   </div>
 
-  <!-- JavaScript Script -->
   <script src="script.js"></script>
 </body>
 </html>
