@@ -1,9 +1,10 @@
 /* NutriAware Platform Stylesheet
-   Designed for Health-Tech Trust & Clean Aesthetics
+   Designed for Health-Tech Trust, Lively Animations & Clean Aesthetics
    Presented by Integrated MTech AIML, Sanjivani University
    Developer: @shreyasshinde619
 */
 
+/* Custom Lively Animations */
 @keyframes scanline {
   0% { top: 0%; opacity: 0.8; }
   50% { top: 90%; opacity: 1; }
@@ -16,13 +17,43 @@
 
 @keyframes splashPulse {
   0%, 100% { transform: scale(1); box-shadow: 0 16px 40px -10px rgba(5, 150, 105, 0.35); }
-  50% { transform: scale(1.04); box-shadow: 0 20px 50px -8px rgba(16, 185, 129, 0.45); }
+  50% { transform: scale(1.05); box-shadow: 0 20px 50px -8px rgba(16, 185, 129, 0.45); }
 }
 
 .splash-logo-box {
   animation: splashPulse 2.4s ease-in-out infinite;
 }
 
+/* Floating Card Ambient Animation */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+
+.animate-glow {
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+/* Slide in Toast Notification */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-toast {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Glassmorphism Card Utility */
 .glass-card {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
@@ -30,15 +61,43 @@
   border: 1px solid rgba(209, 250, 229, 0.8);
 }
 
+.dark-glass-card {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Custom Scrollbar for Chat & Modals */
+#chatMessages::-webkit-scrollbar,
+#quizContainer::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chatMessages::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+#chatMessages::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #059669;
+  border-radius: 8px;
+}
+
+/* Smooth Tab Fade Effect */
 .tab-page {
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Google Sign-in Button Styling */
 .google-btn {
   background: #ffffff;
   border: 1px solid #cbd5e1;

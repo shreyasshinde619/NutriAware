@@ -1,6 +1,6 @@
 /**
  * NutriAware - Smart Nutrition Awareness Platform
- * Front-end Logic, Authentication Portal, Tab Navigation & 30-Question Quiz Engine
+ * Front-end Logic, Auth & Registration Portal, Daily Protein/Water Notifications & 30-Question Quiz Engine
  * Presented by Integrated MTech AIML, Sanjivani University
  * Lead Developer: @shreyasshinde619
  */
@@ -10,10 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initProgressChart();
   initQuizPortal();
   registerPWA();
+  initNotificationSystem();
   
-  // Check if session exists (default launch show login portal)
+  // Check session login state
   const isLoggedIn = sessionStorage.getItem('nutriaware_logged_in');
+  const storedUser = sessionStorage.getItem('nutriaware_user_name');
   if (isLoggedIn === 'true') {
+    if (storedUser) setLoggedInUser(storedUser);
     showMainApp();
   } else {
     showLoginPortal();
@@ -29,8 +32,9 @@ function registerPWA() {
   }
 }
 
+
 /* ==========================================================================
-   1. AUTHENTICATION & LOGIN PORTAL LOGIC
+   1. AUTHENTICATION & REGISTER / SIGN IN PORTAL LOGIC
    ========================================================================== */
 function showLoginPortal() {
   document.getElementById('loginPortal')?.classList.remove('hidden');
@@ -44,36 +48,150 @@ function showMainApp() {
   switchTab('home');
 }
 
+function switchAuthTab(mode) {
+  const loginForm = document.getElementById('loginFormContainer');
+  const registerForm = document.getElementById('registerFormContainer');
+  const tabLoginBtn = document.getElementById('tabAuthLogin');
+  const tabRegisterBtn = document.getElementById('tabAuthRegister');
+
+  if (mode === 'register') {
+    loginForm?.classList.add('hidden');
+    registerForm?.classList.remove('hidden');
+    tabLoginBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
+    tabLoginBtn?.classList.add('text-slate-400');
+    tabRegisterBtn?.classList.add('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
+    tabRegisterBtn?.classList.remove('text-slate-400');
+  } else {
+    registerForm?.classList.add('hidden');
+    loginForm?.classList.remove('hidden');
+    tabRegisterBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
+    tabRegisterBtn?.classList.add('text-slate-400');
+    tabLoginBtn?.classList.add('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
+    tabLoginBtn?.classList.remove('text-slate-400');
+  }
+}
+
 function handleLoginSubmit(event) {
   event.preventDefault();
-  const emailInput = document.getElementById('loginEmail')?.value || 'student@sanjivani.edu.in';
-  setLoggedInUser(emailInput.split('@')[0]);
+  const emailInput = document.getElementById('loginEmail')?.value || 'student@example.com';
+  const displayName = emailInput.split('@')[0];
+  setLoggedInUser(displayName);
+  showMainApp();
+}
+
+function handleRegisterSubmit(event) {
+  event.preventDefault();
+  const nameInput = document.getElementById('regName')?.value || 'New Student';
+  const emailInput = document.getElementById('regEmail')?.value || 'student@example.com';
+  
+  showToastNotification('🎉 Account Created!', `Welcome to NutriAware, ${nameInput}! Registration complete.`);
+  setLoggedInUser(nameInput);
   showMainApp();
 }
 
 function handleGoogleLogin() {
-  setLoggedInUser('shreyasshinde619 (Google Account)');
+  setLoggedInUser('shreyasshinde619');
+  showToastNotification('⚡ Google Authentication', 'Signed in successfully via Google Account.');
   showMainApp();
 }
 
 function handleGuestLogin() {
-  setLoggedInUser('Sanjivani Student (Guest)');
+  setLoggedInUser('Sanjivani Student');
   showMainApp();
 }
 
 function handleLogout() {
   sessionStorage.removeItem('nutriaware_logged_in');
+  sessionStorage.removeItem('nutriaware_user_name');
   showLoginPortal();
 }
 
 function setLoggedInUser(name) {
+  sessionStorage.setItem('nutriaware_user_name', name);
   const nameEls = document.querySelectorAll('.user-display-name');
   nameEls.forEach(el => el.textContent = name);
 }
 
 
 /* ==========================================================================
-   2. DEDICATED SEPARATE DASHBOARD TABS NAVIGATION
+   2. DAILY PROTEIN & WATER NOTIFICATION SYSTEM
+   ========================================================================== */
+function initNotificationSystem() {
+  // Request Web Notification permission if available
+  if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+    setTimeout(() => {
+      Notification.requestPermission();
+    }, 4000);
+  }
+
+  // Periodic reminder triggers (every 4 minutes simulation)
+  setInterval(() => {
+    const randomChoice = Math.random() > 0.5;
+    if (randomChoice) {
+      triggerWaterReminder();
+    } else {
+      triggerProteinReminder();
+    }
+  }, 240000);
+}
+
+function triggerWaterReminder() {
+  const title = '💧 Hydration Alert';
+  const msg = `Time to drink a glass of water (250 ml)! Stay hydrated to hit your 2,500 ml goal.`;
+  showToastNotification(title, msg, 'water');
+
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body: msg, icon: 'app-icon.svg' });
+  }
+}
+
+function triggerProteinReminder() {
+  const title = '💪 Protein Intake Check';
+  const msg = `Don't forget your muscle recovery target! Have a High-Protein Banana Shake or Paneer Skewers.`;
+  showToastNotification(title, msg, 'protein');
+
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body: msg, icon: 'app-icon.svg' });
+  }
+}
+
+function showToastNotification(title, message, type = 'general') {
+  const toast = document.getElementById('notificationToast');
+  const titleEl = document.getElementById('toastTitle');
+  const msgEl = document.getElementById('toastMsg');
+  const iconEl = document.getElementById('toastIcon');
+
+  if (!toast || !titleEl || !msgEl || !iconEl) return;
+
+  titleEl.textContent = title;
+  msgEl.textContent = message;
+
+  if (type === 'water') {
+    iconEl.className = 'w-10 h-10 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-xl shrink-0';
+    iconEl.innerHTML = '<i class="fa-solid fa-droplet"></i>';
+  } else if (type === 'protein') {
+    iconEl.className = 'w-10 h-10 rounded-2xl bg-brand-600 text-white flex items-center justify-center text-xl shrink-0';
+    iconEl.innerHTML = '<i class="fa-solid fa-drumstick-bite"></i>';
+  } else {
+    iconEl.className = 'w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center text-xl shrink-0';
+    iconEl.innerHTML = '<i class="fa-solid fa-bell"></i>';
+  }
+
+  toast.classList.remove('hidden');
+  toast.classList.add('animate-toast');
+
+  setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 6000);
+}
+
+function closeToast() {
+  document.getElementById('notificationToast')?.classList.add('hidden');
+}
+
+
+/* ==========================================================================
+   3. SEPARATE DASHBOARD TABS NAVIGATION
    ========================================================================== */
 function switchTab(tabId) {
   const tabs = ['home', 'scanner', 'recipes', 'quizzes', 'tracker', 'dashboard'];
@@ -110,9 +228,13 @@ function initMobileMenu() {
   }
 }
 
+function toggleMobileMenu() {
+  document.getElementById('mobileMenu')?.classList.add('hidden');
+}
+
 
 /* ==========================================================================
-   3. AI FOOD SCANNER MODAL & SIMULATION (100% Beef-Free Clean Food Options)
+   4. AI FOOD SCANNER MODAL & SIMULATION
    ========================================================================== */
 function openScannerModal() {
   const modal = document.getElementById('scannerModal');
@@ -156,7 +278,7 @@ function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
 
 
 /* ==========================================================================
-   4. FLOATING AI CHATBOT WIDGET ("NutriAssist AI") - 15+ DIET RECIPES
+   5. FLOATING AI CHATBOT WIDGET ("NutriAssist AI")
    ========================================================================== */
 let isChatOpen = false;
 
@@ -356,6 +478,9 @@ function escapeHTML(str) {
   );
 }
 
+/* ==========================================================================
+   6. COMPLETE 30 NUTRITION LITERACY QUESTIONS ENGINE
+   ========================================================================== */
 const quiz30Data = [
   { q: "Q1: Which macronutrient is the body's primary quick energy source?", options: ["Proteins", "Carbohydrates", "Dietary Fats", "Vitamins"], answer: 1, tip: "Carbohydrates break down into glucose, fueling body & brain!" },
   { q: "Q2: Which vitamin synthesized from sunlight is crucial for bone health?", options: ["Vitamin D", "Vitamin C", "Vitamin B12", "Vitamin E"], answer: 0, tip: "Vitamin D promotes calcium absorption in the gut." },

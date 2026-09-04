@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#064e3b" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#greenGrad)"/>
+  <g filter="url(#shadow)">
+    <!-- Bold Stylish Letter N -->
+    <path d="M140 370 V142 H196 L316 312 V142 H372 V370 H316 L196 200 V370 Z" fill="#ffffff"/>
+    <!-- Leaf Accent Dot -->
+    <path d="M375 110 C395 110 410 125 410 145 C410 165 375 180 375 180 C375 180 360 155 360 145 C360 125 375 110 375 110 Z" fill="#34d399"/>
+  </g>
+</svg>
