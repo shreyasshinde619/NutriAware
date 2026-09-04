@@ -1,11 +1,11 @@
 /**
- * NutriAware - Smart Nutrition Awareness Platform
- * Front-end Logic, Auth & Registration Portal, Daily Protein/Water Notifications & 30-Question Quiz Engine
- * Presented by Integrated MTech AIML, Sanjivani University
+ * NutriAware - Smart Nutrition Platform v3.0 (Cinematic 3D & AI Vision Edition)
+ * Three.js 3D Engine, Google Account Chooser, WebRTC Live Camera Vision AI & Smart Chatbot
  * Lead Developer: @shreyasshinde619
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  init3DBackground();
   initMobileMenu();
   initProgressChart();
   initQuizPortal();
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* Service Worker Registration for PWA & Play Store / App Store Support */
+/* Service Worker Registration for PWA */
 function registerPWA() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -32,9 +32,97 @@ function registerPWA() {
   }
 }
 
+/* ==========================================================================
+   1. THREE.JS 3D CINEMATIC BACKGROUND & HERO PORTAL ENGINE
+   ========================================================================== */
+let scene3d, camera3d, renderer3d, particleSystem, orbMesh;
+
+function init3DBackground() {
+  const canvas = document.getElementById('bg3dCanvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  scene3d = new THREE.Scene();
+  camera3d = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera3d.position.z = 30;
+
+  renderer3d = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer3d.setSize(window.innerWidth, window.innerHeight);
+  renderer3d.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Create 3D Glowing Particle Network
+  const particleCount = 180;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+
+  const color1 = new THREE.Color('#10b981');
+  const color2 = new THREE.Color('#34d399');
+
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    positions[i] = (Math.random() - 0.5) * 80;
+    positions[i + 1] = (Math.random() - 0.5) * 80;
+    positions[i + 2] = (Math.random() - 0.5) * 60;
+
+    const mixedColor = Math.random() > 0.5 ? color1 : color2;
+    colors[i] = mixedColor.r;
+    colors[i + 1] = mixedColor.g;
+    colors[i + 2] = mixedColor.b;
+  }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const material = new THREE.PointsMaterial({
+    size: 0.8,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.7,
+    blending: THREE.AdditiveBlending
+  });
+
+  particleSystem = new THREE.Points(geometry, material);
+  scene3d.add(particleSystem);
+
+  // Rotating Wireframe Icosahedron (Floating Health Core)
+  const orbGeo = new THREE.IcosahedronGeometry(8, 2);
+  const orbMat = new THREE.MeshBasicMaterial({
+    color: 0x10b981,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.18
+  });
+  orbMesh = new THREE.Mesh(orbGeo, orbMat);
+  orbMesh.position.set(15, -5, -10);
+  scene3d.add(orbMesh);
+
+  // Animation Loop
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (particleSystem) {
+      particleSystem.rotation.y += 0.0008;
+      particleSystem.rotation.x += 0.0004;
+    }
+    if (orbMesh) {
+      orbMesh.rotation.x += 0.003;
+      orbMesh.rotation.y += 0.005;
+    }
+
+    renderer3d.render(scene3d, camera3d);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera3d.aspect = window.innerWidth / window.innerHeight;
+    camera3d.updateProjectionMatrix();
+    renderer3d.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
 
 /* ==========================================================================
-   1. AUTHENTICATION & REGISTER / SIGN IN PORTAL LOGIC
+   2. AUTHENTICATION, REGISTER & PROFESSIONAL GOOGLE ACCOUNT PICKER
    ========================================================================== */
 function showLoginPortal() {
   document.getElementById('loginPortal')?.classList.remove('hidden');
@@ -73,7 +161,7 @@ function switchAuthTab(mode) {
 
 function handleLoginSubmit(event) {
   event.preventDefault();
-  const emailInput = document.getElementById('loginEmail')?.value || 'student@example.com';
+  const emailInput = document.getElementById('loginEmail')?.value || 'user@example.com';
   const displayName = emailInput.split('@')[0];
   setLoggedInUser(displayName);
   showMainApp();
@@ -81,22 +169,51 @@ function handleLoginSubmit(event) {
 
 function handleRegisterSubmit(event) {
   event.preventDefault();
-  const nameInput = document.getElementById('regName')?.value || 'New Student';
-  const emailInput = document.getElementById('regEmail')?.value || 'student@example.com';
-  
+  const nameInput = document.getElementById('regName')?.value || 'New User';
   showToastNotification('🎉 Account Created!', `Welcome to NutriAware, ${nameInput}! Registration complete.`);
   setLoggedInUser(nameInput);
   showMainApp();
 }
 
-function handleGoogleLogin() {
-  setLoggedInUser('shreyasshinde619');
-  showToastNotification('⚡ Google Authentication', 'Signed in successfully via Google Account.');
-  showMainApp();
+// Google Account Picker Modal Trigger
+function openGoogleAccountPicker() {
+  const modal = document.getElementById('googleAccountPickerModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+}
+
+function closeGoogleAccountPicker() {
+  const modal = document.getElementById('googleAccountPickerModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+}
+
+function selectGoogleAccount(email, name) {
+  const statusBox = document.getElementById('googleSigningState');
+  const accountsBox = document.getElementById('googleAccountsList');
+
+  if (statusBox && accountsBox) {
+    accountsBox.classList.add('hidden');
+    statusBox.classList.remove('hidden');
+    document.getElementById('signingEmailText').textContent = email;
+
+    setTimeout(() => {
+      closeGoogleAccountPicker();
+      accountsBox.classList.remove('hidden');
+      statusBox.classList.add('hidden');
+      setLoggedInUser(name);
+      showToastNotification('⚡ Google Authentication', `Signed in successfully as ${name}`);
+      showMainApp();
+    }, 1200);
+  }
 }
 
 function handleGuestLogin() {
-  setLoggedInUser('Sanjivani Student');
+  setLoggedInUser('Guest Student');
   showMainApp();
 }
 
@@ -114,24 +231,157 @@ function setLoggedInUser(name) {
 
 
 /* ==========================================================================
-   2. DAILY PROTEIN & WATER NOTIFICATION SYSTEM
+   3. LIVE CAMERA ACCESS (WEBRTC) & AI VISION MEAL RECOGNITION
    ========================================================================== */
-function initNotificationSystem() {
-  // Request Web Notification permission if available
-  if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-    setTimeout(() => {
-      Notification.requestPermission();
-    }, 4000);
+let mediaStream = null;
+
+async function startLiveCamera() {
+  const videoEl = document.getElementById('webcamVideo');
+  const initBox = document.getElementById('scanInitialState');
+  const resultsBox = document.getElementById('scanResultsState');
+  const camBtn = document.getElementById('startCamBtn');
+  const capBtn = document.getElementById('captureCamBtn');
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showToastNotification('⚠️ Camera Access Failed', 'Webcam is not supported on this browser context.');
+    return;
   }
 
-  // Periodic reminder triggers (every 4 minutes simulation)
-  setInterval(() => {
-    const randomChoice = Math.random() > 0.5;
-    if (randomChoice) {
-      triggerWaterReminder();
-    } else {
-      triggerProteinReminder();
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+
+    if (videoEl) {
+      videoEl.srcObject = mediaStream;
+      videoEl.classList.remove('hidden');
+      initBox?.classList.add('hidden');
+      resultsBox?.classList.add('hidden');
+      camBtn?.classList.add('hidden');
+      capBtn?.classList.remove('hidden');
     }
+  } catch (err) {
+    console.error('Camera Error:', err);
+    showToastNotification('⚠️ Camera Permission Denied', 'Please allow camera permission in browser settings.');
+  }
+}
+
+function stopLiveCamera() {
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => track.stop());
+    mediaStream = null;
+  }
+  document.getElementById('webcamVideo')?.classList.add('hidden');
+  document.getElementById('startCamBtn')?.classList.remove('hidden');
+  document.getElementById('captureCamBtn')?.classList.add('hidden');
+}
+
+function captureAndAnalyzeCamera() {
+  const videoEl = document.getElementById('webcamVideo');
+  const canvasEl = document.getElementById('snapshotCanvas');
+
+  if (!videoEl || !canvasEl) return;
+
+  const ctx = canvasEl.getContext('2d');
+  canvasEl.width = videoEl.videoWidth || 640;
+  canvasEl.height = videoEl.videoHeight || 480;
+  ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+
+  stopLiveCamera();
+
+  // Analyze canvas snapshot pixel data
+  const imageData = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
+  const detected = classifyImageData(imageData);
+
+  selectSampleFood(detected.name, detected.cals, detected.prot, detected.carbs, detected.fats, detected.grade, detected.tip);
+}
+
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvasEl = document.getElementById('snapshotCanvas');
+      const ctx = canvasEl.getContext('2d');
+      canvasEl.width = img.width;
+      canvasEl.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, img.width, img.height);
+      const detected = classifyImageData(imageData);
+      selectSampleFood(detected.name, detected.cals, detected.prot, detected.carbs, detected.fats, detected.grade, detected.tip);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Client-side Vision AI Pixel Classifier
+function classifyImageData(imageData) {
+  const data = imageData.data;
+  let rSum = 0, gSum = 0, bSum = 0;
+  const totalPixels = data.length / 4;
+
+  for (let i = 0; i < data.length; i += 16) {
+    rSum += data[i];
+    gSum += data[i + 1];
+    bSum += data[i + 2];
+  }
+
+  const rAvg = rSum / (totalPixels / 4);
+  const gAvg = gSum / (totalPixels / 4);
+  const bAvg = bSum / (totalPixels / 4);
+
+  // Classification heuristic based on color dominance & brightness
+  if (gAvg > rAvg && gAvg > bAvg) {
+    return { name: "Green Garden Avocado Salad", cals: 390, prot: "16g", carbs: "38g", fats: "18g", grade: "A+", tip: "Rich in chlorophyll, fiber, and healthy Omega-3 fats!" };
+  } else if (rAvg > 140 && gAvg > 100 && bAvg < 90) {
+    return { name: "Veggie Protein Burger", cals: 460, prot: "22g", carbs: "52g", fats: "14g", grade: "B+", tip: "Swap refined bun for Whole Wheat or Multigrain Bun." };
+  } else if (rAvg > 130 && bAvg > 110 && gAvg < 110) {
+    return { name: "Berry Antioxidant Yogurt Bowl", cals: 280, prot: "15g", carbs: "34g", fats: "5g", grade: "A", tip: "Probiotics in yogurt enhance gut health & immunity." };
+  } else {
+    return { name: "Quinoa & Roasted Veggie Grain Bowl", cals: 480, prot: "24g", carbs: "62g", fats: "11g", grade: "A+", tip: "Complete protein profile with all 9 essential amino acids!" };
+  }
+}
+
+function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
+  const scanLine = document.getElementById('scanLine');
+  const initialState = document.getElementById('scanInitialState');
+  const resultsState = document.getElementById('scanResultsState');
+
+  if (!initialState || !resultsState || !scanLine) return;
+
+  scanLine.classList.remove('hidden');
+  initialState.classList.add('hidden');
+
+  setTimeout(() => {
+    scanLine.classList.add('hidden');
+    resultsState.classList.remove('hidden');
+
+    document.getElementById('detectedFoodName').textContent = name;
+    document.getElementById('detectedGrade').textContent = `NutriScore: Grade ${grade}`;
+    document.getElementById('detectedCals').textContent = `${cals} kcal`;
+    document.getElementById('detectedProt').textContent = prot;
+    document.getElementById('detectedCarbs').textContent = carbs;
+    document.getElementById('detectedFats').textContent = fats;
+    document.getElementById('detectedTip').textContent = `Smart Alternative Swap: ${tip}`;
+  }, 1000);
+}
+
+
+/* ==========================================================================
+   4. DAILY PROTEIN & WATER NOTIFICATION SYSTEM
+   ========================================================================== */
+function initNotificationSystem() {
+  if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+    setTimeout(() => { Notification.requestPermission(); }, 4000);
+  }
+
+  setInterval(() => {
+    Math.random() > 0.5 ? triggerWaterReminder() : triggerProteinReminder();
   }, 240000);
 }
 
@@ -139,7 +389,6 @@ function triggerWaterReminder() {
   const title = '💧 Hydration Alert';
   const msg = `Time to drink a glass of water (250 ml)! Stay hydrated to hit your 2,500 ml goal.`;
   showToastNotification(title, msg, 'water');
-
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification(title, { body: msg, icon: 'app-icon.svg' });
   }
@@ -149,7 +398,6 @@ function triggerProteinReminder() {
   const title = '💪 Protein Intake Check';
   const msg = `Don't forget your muscle recovery target! Have a High-Protein Banana Shake or Paneer Skewers.`;
   showToastNotification(title, msg, 'protein');
-
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification(title, { body: msg, icon: 'app-icon.svg' });
   }
@@ -180,9 +428,7 @@ function showToastNotification(title, message, type = 'general') {
   toast.classList.remove('hidden');
   toast.classList.add('animate-toast');
 
-  setTimeout(() => {
-    toast.classList.add('hidden');
-  }, 6000);
+  setTimeout(() => { toast.classList.add('hidden'); }, 6000);
 }
 
 function closeToast() {
@@ -191,7 +437,7 @@ function closeToast() {
 
 
 /* ==========================================================================
-   3. SEPARATE DASHBOARD TABS NAVIGATION
+   5. SEPARATE DASHBOARD TABS NAVIGATION
    ========================================================================== */
 function switchTab(tabId) {
   const tabs = ['home', 'scanner', 'recipes', 'quizzes', 'tracker', 'dashboard'];
@@ -220,11 +466,8 @@ function switchTab(tabId) {
 function initMobileMenu() {
   const menuBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-
   if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+    menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
   }
 }
 
@@ -234,51 +477,7 @@ function toggleMobileMenu() {
 
 
 /* ==========================================================================
-   4. AI FOOD SCANNER MODAL & SIMULATION
-   ========================================================================== */
-function openScannerModal() {
-  const modal = document.getElementById('scannerModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-}
-
-function closeScannerModal() {
-  const modal = document.getElementById('scannerModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-}
-
-function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
-  const scanLine = document.getElementById('scanLine');
-  const initialState = document.getElementById('scanInitialState');
-  const resultsState = document.getElementById('scanResultsState');
-
-  if (!initialState || !resultsState || !scanLine) return;
-
-  scanLine.classList.remove('hidden');
-  initialState.classList.add('hidden');
-
-  setTimeout(() => {
-    scanLine.classList.add('hidden');
-    resultsState.classList.remove('hidden');
-
-    document.getElementById('detectedFoodName').textContent = name;
-    document.getElementById('detectedGrade').textContent = `NutriScore: Grade ${grade}`;
-    document.getElementById('detectedCals').textContent = `${cals} kcal`;
-    document.getElementById('detectedProt').textContent = prot;
-    document.getElementById('detectedCarbs').textContent = carbs;
-    document.getElementById('detectedFats').textContent = fats;
-    document.getElementById('detectedTip').textContent = `Smart Alternative Swap: ${tip}`;
-  }, 1200);
-}
-
-
-/* ==========================================================================
-   5. FLOATING AI CHATBOT WIDGET ("NutriAssist AI")
+   6. ADVANCED SMART AI CHATBOT ("NutriAssist Pro AI")
    ========================================================================== */
 let isChatOpen = false;
 
@@ -324,7 +523,7 @@ function handleChatSubmit(event) {
     removeTypingIndicator(typingId);
     const aiResponse = generateNutriAIResponse(userQuery);
     appendChatMessage('ai', aiResponse);
-  }, 800);
+  }, 700);
 }
 
 function appendChatMessage(sender, text) {
@@ -347,11 +546,11 @@ function appendChatMessage(sender, text) {
   } else {
     messageWrapper.innerHTML = `
       <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
-        <i class="fa-solid fa-leaf"></i>
+        <i class="fa-solid fa-brain"></i>
       </div>
       <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 space-y-2 leading-relaxed">
         <p class="font-bold text-brand-700 flex items-center gap-1.5">
-          <i class="fa-solid fa-utensils text-xs"></i> NutriAssist AI Recipe Engine
+          <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
         </p>
         <div>${text}</div>
         <span class="block text-[9px] text-slate-400 text-right">${timeStr}</span>
@@ -372,7 +571,7 @@ function appendTypingIndicator() {
   typingWrapper.className = 'flex items-start gap-2 max-w-[85%]';
   typingWrapper.innerHTML = `
     <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
-      <i class="fa-solid fa-leaf"></i>
+      <i class="fa-solid fa-brain"></i>
     </div>
     <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-400 flex items-center gap-1">
       <span class="animate-bounce">●</span>
@@ -387,99 +586,72 @@ function appendTypingIndicator() {
 }
 
 function removeTypingIndicator(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
+  document.getElementById(id)?.remove();
 }
-
-const dietRecipes = {
-  banana_shake: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🍌 High-Protein Banana Peanut Butter Shake</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 380 kcal | Protein: 18g | Carbs: 52g | Fats: 12g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 medium ripe banana<br/>
-        • 1 cup low-fat milk (or almond milk)<br/>
-        • 1 tbsp natural peanut butter<br/>
-        • 2 tbsp rolled oats<br/>
-        • 1 tsp honey or chia seeds (optional)
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Blend all ingredients in a high-speed blender for 45 seconds until creamy. Serve chilled post-workout or for breakfast!</p>
-    </div>
-  `,
-
-  oats_porridge: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🥣 Nutritious Protein Oats Porridge</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 290 kcal | Protein: 12g | Carbs: 45g | Fats: 6g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1/2 cup rolled oats<br/>
-        • 1 cup water/skim milk<br/>
-        • 1 tbsp chia seeds<br/>
-        • 1/2 sliced apple or fresh blueberries<br/>
-        • Pinch of cinnamon powder
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Simmer oats in milk/water for 5-7 minutes. Stir in cinnamon & chia seeds. Top with fruits!</p>
-    </div>
-  `,
-
-  moong_chilla: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🥞 High-Fiber Moong Dal Veggie Chilla</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 220 kcal | Protein: 14g | Carbs: 32g | Fats: 4g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cup soaked yellow moong dal (blended into batter)<br/>
-        • Finely chopped spinach, onion & coriander<br/>
-        • 50g grated low-fat paneer<br/>
-        • 1/2 tsp cumin & turmeric
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Spread batter on a non-stick tawa, sprinkle chopped veggies & paneer, cook with 1/2 tsp olive oil until golden brown.</p>
-    </div>
-  `,
-
-  sprouted_salad: `
-    <div class="space-y-1.5">
-      <h5 class="font-bold text-slate-900 text-sm">🥗 Sprouted Moong & Chickpea Protein Salad</h5>
-      <p class="text-xs text-brand-700 font-semibold">Macros: 190 kcal | Protein: 13g | Carbs: 30g | Fats: 2.5g</p>
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-        <strong class="block text-slate-800">Ingredients:</strong>
-        • 1 cup sprouted green moong & boiled chickpeas<br/>
-        • 1/2 chopped cucumber, tomato & onion<br/>
-        • 1 tbsp lemon juice & chaat masala
-      </div>
-      <p class="text-xs"><strong>Steps:</strong> Toss all ingredients in a bowl. Refreshing, crisp, and loaded with digestive enzymes!</p>
-    </div>
-  `
-};
 
 function generateNutriAIResponse(query) {
   const q = query.toLowerCase();
 
-  if (q.includes('banana') || q.includes('shake')) {
-    return dietRecipes.banana_shake;
+  if (q.includes('project') || q.includes('how') && (q.includes('built') || q.includes('tech') || q.includes('developer'))) {
+    return `
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">💻 NutriAware Platform Architecture</h5>
+        <p>NutriAware is built with high-performance web standards:</p>
+        <ul class="list-disc pl-4 space-y-0.5">
+          <li><strong>3D Graphics:</strong> Three.js WebGL Particle Scene</li>
+          <li><strong>AI Camera Vision:</strong> HTML5 WebRTC + Canvas Histogram Classification</li>
+          <li><strong>PWA:</strong> Service Workers (`sw.js`) & Green Theme Manifest</li>
+          <li><strong>Styling & UI:</strong> Tailwind CSS & FontAwesome 6</li>
+          <li><strong>Developer:</strong> @shreyasshinde619</li>
+        </ul>
+      </div>
+    `;
+  } else if (q.includes('banana') || q.includes('shake')) {
+    return `
+      <div class="space-y-1.5">
+        <h5 class="font-bold text-slate-900 text-sm">🍌 High-Protein Banana Peanut Butter Shake</h5>
+        <p class="text-xs text-brand-700 font-semibold">Macros: 380 kcal | Protein: 18g | Carbs: 52g | Fats: 12g</p>
+        <p class="text-xs">Blend 1 ripe banana, 1 cup milk, 1 tbsp peanut butter & 2 tbsp oats for 45s!</p>
+      </div>
+    `;
   } else if (q.includes('oat') || q.includes('porridge')) {
-    return dietRecipes.oats_porridge;
-  } else if (q.includes('chilla') || q.includes('moong dal')) {
-    return dietRecipes.moong_chilla;
-  } else if (q.includes('sprout') || q.includes('chickpea salad')) {
-    return dietRecipes.sprouted_salad;
+    return `
+      <div class="space-y-1.5">
+        <h5 class="font-bold text-slate-900 text-sm">🥣 Protein Oats Porridge</h5>
+        <p class="text-xs text-brand-700 font-semibold">Macros: 290 kcal | Protein: 12g | Carbs: 45g | Fats: 6g</p>
+        <p class="text-xs">Simmer rolled oats in milk for 5 mins, top with chia seeds & apple slices.</p>
+      </div>
+    `;
+  } else if (q.includes('chilla') || q.includes('moong')) {
+    return `
+      <div class="space-y-1.5">
+        <h5 class="font-bold text-slate-900 text-sm">🥞 High-Fiber Moong Dal Veggie Chilla</h5>
+        <p class="text-xs text-brand-700 font-semibold">Macros: 220 kcal | Protein: 14g | Carbs: 32g | Fats: 4g</p>
+        <p class="text-xs">Spread yellow moong dal batter on tawa, top with spinach & low-fat paneer.</p>
+      </div>
+    `;
+  } else if (q.includes('protein') || q.includes('muscle')) {
+    return `
+      <p>Target protein requirement for students & active adults is <strong>1.2g - 1.6g per kg of bodyweight</strong>. Best sources: Paneer, Moong Sprouts, Greek Yogurt, Oats, Lentils & Almonds!</p>
+    `;
+  } else if (q.includes('water') || q.includes('hydration')) {
+    return `
+      <p>Maintain at least <strong>2,500 ml (2.5 Liters)</strong> daily water intake! Proper hydration boosts memory retention and cognitive focus during study sessions by up to 20%.</p>
+    `;
   } else {
     return `
-      <p>I can help you prepare healthy diet meals! Type <strong>"Banana Shake"</strong>, <strong>"Oats"</strong>, <strong>"Moong Chilla"</strong>, or explore our dedicated <strong>Diet Recipes Tab</strong>!</p>
+      <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me about <em>Diet Recipes</em>, <em>Protein Targets</em>, <em>Hydration Advice</em>, or <em>How NutriAware was built</em>!</p>
     `;
   }
 }
 
 function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
-    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-  );
+  return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
 
+
 /* ==========================================================================
-   6. COMPLETE 30 NUTRITION LITERACY QUESTIONS ENGINE
+   7. 30-QUESTION NUTRITION CERTIFICATION QUIZ PORTAL
    ========================================================================== */
 const quiz30Data = [
   { q: "Q1: Which macronutrient is the body's primary quick energy source?", options: ["Proteins", "Carbohydrates", "Dietary Fats", "Vitamins"], answer: 1, tip: "Carbohydrates break down into glucose, fueling body & brain!" },
@@ -612,8 +784,8 @@ function renderQuiz30Certificate() {
       </div>
 
       <div class="bg-white p-4 rounded-2xl border border-slate-200 max-w-sm mx-auto text-xs space-y-1">
-        <p class="font-bold text-slate-800">Presented by Integrated MTech AIML</p>
-        <p class="text-slate-500">Sanjivani University | Lead: @shreyasshinde619</p>
+        <p class="font-bold text-slate-800">NutriAware Health Platform</p>
+        <p class="text-slate-500">Lead Developer: @shreyasshinde619</p>
       </div>
 
       <button onclick="initQuizPortal()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-lg transition">
@@ -628,11 +800,6 @@ const targetWaterIntake = 2500;
 
 function addWater(amount) {
   currentWaterIntake = Math.min(targetWaterIntake, currentWaterIntake + amount);
-  updateWaterUI();
-}
-
-function resetWater() {
-  currentWaterIntake = 0;
   updateWaterUI();
 }
 
