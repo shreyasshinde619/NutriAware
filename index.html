@@ -1152,35 +1152,72 @@
   </div>
 
 
-  <!-- CUSTOM INTERACTIVE ELEMENT: FLOATING AI CHATBOT WIDGET -->
+  <!-- CUSTOM INTERACTIVE ELEMENT: FLOATING AI CHATBOT SMART ASSISTANT WIDGET -->
   <div id="chatWidget" class="fixed bottom-16 md:bottom-6 right-6 z-50 flex flex-col items-end">
     <div id="chatBox" class="hidden w-[360px] sm:w-[420px] bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-emerald-500/40 overflow-hidden flex-col mb-4 transition-all text-white">
-      <div class="bg-gradient-to-r from-brand-700 to-emerald-600 p-4 text-white flex justify-between items-center">
+      
+      <!-- Chatbot Header -->
+      <div class="bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-700 p-4 text-white flex justify-between items-center shadow-md">
         <div class="flex items-center gap-3">
-          <i class="fa-solid fa-brain text-lg"></i>
+          <div class="w-9 h-9 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg">
+            <i class="fa-solid fa-brain"></i>
+          </div>
           <div>
-            <h4 class="font-bold text-sm">NutriAssist Pro AI</h4>
-            <p class="text-[10px] text-brand-100">Smart NLP Health Assistant</p>
+            <h4 class="font-bold text-sm flex items-center gap-1.5">
+              NutriAssist Pro AI <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            </h4>
+            <p class="text-[10px] text-brand-100 font-medium">Smart NLP Health &amp; Project Assistant</p>
           </div>
         </div>
-        <button onclick="toggleChatWidget()"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="toggleChatWidget()" class="text-white/80 hover:text-white text-lg p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
+      <!-- Quick Suggestion Chips Bar -->
+      <div class="px-3 py-2 bg-slate-950/80 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto text-[10px] scrollbar-none">
+        <button onclick="sendQuickPrompt('Who developed this?')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          👥 Development Team
+        </button>
+        <button onclick="sendQuickPrompt('What is the Tech Stack?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          💻 Tech Stack
+        </button>
+        <button onclick="sendQuickPrompt('What are the key features?')" class="bg-indigo-950/80 text-indigo-300 hover:bg-indigo-900 border border-indigo-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          ⚡ Key Features
+        </button>
+        <button onclick="sendQuickPrompt('Healthy diet recipes')" class="bg-amber-950/80 text-amber-300 hover:bg-amber-900 border border-amber-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🥗 Diet Recipes
+        </button>
+      </div>
+
+      <!-- Chat Message Thread -->
       <div id="chatMessages" class="p-4 h-80 overflow-y-auto space-y-3 bg-slate-950/90 text-xs">
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800">
-          <p class="font-bold text-brand-400">NutriAssist Pro AI</p>
-          <p>Hi! Ask me about <strong>Recipes</strong>, <strong>Protein targets</strong>, or <strong>How NutriAware was built</strong>!</p>
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <p class="font-bold text-brand-400 flex items-center gap-1">
+            <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
+          </p>
+          <p class="text-slate-300 leading-relaxed">
+            Hello! 👋 I am your Smart AI Health &amp; Project Assistant. Ask me about <strong>Development Team</strong>, <strong>Tech Stack</strong>, <strong>AI Food Scanner</strong>, or <strong>Healthy Diet Recipes</strong>!
+          </p>
         </div>
       </div>
 
-      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-3 bg-slate-900 border-t border-slate-800 flex gap-2">
-        <input type="text" id="chatInput" placeholder="Ask NutriAssist AI..." class="flex-1 bg-slate-800 text-white text-xs px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-brand-500" required />
-        <button type="submit" class="bg-brand-600 text-white font-bold px-3.5 py-2 rounded-xl"><i class="fa-solid fa-paper-plane"></i></button>
+      <!-- Chat Input Form with Voice Mic -->
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
+        <input type="text" id="chatInput" placeholder="Ask NutriAssist AI or click mic..." class="flex-1 bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-brand-500" required />
+        
+        <button type="button" onclick="startVoiceChatInput()" title="Voice AI Speech Input" class="bg-slate-800 hover:bg-slate-700 text-brand-400 p-2.5 rounded-xl border border-slate-700 transition">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        
+        <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold p-2.5 px-3.5 rounded-xl shadow-md transition">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
       </form>
     </div>
 
-    <button onclick="toggleChatWidget()" class="bg-brand-600 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition border border-brand-400">
-      <i class="fa-solid fa-comment-dots text-2xl"></i>
+    <button onclick="toggleChatWidget()" class="bg-gradient-to-tr from-brand-600 to-emerald-500 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition border-2 border-emerald-400 flex items-center justify-center group">
+      <i class="fa-solid fa-comment-dots text-2xl group-hover:rotate-12 transition-transform"></i>
     </button>
   </div>
 
