@@ -181,7 +181,7 @@
       </div>
 
       <!-- Authentication Tabs: Sign In / Register -->
-      <div class="flex border-b border-slate-200 text-sm font-bold">
+      <div class="flex border-b border-slate-200 text-sm font-bold mb-4">
         <button id="tabAuthLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 text-brand-600 border-b-2 border-brand-600 font-extrabold transition">
           Sign In
         </button>
@@ -190,21 +190,23 @@
         </button>
       </div>
 
-      <!-- Professional Google Sign-In Trigger -->
-      <button onclick="openGoogleAccountPicker()" class="w-full google-btn py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
-        <svg class="w-5 h-5" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        <span>Continue with Google Account</span>
-      </button>
+      <!-- Professional Google Sign-In Trigger (Visible only on Sign In Tab) -->
+      <div id="googleAuthBtnContainer" class="space-y-3">
+        <button onclick="openGoogleAccountPicker()" class="w-full google-btn py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continue with Google Account</span>
+        </button>
 
-      <div class="flex items-center gap-3 my-2">
-        <div class="h-px bg-slate-200 flex-1"></div>
-        <span class="text-[11px] font-bold text-slate-400 uppercase">Or</span>
-        <div class="h-px bg-slate-200 flex-1"></div>
+        <div class="flex items-center gap-3 my-2">
+          <div class="h-px bg-slate-200 flex-1"></div>
+          <span class="text-[11px] font-bold text-slate-400 uppercase">Or</span>
+          <div class="h-px bg-slate-200 flex-1"></div>
+        </div>
       </div>
 
       <!-- SIGN IN FORM -->
@@ -224,7 +226,7 @@
         </form>
       </div>
 
-      <!-- REGISTER FORM (SAVES TO SUPABASE) -->
+      <!-- REGISTER FORM (CLEAN DIRECT REGISTRATION - SAVES TO SUPABASE) -->
       <div id="registerFormContainer" class="hidden">
         <form onsubmit="handleRegisterSubmit(event)" class="space-y-3 text-left">
           <div>
@@ -240,7 +242,7 @@
             <input type="password" id="regPassword" required placeholder="Create a password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
           </div>
           <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Register Account to Supabase
+            <i class="fa-solid fa-cloud-arrow-up"></i> Register Account &amp; Save to Supabase
           </button>
         </form>
       </div>
@@ -785,6 +787,181 @@
               </table>
             </div>
 
+          </div>
+
+          <!-- PROJECT TEAM MEMBERS & LEADERSHIP INFO -->
+          <div class="dark-glass-card p-6 rounded-3xl border border-emerald-900/60 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">👥 University Project Group</span>
+                <h3 class="font-display text-xl font-extrabold text-white">Project Team Members &amp; Leadership</h3>
+              </div>
+              <span class="bg-emerald-950 text-emerald-300 border border-emerald-700/60 text-xs font-bold px-3 py-1 rounded-full">
+                Lead: Shreyas Shinde
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              
+              <!-- Leader Card -->
+              <div class="bg-gradient-to-br from-emerald-950/80 to-slate-900 p-4 rounded-2xl border border-emerald-500/40 space-y-2 relative overflow-hidden">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-emerald-500 text-slate-950 font-extrabold flex items-center justify-center text-sm shadow-md">
+                    SS
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Shreyas Shinde</h4>
+                    <p class="text-[11px] text-emerald-400 font-semibold">Team Lead &amp; Lead Developer</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] font-mono bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-700">@shreyasshinde619</span>
+              </div>
+
+              <!-- Member 2 -->
+              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    KJ
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Kunal Jejurkar</h4>
+                    <p class="text-[11px] text-slate-400">Project Team Member</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Research &amp; Systems Analysis</span>
+              </div>
+
+              <!-- Member 3 -->
+              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    AB
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Ayush Bhosale</h4>
+                    <p class="text-[11px] text-slate-400">Project Team Member</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">UI &amp; System Architecture</span>
+              </div>
+
+              <!-- Member 4 -->
+              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    SP
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Sarthak Pawar</h4>
+                    <p class="text-[11px] text-slate-400">Project Team Member</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Database &amp; Supabase Integration</span>
+              </div>
+
+              <!-- Member 5 -->
+              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-pink-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    GB
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Gayatri Bhuse</h4>
+                    <p class="text-[11px] text-slate-400">Project Team Member</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Nutrition &amp; Recipe Research</span>
+              </div>
+
+              <!-- Member 6 -->
+              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    VB
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm text-white">Vaishnavi Bongane</h4>
+                    <p class="text-[11px] text-slate-400">Project Team Member</p>
+                  </div>
+                </div>
+                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Quality Assurance &amp; Documentation</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PROJECT DOMAINS SCOPE & SELECTED TOPIC HIGHLIGHT -->
+          <div class="dark-glass-card p-6 rounded-3xl border border-brand-500/40 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400">📌 System Classification &amp; Project Scope</span>
+                <h3 class="font-display text-xl font-extrabold text-white">5 Main Project Systems &amp; Selected Topic</h3>
+              </div>
+              <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
+                <i class="fa-solid fa-star text-amber-400"></i> Primary Focus: Domain #1
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              
+              <!-- SELECTED PRIMARY DOMAIN TOPIC CARD -->
+              <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 rounded-2xl border-2 border-emerald-400 shadow-xl space-y-3 relative overflow-hidden">
+                <div class="flex justify-between items-center">
+                  <span class="bg-emerald-500 text-slate-950 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow">
+                    ★ SELECTED PRIMARY PROJECT PROBLEM TOPIC
+                  </span>
+                  <span class="text-xs font-bold text-emerald-300">Domain 1 / 5</span>
+                </div>
+
+                <h4 class="font-display text-lg font-extrabold text-white">1. Nutrition and Healthy Food Awareness System</h4>
+                
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  <strong>Selected Project Problem Implementation:</strong> Our platform NutriAware is specifically engineered to indulge and solve the <em>Nutrition and Healthy Food Awareness System</em> problem. Features WebRTC Live AI Camera meal scanning, 30-question certification quiz, personalized macro analytics, BMR computation, beef-free plant-based nutrition, water/protein hydration trackers, and cloud backend database persistence.
+                </p>
+              </div>
+
+              <!-- OTHER 4 SYSTEM SCOPE CARDS -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">2</span>
+                    <span>System Domain #2</span>
+                  </div>
+                  <h5 class="font-bold text-sm text-white">Community-Based Environmental Protection System</h5>
+                  <p class="text-[11px] text-slate-400">Community eco-awareness, local food waste reduction, and environmental footprint tracking.</p>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">3</span>
+                    <span>System Domain #3</span>
+                  </div>
+                  <h5 class="font-bold text-sm text-white">Sustainable Packaging and Reuse System</h5>
+                  <p class="text-[11px] text-slate-400">Zero-waste meal prep guidelines, bio-degradable food packaging, and reusable utensil awareness.</p>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">4</span>
+                    <span>System Domain #4</span>
+                  </div>
+                  <h5 class="font-bold text-sm text-white">Rural Connectivity and Service Access System</h5>
+                  <p class="text-[11px] text-slate-400">PWA offline service worker caching for seamless access in low-connectivity rural health centers.</p>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">5</span>
+                    <span>System Domain #5</span>
+                  </div>
+                  <h5 class="font-bold text-sm text-white">Information System for Hiking Trails and Public Parks</h5>
+                  <p class="text-[11px] text-slate-400">Outdoor physical activity integration, hydration reminders during hikes, and public fitness awareness.</p>
+                </div>
+
+              </div>
+
+            </div>
           </div>
 
         </div>

@@ -49,9 +49,9 @@ function registerPWA() {
 }
 
 /* ==========================================================================
-   1. THREE.JS 3D CINEMATIC DNA HELIX & PARTICLE CORE ENGINE
+   1. THREE.JS 3D CINEMATIC ECO-NATURE & BIO-HEALTH ENGINE
    ========================================================================== */
-let scene3d, camera3d, renderer3d, particleSystem, dnaGroup;
+let scene3d, camera3d, renderer3d, ecoParticles, natureTorus, bioGroup;
 
 function init3DBackground() {
   const canvas = document.getElementById('bg3dCanvas');
@@ -59,77 +59,80 @@ function init3DBackground() {
 
   scene3d = new THREE.Scene();
   camera3d = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera3d.position.z = 35;
+  camera3d.position.z = 32;
 
   renderer3d = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
   renderer3d.setSize(window.innerWidth, window.innerHeight);
   renderer3d.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // 1. 3D Glowing Particle Cloud
-  const particleCount = 240;
+  // 1. Lively Eco-Nature Floating Particle Cloud (Green Spores & Leaves)
+  const particleCount = 320;
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
 
-  const color1 = new THREE.Color('#10b981');
-  const color2 = new THREE.Color('#34d399');
+  const emeraldColor = new THREE.Color('#059669');
+  const mintColor = new THREE.Color('#34d399');
+  const goldColor = new THREE.Color('#fbbf24');
 
   for (let i = 0; i < particleCount * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 90;
-    positions[i + 1] = (Math.random() - 0.5) * 90;
-    positions[i + 2] = (Math.random() - 0.5) * 70;
+    positions[i] = (Math.random() - 0.5) * 100;
+    positions[i + 1] = (Math.random() - 0.5) * 100;
+    positions[i + 2] = (Math.random() - 0.5) * 80;
 
-    const mixedColor = Math.random() > 0.5 ? color1 : color2;
-    colors[i] = mixedColor.r;
-    colors[i + 1] = mixedColor.g;
-    colors[i + 2] = mixedColor.b;
+    const rand = Math.random();
+    const c = rand > 0.6 ? mintColor : (rand > 0.2 ? emeraldColor : goldColor);
+    colors[i] = c.r;
+    colors[i + 1] = c.g;
+    colors[i + 2] = c.b;
   }
 
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
   const material = new THREE.PointsMaterial({
-    size: 0.9,
+    size: 1.1,
     vertexColors: true,
     transparent: true,
-    opacity: 0.75,
+    opacity: 0.8,
     blending: THREE.AdditiveBlending
   });
 
-  particleSystem = new THREE.Points(geometry, material);
-  scene3d.add(particleSystem);
+  ecoParticles = new THREE.Points(geometry, material);
+  scene3d.add(ecoParticles);
 
-  // 2. Rotating 3D DNA Helix Mesh Structure
-  dnaGroup = new THREE.Group();
-  const dnaNodes = 30;
-  const sphereGeo = new THREE.SphereGeometry(0.6, 16, 16);
-  const mat1 = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true });
-  const mat2 = new THREE.MeshBasicMaterial({ color: 0x34d399 });
+  // 2. Rotating 3D Organic Eco-Torus (Sustainable Nutrition Cycle)
+  bioGroup = new THREE.Group();
+  
+  const torusGeo = new THREE.TorusGeometry(9, 0.4, 16, 100);
+  const torusMat = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.35 });
+  natureTorus = new THREE.Mesh(torusGeo, torusMat);
+  bioGroup.add(natureTorus);
 
-  for (let i = 0; i < dnaNodes; i++) {
-    const y = (i - dnaNodes / 2) * 1.2;
-    const angle = i * 0.35;
+  // Floating Organic Bio-Nodes
+  const nodeGeo = new THREE.IcosahedronGeometry(0.7, 1);
+  const nodeMat1 = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true });
+  const nodeMat2 = new THREE.MeshBasicMaterial({ color: 0xfbbf24 });
 
-    const s1 = new THREE.Mesh(sphereGeo, mat1);
-    s1.position.set(Math.cos(angle) * 5, y, Math.sin(angle) * 5);
-    dnaGroup.add(s1);
-
-    const s2 = new THREE.Mesh(sphereGeo, mat2);
-    s2.position.set(Math.cos(angle + Math.PI) * 5, y, Math.sin(angle + Math.PI) * 5);
-    dnaGroup.add(s2);
+  for (let i = 0; i < 16; i++) {
+    const angle = (i / 16) * Math.PI * 2;
+    const mesh = new THREE.Mesh(nodeGeo, i % 2 === 0 ? nodeMat1 : nodeMat2);
+    mesh.position.set(Math.cos(angle) * 9, Math.sin(angle) * 9, (Math.random() - 0.5) * 3);
+    bioGroup.add(mesh);
   }
 
-  dnaGroup.position.set(22, -2, -15);
-  scene3d.add(dnaGroup);
+  bioGroup.position.set(20, -3, -12);
+  bioGroup.rotation.x = Math.PI / 4;
+  scene3d.add(bioGroup);
 
   // Interactive Mouse Parallax
   window.addEventListener('mousemove', (e) => {
     const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     const mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
 
-    if (dnaGroup) {
-      dnaGroup.rotation.y = mouseX * 0.8;
-      dnaGroup.rotation.x = mouseY * 0.4;
+    if (bioGroup) {
+      bioGroup.rotation.y = mouseX * 0.6;
+      bioGroup.rotation.x = Math.PI / 4 + mouseY * 0.3;
     }
   });
 
@@ -137,12 +140,12 @@ function init3DBackground() {
   function animate() {
     requestAnimationFrame(animate);
 
-    if (particleSystem) {
-      particleSystem.rotation.y += 0.0006;
-      particleSystem.rotation.x += 0.0003;
+    if (ecoParticles) {
+      ecoParticles.rotation.y += 0.0008;
+      ecoParticles.rotation.x += 0.0004;
     }
-    if (dnaGroup) {
-      dnaGroup.rotation.y += 0.008;
+    if (bioGroup) {
+      bioGroup.rotation.z += 0.005;
     }
 
     renderer3d.render(scene3d, camera3d);
@@ -189,11 +192,13 @@ function showMainApp() {
 function switchAuthTab(mode) {
   const loginForm = document.getElementById('loginFormContainer');
   const registerForm = document.getElementById('registerFormContainer');
+  const googleBtnContainer = document.getElementById('googleAuthBtnContainer');
   const tabLoginBtn = document.getElementById('tabAuthLogin');
   const tabRegisterBtn = document.getElementById('tabAuthRegister');
 
   if (mode === 'register') {
     loginForm?.classList.add('hidden');
+    googleBtnContainer?.classList.add('hidden');
     registerForm?.classList.remove('hidden');
     tabLoginBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
     tabLoginBtn?.classList.add('text-slate-400');
@@ -202,6 +207,7 @@ function switchAuthTab(mode) {
   } else {
     registerForm?.classList.add('hidden');
     loginForm?.classList.remove('hidden');
+    googleBtnContainer?.classList.remove('hidden');
     tabRegisterBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
     tabRegisterBtn?.classList.add('text-slate-400');
     tabLoginBtn?.classList.add('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
