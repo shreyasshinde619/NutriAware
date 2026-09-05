@@ -972,6 +972,47 @@ function removeTypingIndicator(id) {
   document.getElementById(id)?.remove();
 }
 
+function startVoiceChatInput() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert("Speech recognition is not supported in this browser.");
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.lang = 'en-US';
+  showToastNotification('🎙️ Listening...', 'Speak your question out loud!');
+  recognition.start();
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    sendQuickPrompt(transcript);
+  };
+}
+
+function openRegistrationModalFromChat() {
+  showLoginPortal();
+  switchAuthTab('register');
+  const portal = document.getElementById('loginPortal');
+  if (portal) portal.scrollIntoView({ behavior: 'smooth' });
+  const regNameInput = document.getElementById('regName');
+  if (regNameInput) regNameInput.focus();
+}
+
+function openLoginModalFromChat() {
+  showLoginPortal();
+  switchAuthTab('login');
+  const portal = document.getElementById('loginPortal');
+  if (portal) portal.scrollIntoView({ behavior: 'smooth' });
+  const loginEmailInput = document.getElementById('loginEmail');
+  if (loginEmailInput) loginEmailInput.focus();
+}
+
+function triggerGoogleSignInHelp() {
+  showLoginPortal();
+  switchAuthTab('login');
+  openGoogleAccountPicker();
+}
+
 function generateNutriAIResponse(query) {
   const q = query.toLowerCase().trim();
 
@@ -979,8 +1020,99 @@ function generateNutriAIResponse(query) {
   if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ') || q.startsWith('hey ') || q.includes('good morning') || q.includes('good evening') || q.includes('good afternoon') || q === 'yo' || q === 'sup') {
     const currentUser = sessionStorage.getItem('nutriaware_user_name') || 'Friend';
     return `
-      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>NutriAware AI</strong>!</p>
-      <p class="mt-1">I am your official support assistant. I can answer questions about <em>Platform Identity</em>, <em>Core Workflow</em>, <em>Key Features</em>, <em>Technology Stack</em>, <em>Development Team</em>, or <em>Future Scope</em>!</p>
+      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>NutriAware AI Assistant</strong>!</p>
+      <p class="mt-1">I am here to guide you with <strong>Registration &amp; Sign-In</strong>, <em>Development Team</em>, <em>Tech Stack</em>, <em>Key Features</em>, or <em>Healthy Recipes</em>!</p>
+      <div class="pt-2 flex flex-wrap gap-1.5">
+        <button onclick="sendQuickPrompt('How to register an account?')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold px-2.5 py-1 rounded-xl text-[10px]">📝 How to Register</button>
+        <button onclick="sendQuickPrompt('How to sign in?')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold px-2.5 py-1 rounded-xl text-[10px]">🔑 How to Sign In</button>
+      </div>
+    `;
+  }
+
+  // 1b. Registration Help (Comprehensive Step-by-Step)
+  if (q.includes('register') || q.includes('registration') || q.includes('create account') || q.includes('sign up') || q.includes('new user') || q.includes('register portal') || q.includes('how to register')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-user-plus text-emerald-600"></i> How to Register an Account
+        </h5>
+        <p class="text-slate-600">Registration is <strong>mandatory</strong> to access NutriAware. Follow these steps:</p>
+        <ol class="list-decimal pl-4 space-y-1 text-slate-700">
+          <li>Click the button below to open the <strong class="text-emerald-700">"Register Account"</strong> tab on the portal.</li>
+          <li>Enter your <strong>Full Name</strong>, valid <strong>Email Address</strong>, and a <strong>Password</strong>.</li>
+          <li>Click <strong class="text-emerald-700">"Create Registered Account"</strong>.</li>
+          <li>Your credentials will be stored in our <em>Cloud Encrypted Database</em> so you can sign in anytime.</li>
+        </ol>
+        <div class="pt-2 flex flex-wrap gap-2">
+          <button onclick="openRegistrationModalFromChat()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-user-plus"></i> Open Registration Form Now
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 1c. Sign In / Login Help (Step-by-Step & Troubleshooting)
+  if (q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('access denied') || q.includes('cant login') || q.includes('account not found') || q.includes('forgot password') || q.includes('how to log in') || q.includes('how to sign in')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-right-to-bracket text-emerald-600"></i> How to Sign In
+        </h5>
+        <p class="text-slate-600">Follow these steps to log into NutriAware:</p>
+        <ol class="list-decimal pl-4 space-y-1 text-slate-700">
+          <li><strong>Pre-requisite:</strong> You must click <strong class="text-emerald-700">"Register Account"</strong> first if you haven't created an account yet.</li>
+          <li>Enter your registered <strong>Email Address</strong> and <strong>Password</strong> on the <strong>Sign In</strong> tab.</li>
+          <li>Or click <strong class="text-emerald-700">"Continue with Google Account"</strong> to choose your signed-in Google account.</li>
+          <li>Click <strong>"Sign In to Portal"</strong> to unlock your personal health dashboard!</li>
+        </ol>
+        <div class="pt-2 flex flex-wrap gap-2">
+          <button onclick="openLoginModalFromChat()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-key"></i> Go to Sign In Portal
+          </button>
+          <button onclick="triggerGoogleSignInHelp()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+            <i class="fa-brands fa-google text-amber-400"></i> Sign in with Google
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 1d. Google Login Specific Help
+  if (q.includes('google') || q.includes('gmail') || q.includes('oauth') || q.includes('picker')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-brands fa-google text-red-500"></i> Google Account Sign-In Guide
+        </h5>
+        <p class="text-slate-600">NutriAware supports one-click Google Account sign-in:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+          <li>Click <strong>"Continue with Google Account"</strong> on the Sign In portal.</li>
+          <li>A modal will display all active Google accounts logged in on your browser/device.</li>
+          <li>Click on your account (e.g., <em>Shreyas Shinde</em> or <em>Sainath Developer</em>) to instantly log in!</li>
+        </ul>
+        <div class="pt-2">
+          <button onclick="triggerGoogleSignInHelp()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+            <i class="fa-brands fa-google"></i> Open Google Account Picker
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 1e. Admin Panel Access Guide
+  if (q.includes('admin') || q.includes('admin panel') || q.includes('admin login') || q.includes('shreyas shinde admin')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-user-shield text-amber-600"></i> Admin Panel Security
+        </h5>
+        <p class="text-slate-600">Admin Panel access is restricted exclusively to <strong>Shreyas Shinde (Admin)</strong>:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+          <li>Authorized Email: <strong class="text-amber-700">shreyasshinde619@gmail.com</strong></li>
+          <li>Emergency Passcode: <code class="bg-slate-100 px-1 py-0.5 rounded text-amber-800">admin123</code></li>
+        </ul>
+      </div>
     `;
   }
 
