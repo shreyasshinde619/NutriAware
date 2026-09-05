@@ -980,77 +980,112 @@ function generateNutriAIResponse(query) {
     const currentUser = sessionStorage.getItem('nutriaware_user_name') || 'Friend';
     return `
       <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>NutriAware AI</strong>!</p>
-      <p class="mt-1">I am ready to help you with <em>Healthy Food Recipes</em>, <em>Protein Targets</em>, <em>AI Camera Scanner</em>, or <em>Project Team Info</em>. What would you like to know today? 😊</p>
+      <p class="mt-1">I am your official support assistant. I can answer questions about <em>Platform Identity</em>, <em>Core Workflow</em>, <em>Key Features</em>, <em>Technology Stack</em>, <em>Development Team</em>, or <em>Future Scope</em>!</p>
     `;
   }
 
-  // 2. Who Developed / Created / Team Queries
-  if (q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('developer') || q.includes('creator') || q.includes('author') || q.includes('team') || q.includes('members') || q.includes('shreyas') || q.includes('kunal') || q.includes('gayatri') || q.includes('sarthak') || q.includes('ayush') || q.includes('vaishnavi')) {
+  // 2. Platform Identity & Target Audience
+  if (q.includes('identity') || q.includes('audience') || q.includes('target') || q.includes('who is this for') || q.includes('purpose')) {
     return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-users text-emerald-600"></i> Project Team &amp; Developers
-        </h5>
-        <p class="text-slate-600">NutriAware was developed by our Project Group:</p>
-        <ul class="list-disc pl-4 space-y-1 text-slate-700">
-          <li><strong class="text-emerald-700">Shreyas Shinde (Admin):</strong> Team Lead &amp; Full-Stack System Architect (@shreyasshinde619)</li>
-          <li><strong>Kunal Jejurkar:</strong> Project Team Member</li>
-          <li><strong>Gayatri Bhuse:</strong> Project Team Member</li>
-          <li><strong>Sarthak Pawar:</strong> Project Team Member</li>
-          <li><strong>Ayush Bhosale:</strong> Project Team Member</li>
-          <li><strong>Vaishnavi Bongane:</strong> Project Team Member</li>
-        </ul>
-        <p class="text-[10px] text-slate-400 border-t border-slate-100 pt-1">Topic: Nutrition and Healthy Food Awareness System</p>
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">🥗 Platform Identity &amp; Target Audience</h5>
+        <p><strong>Identity:</strong> NutriAware is a mobile and web platform that combines AI, nutrition information, education, and healthy alternatives.</p>
+        <p class="text-slate-600"><strong>Target Audience:</strong> Designed for students, young people, and busy individuals who lack practical knowledge about the nutritional value of everyday foods or default to convenient processed options.</p>
       </div>
     `;
   }
 
-  // 3. How are you / Silly / Friendly questions
-  if (q.includes('how are you') || q.includes('how r u') || q.includes('how do you do')) {
+  // 3. Development Team (Sanjivani University MTech AIML)
+  if (q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('developer') || q.includes('creator') || q.includes('team') || q.includes('sanjivani') || q.includes('university') || q.includes('shreyas') || q.includes('sarthak') || q.includes('kunal') || q.includes('gayatri') || q.includes('ayush') || q.includes('vaishnavi')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-graduation-cap text-emerald-600"></i> Development Team
+        </h5>
+        <p class="text-slate-600">Created by Integrated MTech AIML students from Sanjivani University:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+          <li><strong class="text-emerald-700">Sarthak Pawar:</strong> Team Leader</li>
+          <li><strong class="text-emerald-700">Shreyash Shinde:</strong> Web Developer / Admin (@shreyasshinde619)</li>
+          <li><strong>Kunal Jejurkar:</strong> Designer</li>
+          <li><strong>Ayush Bhosale:</strong> Team Member</li>
+          <li><strong>Vaishnavi Bongane:</strong> Team Member</li>
+          <li><strong>Gayatri Bhuse:</strong> Team Member</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // 4. Technology Stack
+  if (q.includes('tech') || q.includes('technology') || q.includes('stack') || q.includes('tensorflow') || q.includes('flutter') || q.includes('firebase') || q.includes('node') || q.includes('python')) {
+    return `
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">💻 Technology Stack</h5>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
+          <li><strong>UI Frontend:</strong> Flutter (Mobile App) + HTML5/Tailwind &amp; Three.js WebGL (Web)</li>
+          <li><strong>Backend:</strong> Firebase &amp; Node.js</li>
+          <li><strong>Database:</strong> Firestore / MySQL &amp; Supabase Cloud Database</li>
+          <li><strong>AI Image Recognition:</strong> Python with TensorFlow (CNN / Transfer Learning)</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // 5. Core Workflow & Key Features
+  if (q.includes('workflow') || q.includes('how it works') || q.includes('feature') || q.includes('scanner') || q.includes('quiz') || q.includes('dashboard') || q.includes('reminder')) {
+    return `
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">⚡ Core Workflow &amp; Key Features</h5>
+        <p><strong>Core Workflow:</strong> Users scan or search for food, the AI recognizes the item, provides nutrition info, explains benefits/concerns, and recommends a healthier alternative.</p>
+        <p><strong>Key Features:</strong> AI Food Scanner, Interactive 30-Q Quizzes, Water Reminders, Smart Notifications, Personalized Suggestions, and Progress Dashboard.</p>
+      </div>
+    `;
+  }
+
+  // 6. Platform Goals
+  if (q.includes('goal') || q.includes('objective') || q.includes('aim') || q.includes('medical') || q.includes('diagnosis')) {
+    return `
+      <div class="space-y-1 text-xs">
+        <h5 class="font-bold text-slate-900">🎯 Platform Goals</h5>
+        <p>The main objectives are to increase nutrition awareness, promote hydration, and encourage healthy habits.</p>
+        <p class="text-emerald-700 font-semibold mt-1">⚠️ Disclaimer: NutriAware focuses purely on awareness and informed choices, not medical diagnosis.</p>
+      </div>
+    `;
+  }
+
+  // 7. Future Enhancements
+  if (q.includes('future') || q.includes('enhancement') || q.includes('scope') || q.includes('upcoming') || q.includes('roadmap') || q.includes('wearable') || q.includes('multilingual')) {
+    return `
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">🚀 Future Enhancements</h5>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
+          <li>Regional Indian food recognition &amp; nutritional mapping</li>
+          <li>Voice-based AI assistant integration</li>
+          <li>Multilingual language support</li>
+          <li>Wearable device &amp; smartwatch integration</li>
+          <li>Personalized AI meal planning engines</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // 8. How are you / Silly / Friendly questions
+  if (q.includes('how are you') || q.includes('how r u')) {
     return `
       <p>I am feeling 100% healthy, hydrated, and ready to assist you! 🥗 How are you doing today? Don't forget to drink a glass of water!</p>
     `;
   }
 
-  if (q.includes('who are you') || q.includes('what is your name') || q.includes('your name')) {
+  if (q.includes('who are you') || q.includes('what is your name')) {
     return `
-      <p>I am <strong>NutriAssist Pro AI</strong> 🤖, your smart health, nutrition, and diet assistant built right into the NutriAware 3D Platform!</p>
+      <p>I am <strong>NutriAssist Pro AI</strong> 🤖, the official support chatbot for NutriAware (Smart Nutrition Awareness Platform)!</p>
     `;
   }
 
-  if (q.includes('joke') || q.includes('funny') || q.includes('laugh')) {
+  if (q.includes('joke') || q.includes('funny')) {
     return `
       <div class="space-y-1">
-        <p class="font-bold text-slate-800">😄 Here is a healthy joke for you:</p>
+        <p class="font-bold text-slate-800">😄 Healthy Joke:</p>
         <p class="italic text-brand-700">"Why did the tomato blush? ... Because it saw the salad dressing!" 🥗🍅</p>
-      </div>
-    `;
-  }
-
-  if (q.includes('database') || q.includes('backend') || q.includes('cloud')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">⚡ Cloud Database Security</h5>
-        <p>NutriAware features real-time encrypted cloud sync:</p>
-        <ul class="list-disc pl-4 space-y-0.5">
-          <li><strong>Security Protocol:</strong> Row Level Security (RLS) + OAuth2</li>
-          <li><strong>Cloud Persistence:</strong> All registered accounts &amp; progress are encrypted and synced.</li>
-        </ul>
-      </div>
-    `;
-  }
-
-  if (q.includes('project') || q.includes('about') || q.includes('system') || q.includes('what is this')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">💻 NutriAware Platform</h5>
-        <p>Selected Focus: <strong>Nutrition and Healthy Food Awareness System</strong></p>
-        <ul class="list-disc pl-4 space-y-0.5 text-slate-600">
-          <li><strong>3D Graphics:</strong> Three.js WebGL Eco-Nature Scene</li>
-          <li><strong>AI Camera Vision:</strong> HTML5 WebRTC + Canvas Classification</li>
-          <li><strong>Certification:</strong> 30-Question Nutrition Quiz &amp; Printable HD Certificate</li>
-          <li><strong>PWA Mobile:</strong> Installable shortcut on Android &amp; iOS</li>
-        </ul>
       </div>
     `;
   }
@@ -1065,40 +1100,17 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  if (q.includes('oat') || q.includes('porridge')) {
-    return `
-      <div class="space-y-1.5">
-        <h5 class="font-bold text-slate-900 text-sm">🥣 Protein Oats Porridge</h5>
-        <p class="text-xs text-brand-700 font-semibold">Macros: 290 kcal | Protein: 12g | Carbs: 45g | Fats: 6g</p>
-        <p class="text-xs">Simmer rolled oats in milk for 5 mins, top with chia seeds &amp; apple slices.</p>
-      </div>
-    `;
-  }
-
-  if (q.includes('chilla') || q.includes('moong')) {
-    return `
-      <div class="space-y-1.5">
-        <h5 class="font-bold text-slate-900 text-sm">🥞 High-Fiber Moong Dal Veggie Chilla</h5>
-        <p class="text-xs text-brand-700 font-semibold">Macros: 220 kcal | Protein: 14g | Carbs: 32g | Fats: 4g</p>
-        <p class="text-xs">Spread yellow moong dal batter on tawa, top with spinach &amp; low-fat paneer.</p>
-      </div>
-    `;
-  }
-
-  if (q.includes('protein') || q.includes('muscle')) {
-    return `
-      <p>Target protein requirement for active individuals is <strong>1.2g - 1.6g per kg of bodyweight</strong>. Best sources: Paneer, Moong Sprouts, Greek Yogurt, Oats, Lentils &amp; Almonds!</p>
-    `;
-  }
-
-  if (q.includes('water') || q.includes('hydration')) {
-    return `
-      <p>Maintain at least <strong>2,500 ml (2.5 Liters)</strong> daily water intake! Proper hydration boosts memory retention and cognitive focus during study sessions by up to 20%.</p>
-    `;
-  }
-
+  // General Catch-all Project Information
   return `
-    <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me greetings like <em>"Hi"</em>, <em>"Who developed this?"</em>, or questions about <em>Diet Recipes</em>, <em>Protein Targets</em>, and <em>Hydration Advice</em>!</p>
+    <div class="space-y-1 text-xs">
+      <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me about:</p>
+      <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
+        <li><strong>Development Team</strong> (Sanjivani University MTech AIML)</li>
+        <li><strong>Tech Stack</strong> (Flutter, TensorFlow, Node.js, Python, Supabase)</li>
+        <li><strong>Core Workflow &amp; Key Features</strong></li>
+        <li><strong>Future Scope &amp; Enhancements</strong></li>
+      </ul>
+    </div>
   `;
 }
 
