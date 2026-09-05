@@ -127,3 +127,17 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Mobile App Viewport Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 4rem; /* Space for native bottom app bar */
+  }
+}
+
+/* Vast Laptop Grid Container Enhancement */
+@media (min-width: 1024px) {
+  .vast-desktop-container {
+    max-width: 1400px;
+  }
+}
