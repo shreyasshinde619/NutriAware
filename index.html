@@ -108,35 +108,22 @@
 
       <!-- Account List -->
       <div id="googleAccountsList" class="space-y-2">
-        <p class="text-xs text-slate-500 font-bold mb-2">Select from 3 Google Accounts on this device:</p>
+        <p class="text-xs text-slate-500 font-bold mb-2">Select Google Account to continue to NutriAware:</p>
         
-        <button onclick="selectGoogleAccount('shreyasshinde619@gmail.com', 'Shreyas Shinde')" class="w-full p-3 rounded-2xl hover:bg-emerald-50/80 border border-slate-200 transition flex items-center justify-between text-left group">
+        <button onclick="selectGoogleAccount('shreyasshinde619@gmail.com', 'Shreyas Shinde (Admin)')" class="w-full p-3 rounded-2xl hover:bg-emerald-50/80 border border-slate-200 transition flex items-center justify-between text-left group">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow">
               SS
             </div>
             <div>
-              <h5 class="font-bold text-xs text-slate-900 group-hover:text-emerald-700">Shreyas Shinde</h5>
+              <h5 class="font-bold text-xs text-slate-900 group-hover:text-emerald-700">Shreyas Shinde (Admin)</h5>
               <p class="text-[10px] text-slate-500">shreyasshinde619@gmail.com</p>
             </div>
           </div>
-          <span class="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">Signed In</span>
+          <span class="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">Admin Account</span>
         </button>
 
-        <button onclick="selectGoogleAccount('sainath.user@gmail.com', 'Sainath Developer')" class="w-full p-3 rounded-2xl hover:bg-emerald-50/80 border border-slate-200 transition flex items-center justify-between text-left group">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm shadow">
-              SD
-            </div>
-            <div>
-              <h5 class="font-bold text-xs text-slate-900 group-hover:text-teal-700">Sainath Developer</h5>
-              <p class="text-[10px] text-slate-500">sainath.user@gmail.com</p>
-            </div>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Available</span>
-        </button>
-
-        <button onclick="promptCustomGoogleAccount()" class="w-full p-3 rounded-2xl hover:bg-slate-100 border border-dashed border-slate-300 transition flex items-center gap-3 text-left">
+        <button onclick="promptCustomGoogleAccount()" class="w-full p-3 rounded-2xl hover:bg-slate-100 border border-dashed border-slate-300 transition flex items-center gap-3 text-left mt-2">
           <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-sm">
             <i class="fa-solid fa-user-plus"></i>
           </div>
@@ -150,7 +137,7 @@
       <!-- Signing state spinner -->
       <div id="googleSigningState" class="hidden text-center py-6 space-y-3">
         <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="text-xs font-bold text-slate-700">Connecting to Google &amp; Supabase Cloud...</p>
+        <p class="text-xs font-bold text-slate-700">Authenticating Google Account...</p>
         <span id="signingEmailText" class="text-[10px] text-slate-400 block"></span>
       </div>
 
@@ -176,7 +163,7 @@
         <span class="text-xs font-bold uppercase tracking-widest text-brand-600">⚡ 3D AI Health Portal</span>
         <h2 class="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Welcome to NutriAware</h2>
         <p class="text-xs text-slate-500 flex items-center justify-center gap-1">
-          <i class="fa-solid fa-shield-halved text-emerald-600"></i> Mandatory Authentication (Supabase Cloud Protected)
+          <i class="fa-solid fa-shield-halved text-emerald-600"></i> Mandatory Authentication (Encrypted Health Portal)
         </p>
       </div>
 
@@ -213,8 +200,8 @@
       <div id="loginFormContainer">
         <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-left">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-            <input type="email" id="loginEmail" required placeholder="Enter your email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Registered Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="Enter your registered email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
@@ -226,7 +213,7 @@
         </form>
       </div>
 
-      <!-- REGISTER FORM (CLEAN DIRECT REGISTRATION - SAVES TO SUPABASE) -->
+      <!-- REGISTER FORM (DIRECT REGISTRATION - SAVES TO BACKEND) -->
       <div id="registerFormContainer" class="hidden">
         <form onsubmit="handleRegisterSubmit(event)" class="space-y-3 text-left">
           <div>
@@ -242,14 +229,14 @@
             <input type="password" id="regPassword" required placeholder="Create a password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
           </div>
           <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Register Account &amp; Save to Supabase
+            <i class="fa-solid fa-user-plus"></i> Create Registered Account
           </button>
         </form>
       </div>
 
       <div class="pt-2 border-t border-slate-100">
         <p class="text-[11px] font-semibold text-slate-400">
-          🔒 Strict Security: You must sign in or register an account to access NutriAware features.
+          🔒 Strict Security: You must sign in with a registered account to access NutriAware.
         </p>
       </div>
 
@@ -264,8 +251,8 @@
 
     <!-- TOP ANNOUNCEMENT BANNER -->
     <div class="bg-slate-900/90 backdrop-blur-md text-brand-300 py-2 px-4 text-xs md:text-sm text-center font-medium border-b border-slate-800 flex items-center justify-center gap-2">
-      <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">Supabase Live</span>
-      <span>Cloud Database Sync Active (Project: xhihgjashxqtfdweytsj)</span>
+      <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">System Active</span>
+      <span>Selected Focus: Nutrition and Healthy Food Awareness System (Cloud Security Active)</span>
     </div>
 
     <!-- NAVIGATION HEADER WITH SEPARATE TABS -->
@@ -302,7 +289,10 @@
           <button id="nav-link-dashboard" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
             📊 Analytics
           </button>
-          <button id="nav-link-admin" onclick="switchTab('admin')" class="px-3.5 py-2 rounded-xl text-amber-400 hover:bg-amber-950/40 border border-amber-500/40 font-bold transition flex items-center gap-1.5 shadow-sm">
+          <button id="nav-link-about" onclick="switchTab('about')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            ℹ️ About Us
+          </button>
+          <button id="nav-link-admin" onclick="switchTab('admin')" class="hidden px-3.5 py-2 rounded-xl text-amber-400 hover:bg-amber-950/40 border border-amber-500/40 font-bold transition flex items-center gap-1.5 shadow-sm">
             🛡️ Admin Panel
           </button>
         </nav>
@@ -344,7 +334,8 @@
         <button id="mobile-link-quizzes" onclick="switchTab('quizzes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🧠 30-Question Quiz</button>
         <button id="mobile-link-tracker" onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">💧 Water Tracker</button>
         <button id="mobile-link-dashboard" onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">📊 Analytics Dashboard</button>
-        <button id="mobile-link-admin" onclick="switchTab('admin'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl text-amber-400 font-bold bg-amber-950/30 border border-amber-500/30">🛡️ Admin Panel</button>
+        <button id="mobile-link-about" onclick="switchTab('about'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">ℹ️ About Us &amp; Team</button>
+        <button id="mobile-link-admin" onclick="switchTab('admin'); toggleMobileMenu()" class="hidden block w-full text-left py-2 px-3 rounded-xl text-amber-400 font-bold bg-amber-950/30 border border-amber-500/30">🛡️ Admin Panel</button>
       </div>
     </header>
 
@@ -673,7 +664,159 @@
 
 
     <!-- ==========================================================================
-         VIEW TAB 7: MASTER ADMIN PANEL (REGISTERED ACCOUNTS DASHBOARD)
+         VIEW TAB 7: ABOUT US & PROJECT TEAM
+         ========================================================================== -->
+    <main id="view-about" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <!-- Hero / Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">
+            Official University Project
+          </span>
+          <h2 class="font-display text-4xl font-extrabold text-white">About NutriAware &amp; Our Team</h2>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Empowering healthier lifestyle choices through real-time AI food vision, intelligent macro tracking, and interactive nutrition awareness.
+          </p>
+        </div>
+
+        <!-- Project Information Card -->
+        <div class="dark-glass-card p-8 rounded-3xl border border-emerald-900/60 space-y-6 shadow-2xl">
+          <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+            <div class="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center text-2xl shadow-lg">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <div>
+              <h3 class="font-display text-xl font-extrabold text-white">Project Objective &amp; Problem Statement</h3>
+              <p class="text-xs text-brand-400 font-semibold">Selected Focus: Nutrition and Healthy Food Awareness System</p>
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Our core project focus is dedicated to solving the <strong>Nutrition and Healthy Food Awareness System</strong> problem. By combining WebRTC Live Camera AI meal recognition, personalized BMR computation, 100% plant-based and beef-free diet recipe recommendation engines, and interactive 30-question nutrition certification, NutriAware provides an end-to-end digital ecosystem for personal health awareness.
+          </p>
+        </div>
+
+        <!-- Official Team Members Grid -->
+        <div class="space-y-6">
+          <div class="text-center space-y-1">
+            <h3 class="font-display text-2xl font-extrabold text-white">Meet Our Project Team</h3>
+            <p class="text-xs text-slate-400">Dedicated Development Group</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Shreyas Shinde (Admin) -->
+            <div class="dark-glass-card p-6 rounded-3xl border-2 border-emerald-400/80 space-y-4 shadow-xl relative overflow-hidden group hover:scale-[1.02] transition">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-brand-400 text-white font-extrabold flex items-center justify-center text-xl shadow-lg">
+                  SS
+                </div>
+                <div>
+                  <span class="bg-emerald-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Admin &amp; Lead</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Shreyas Shinde (Admin)</h4>
+                  <p class="text-xs text-emerald-400 font-medium">Team Lead &amp; System Architect</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                Lead developer responsible for full-stack architecture, 3D WebGL engine, and cloud database security.
+              </p>
+            </div>
+
+            <!-- Kunal Jejurkar -->
+            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-teal-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  KJ
+                </div>
+                <div>
+                  <span class="bg-slate-800 text-teal-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Kunal Jejurkar</h4>
+                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                Systems analysis, domain research, and environmental protection integration.
+              </p>
+            </div>
+
+            <!-- Gayatri Bhuse -->
+            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-pink-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  GB
+                </div>
+                <div>
+                  <span class="bg-slate-800 text-pink-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Gayatri Bhuse</h4>
+                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                Nutrition research, healthy diet recipe curation, and user experience design.
+              </p>
+            </div>
+
+            <!-- Sarthak Pawar -->
+            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  SP
+                </div>
+                <div>
+                  <span class="bg-slate-800 text-indigo-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Sarthak Pawar</h4>
+                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                Database synchronization, authentication security, and data validation testing.
+              </p>
+            </div>
+
+            <!-- Ayush Bhosale -->
+            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-sky-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  AB
+                </div>
+                <div>
+                  <span class="bg-slate-800 text-sky-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Ayush Bhosale</h4>
+                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                UI components development, mobile app view optimization, and chart analytics.
+              </p>
+            </div>
+
+            <!-- Vaishnavi Bongane -->
+            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-purple-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  VB
+                </div>
+                <div>
+                  <span class="bg-slate-800 text-purple-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Vaishnavi Bongane</h4>
+                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
+                Quality assurance, 30-question quiz verification, and project documentation.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 8: MASTER ADMIN PANEL (REGISTERED ACCOUNTS DASHBOARD)
          ========================================================================== -->
     <main id="view-admin" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -998,7 +1141,11 @@
       <i class="fa-solid fa-brain text-lg"></i>
       <span>Quiz</span>
     </button>
-    <button onclick="switchTab('admin')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-amber-400 hover:text-amber-300 transition">
+    <button onclick="switchTab('about')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
+      <i class="fa-solid fa-circle-info text-lg"></i>
+      <span>About</span>
+    </button>
+    <button id="mobile-bottom-admin" onclick="switchTab('admin')" class="hidden flex flex-col items-center gap-1 text-[10px] font-bold text-amber-400 hover:text-amber-300 transition">
       <i class="fa-solid fa-user-shield text-lg"></i>
       <span>Admin</span>
     </button>

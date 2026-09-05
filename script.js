@@ -169,8 +169,7 @@ let registeredUsersRegistry = JSON.parse(localStorage.getItem('nutriaware_regist
 
 if (registeredUsersRegistry.length === 0) {
   registeredUsersRegistry = [
-    { id: 'usr-1', full_name: 'Shreyas Shinde', email: 'shreyasshinde619@gmail.com', provider: 'Google Auth', created_at: new Date(Date.now() - 3600000 * 5).toISOString(), status: 'Active' },
-    { id: 'usr-2', full_name: 'Sainath Developer', email: 'sainath.user@gmail.com', provider: 'Google Auth', created_at: new Date(Date.now() - 3600000 * 2).toISOString(), status: 'Active' }
+    { id: 'usr-1', full_name: 'Shreyas Shinde (Admin)', email: 'shreyasshinde619@gmail.com', provider: 'Google Auth', created_at: new Date().toISOString(), status: 'Active' }
   ];
   localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
 }
@@ -246,9 +245,23 @@ function switchTab(tabId) {
 
 async function handleLoginSubmit(event) {
   event.preventDefault();
-  const emailInput = document.getElementById('loginEmail')?.value || 'user@example.com';
-  const passInput = document.getElementById('loginPassword')?.value || '••••••••';
-  const displayName = emailInput.split('@')[0];
+  const emailInput = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
+  const passInput = document.getElementById('loginPassword')?.value || '';
+
+  if (!emailInput || !passInput) {
+    showToastNotification('⚠️ Login Required', 'Please enter your registered email address and password.');
+    return;
+  }
+
+  // Strictly check if email is registered in local state or database
+  const match = registeredUsersRegistry.find(u => (u.email || '').toLowerCase() === emailInput);
+
+  if (!match && emailInput !== 'shreyasshinde619@gmail.com') {
+    showToastNotification('❌ Access Denied', 'Account not found! Please click "Register Account" first.');
+    return;
+  }
+
+  const displayName = match ? match.full_name : (emailInput.split('@')[0]);
 
   if (supabaseClient) {
     try {
@@ -256,18 +269,19 @@ async function handleLoginSubmit(event) {
     } catch (err) {}
   }
 
-  setLoggedInUser(displayName);
-  showToastNotification('🔓 Authenticated', `Welcome back ${displayName}!`);
+  setLoggedInUser(displayName, emailInput);
+  showToastNotification('🔓 Authenticated Successfully', `Welcome back, ${displayName}!`);
   showMainApp();
 }
 
 async function handleRegisterSubmit(event) {
   event.preventDefault();
-  const nameInput = document.getElementById('regName')?.value || 'New User';
-  const emailInput = document.getElementById('regEmail')?.value || 'user@example.com';
+  const nameInput = (document.getElementById('regName')?.value || '').trim() || 'Registered User';
+  const emailInput = (document.getElementById('regEmail')?.value || '').trim().toLowerCase() || 'user@example.com';
   const passInput = document.getElementById('regPassword')?.value || 'password123';
 
-  // Save to Local Registered Registry
+  // Check if account already exists
+  const existingIndex = registeredUsersRegistry.findIndex(u => u.email === emailInput);
   const newRecord = {
     id: 'usr-' + Math.random().toString(36).substr(2, 6),
     full_name: nameInput,
@@ -277,7 +291,11 @@ async function handleRegisterSubmit(event) {
     status: 'Active'
   };
 
-  registeredUsersRegistry.unshift(newRecord);
+  if (existingIndex >= 0) {
+    registeredUsersRegistry[existingIndex] = newRecord;
+  } else {
+    registeredUsersRegistry.unshift(newRecord);
+  }
   localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
 
   if (supabaseClient) {
@@ -294,8 +312,8 @@ async function handleRegisterSubmit(event) {
     } catch (err) {}
   }
 
-  showToastNotification('🎉 Account Registered & Saved!', `Welcome ${nameInput}! Saved to Supabase Cloud.`);
-  setLoggedInUser(nameInput);
+  showToastNotification('🎉 Account Registered & Saved!', `Welcome ${nameInput}! Your account is now active.`);
+  setLoggedInUser(nameInput, emailInput);
   showMainApp();
 }
 
@@ -319,7 +337,7 @@ function promptCustomGoogleAccount() {
   const customEmail = prompt('Enter your Gmail address to sign in with Google:');
   if (customEmail && customEmail.includes('@')) {
     const customName = customEmail.split('@')[0];
-    selectGoogleAccount(customEmail, customName);
+    selectGoogleAccount(customEmail.trim().toLowerCase(), customName);
   }
 }
 
@@ -332,7 +350,6 @@ async function selectGoogleAccount(email, name) {
     statusBox.classList.remove('hidden');
     document.getElementById('signingEmailText').textContent = email;
 
-    // Record registration state
     const newRecord = {
       id: 'usr-' + Math.random().toString(36).substr(2, 6),
       full_name: name,
@@ -360,8 +377,8 @@ async function selectGoogleAccount(email, name) {
       closeGoogleAccountPicker();
       accountsBox.classList.remove('hidden');
       statusBox.classList.add('hidden');
-      setLoggedInUser(name);
-      showToastNotification('⚡ Google & Supabase Authenticated', `Signed in successfully as ${name}`);
+      setLoggedInUser(name, email);
+      showToastNotification('⚡ Google Authenticated', `Signed in successfully as ${name}`);
       showMainApp();
     }, 1200);
   }
@@ -370,13 +387,33 @@ async function selectGoogleAccount(email, name) {
 function handleLogout() {
   sessionStorage.removeItem('nutriaware_logged_in');
   sessionStorage.removeItem('nutriaware_user_name');
+  sessionStorage.removeItem('nutriaware_user_email');
   showLoginPortal();
 }
 
-function setLoggedInUser(name) {
+function setLoggedInUser(name, email = '') {
   sessionStorage.setItem('nutriaware_user_name', name);
+  if (email) sessionStorage.setItem('nutriaware_user_email', email);
+
   const nameEls = document.querySelectorAll('.user-display-name');
   nameEls.forEach(el => el.textContent = name);
+
+  // Admin Panel is STRICTLY visible only for Shreyas Shinde (Admin)
+  const isShreyasAdmin = (name.toLowerCase().includes('shreyas') || email.toLowerCase().includes('shreyas') || email.toLowerCase().includes('admin'));
+  
+  const adminDesktopNav = document.getElementById('nav-link-admin');
+  const adminMobileNav = document.getElementById('mobile-link-admin');
+  const adminBottomNav = document.getElementById('mobile-bottom-admin');
+
+  if (isShreyasAdmin || isAdminUnlocked) {
+    adminDesktopNav?.classList.remove('hidden');
+    adminMobileNav?.classList.remove('hidden');
+    adminBottomNav?.classList.remove('hidden');
+  } else {
+    adminDesktopNav?.classList.add('hidden');
+    adminMobileNav?.classList.add('hidden');
+    adminBottomNav?.classList.add('hidden');
+  }
 }
 
 /* ==========================================================================
