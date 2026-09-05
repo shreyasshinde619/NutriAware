@@ -973,71 +973,133 @@ function removeTypingIndicator(id) {
 }
 
 function generateNutriAIResponse(query) {
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().trim();
 
-  if (q.includes('supabase') || q.includes('database') || q.includes('backend')) {
+  // 1. Greetings & Friendly Small Talk
+  if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ') || q.startsWith('hey ') || q.includes('good morning') || q.includes('good evening') || q.includes('good afternoon') || q === 'yo' || q === 'sup') {
+    const currentUser = sessionStorage.getItem('nutriaware_user_name') || 'Friend';
+    return `
+      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>NutriAware AI</strong>!</p>
+      <p class="mt-1">I am ready to help you with <em>Healthy Food Recipes</em>, <em>Protein Targets</em>, <em>AI Camera Scanner</em>, or <em>Project Team Info</em>. What would you like to know today? 😊</p>
+    `;
+  }
+
+  // 2. Who Developed / Created / Team Queries
+  if (q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('developer') || q.includes('creator') || q.includes('author') || q.includes('team') || q.includes('members') || q.includes('shreyas') || q.includes('kunal') || q.includes('gayatri') || q.includes('sarthak') || q.includes('ayush') || q.includes('vaishnavi')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-users text-emerald-600"></i> Project Team &amp; Developers
+        </h5>
+        <p class="text-slate-600">NutriAware was developed by our Project Group:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+          <li><strong class="text-emerald-700">Shreyas Shinde (Admin):</strong> Team Lead &amp; Full-Stack System Architect (@shreyasshinde619)</li>
+          <li><strong>Kunal Jejurkar:</strong> Project Team Member</li>
+          <li><strong>Gayatri Bhuse:</strong> Project Team Member</li>
+          <li><strong>Sarthak Pawar:</strong> Project Team Member</li>
+          <li><strong>Ayush Bhosale:</strong> Project Team Member</li>
+          <li><strong>Vaishnavi Bongane:</strong> Project Team Member</li>
+        </ul>
+        <p class="text-[10px] text-slate-400 border-t border-slate-100 pt-1">Topic: Nutrition and Healthy Food Awareness System</p>
+      </div>
+    `;
+  }
+
+  // 3. How are you / Silly / Friendly questions
+  if (q.includes('how are you') || q.includes('how r u') || q.includes('how do you do')) {
+    return `
+      <p>I am feeling 100% healthy, hydrated, and ready to assist you! 🥗 How are you doing today? Don't forget to drink a glass of water!</p>
+    `;
+  }
+
+  if (q.includes('who are you') || q.includes('what is your name') || q.includes('your name')) {
+    return `
+      <p>I am <strong>NutriAssist Pro AI</strong> 🤖, your smart health, nutrition, and diet assistant built right into the NutriAware 3D Platform!</p>
+    `;
+  }
+
+  if (q.includes('joke') || q.includes('funny') || q.includes('laugh')) {
+    return `
+      <div class="space-y-1">
+        <p class="font-bold text-slate-800">😄 Here is a healthy joke for you:</p>
+        <p class="italic text-brand-700">"Why did the tomato blush? ... Because it saw the salad dressing!" 🥗🍅</p>
+      </div>
+    `;
+  }
+
+  if (q.includes('database') || q.includes('backend') || q.includes('cloud')) {
     return `
       <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">⚡ Supabase Cloud Integration</h5>
-        <p>NutriAware connects directly to Supabase Cloud Backend:</p>
+        <h5 class="font-bold text-slate-900">⚡ Cloud Database Security</h5>
+        <p>NutriAware features real-time encrypted cloud sync:</p>
         <ul class="list-disc pl-4 space-y-0.5">
-          <li><strong>Project ID:</strong> <code>xhihgjashxqtfdweytsj</code></li>
-          <li><strong>Cloud Endpoint:</strong> <code>https://xhihgjashxqtfdweytsj.supabase.co</code></li>
-          <li><strong>User Registration Table:</strong> All registered accounts & full names are saved to Supabase Cloud Database!</li>
+          <li><strong>Security Protocol:</strong> Row Level Security (RLS) + OAuth2</li>
+          <li><strong>Cloud Persistence:</strong> All registered accounts &amp; progress are encrypted and synced.</li>
         </ul>
       </div>
     `;
-  } else if (q.includes('project') || q.includes('how') && (q.includes('built') || q.includes('tech') || q.includes('developer'))) {
+  }
+
+  if (q.includes('project') || q.includes('about') || q.includes('system') || q.includes('what is this')) {
     return `
       <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">💻 NutriAware Platform Architecture</h5>
-        <p>NutriAware is built with high-performance web standards:</p>
-        <ul class="list-disc pl-4 space-y-0.5">
-          <li><strong>Cloud Database:</strong> Supabase Backend Integration</li>
-          <li><strong>3D Graphics:</strong> Three.js WebGL Particle Scene</li>
-          <li><strong>AI Camera Vision:</strong> HTML5 WebRTC + Canvas Histogram Classification</li>
-          <li><strong>PWA:</strong> Service Workers (sw.js) & Green Theme Manifest</li>
-          <li><strong>Developer:</strong> @shreyasshinde619</li>
+        <h5 class="font-bold text-slate-900">💻 NutriAware Platform</h5>
+        <p>Selected Focus: <strong>Nutrition and Healthy Food Awareness System</strong></p>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-600">
+          <li><strong>3D Graphics:</strong> Three.js WebGL Eco-Nature Scene</li>
+          <li><strong>AI Camera Vision:</strong> HTML5 WebRTC + Canvas Classification</li>
+          <li><strong>Certification:</strong> 30-Question Nutrition Quiz &amp; Printable HD Certificate</li>
+          <li><strong>PWA Mobile:</strong> Installable shortcut on Android &amp; iOS</li>
         </ul>
       </div>
     `;
-  } else if (q.includes('banana') || q.includes('shake')) {
+  }
+
+  if (q.includes('banana') || q.includes('shake')) {
     return `
       <div class="space-y-1.5">
         <h5 class="font-bold text-slate-900 text-sm">🍌 High-Protein Banana Peanut Butter Shake</h5>
         <p class="text-xs text-brand-700 font-semibold">Macros: 380 kcal | Protein: 18g | Carbs: 52g | Fats: 12g</p>
-        <p class="text-xs">Blend 1 ripe banana, 1 cup milk, 1 tbsp peanut butter & 2 tbsp oats for 45s!</p>
+        <p class="text-xs">Blend 1 ripe banana, 1 cup milk, 1 tbsp peanut butter &amp; 2 tbsp oats for 45s!</p>
       </div>
     `;
-  } else if (q.includes('oat') || q.includes('porridge')) {
+  }
+
+  if (q.includes('oat') || q.includes('porridge')) {
     return `
       <div class="space-y-1.5">
         <h5 class="font-bold text-slate-900 text-sm">🥣 Protein Oats Porridge</h5>
         <p class="text-xs text-brand-700 font-semibold">Macros: 290 kcal | Protein: 12g | Carbs: 45g | Fats: 6g</p>
-        <p class="text-xs">Simmer rolled oats in milk for 5 mins, top with chia seeds & apple slices.</p>
+        <p class="text-xs">Simmer rolled oats in milk for 5 mins, top with chia seeds &amp; apple slices.</p>
       </div>
     `;
-  } else if (q.includes('chilla') || q.includes('moong')) {
+  }
+
+  if (q.includes('chilla') || q.includes('moong')) {
     return `
       <div class="space-y-1.5">
         <h5 class="font-bold text-slate-900 text-sm">🥞 High-Fiber Moong Dal Veggie Chilla</h5>
         <p class="text-xs text-brand-700 font-semibold">Macros: 220 kcal | Protein: 14g | Carbs: 32g | Fats: 4g</p>
-        <p class="text-xs">Spread yellow moong dal batter on tawa, top with spinach & low-fat paneer.</p>
+        <p class="text-xs">Spread yellow moong dal batter on tawa, top with spinach &amp; low-fat paneer.</p>
       </div>
     `;
-  } else if (q.includes('protein') || q.includes('muscle')) {
+  }
+
+  if (q.includes('protein') || q.includes('muscle')) {
     return `
-      <p>Target protein requirement for students & active adults is <strong>1.2g - 1.6g per kg of bodyweight</strong>. Best sources: Paneer, Moong Sprouts, Greek Yogurt, Oats, Lentils & Almonds!</p>
+      <p>Target protein requirement for active individuals is <strong>1.2g - 1.6g per kg of bodyweight</strong>. Best sources: Paneer, Moong Sprouts, Greek Yogurt, Oats, Lentils &amp; Almonds!</p>
     `;
-  } else if (q.includes('water') || q.includes('hydration')) {
+  }
+
+  if (q.includes('water') || q.includes('hydration')) {
     return `
       <p>Maintain at least <strong>2,500 ml (2.5 Liters)</strong> daily water intake! Proper hydration boosts memory retention and cognitive focus during study sessions by up to 20%.</p>
     `;
-  } else {
-    return `
-      <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me about <em>Diet Recipes</em>, <em>Protein Targets</em>, <em>Hydration Advice</em>, or <em>Supabase Backend Sync</em>!</p>
-    `;
   }
+
+  return `
+    <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me greetings like <em>"Hi"</em>, <em>"Who developed this?"</em>, or questions about <em>Diet Recipes</em>, <em>Protein Targets</em>, and <em>Hydration Advice</em>!</p>
+  `;
 }
 
 function escapeHTML(str) {
