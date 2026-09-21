@@ -232,6 +232,8 @@ function switchTab(tabId) {
     activeBtn.classList.remove('text-slate-300');
     activeBtn.classList.add('text-brand-400', 'font-bold', 'border-b-2', 'border-brand-400', 'bg-brand-950/60');
   }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function handleLoginSubmit(event) {
@@ -669,34 +671,9 @@ function closeToast() {
   document.getElementById('notificationToast')?.classList.add('hidden');
 }
 
-
 /* ==========================================================================
-   7. SEPARATE DASHBOARD TABS NAVIGATION
+   7. MOBILE NAVIGATION CONTROLS
    ========================================================================== */
-function switchTab(tabId) {
-  const tabs = ['home', 'scanner', 'recipes', 'quizzes', 'tracker', 'dashboard'];
-  
-  tabs.forEach(t => {
-    const pageEl = document.getElementById(`view-${t}`);
-    const navBtn = document.getElementById(`nav-link-${t}`);
-    const mobileBtn = document.getElementById(`mobile-link-${t}`);
-
-    if (t === tabId) {
-      pageEl?.classList.remove('hidden');
-      navBtn?.classList.add('text-brand-600', 'border-b-2', 'border-brand-600', 'bg-brand-50/50');
-      navBtn?.classList.remove('text-slate-600');
-      mobileBtn?.classList.add('text-brand-600', 'font-bold', 'bg-brand-50');
-    } else {
-      pageEl?.classList.add('hidden');
-      navBtn?.classList.remove('text-brand-600', 'border-b-2', 'border-brand-600', 'bg-brand-50/50');
-      navBtn?.classList.add('text-slate-600');
-      mobileBtn?.classList.remove('text-brand-600', 'font-bold', 'bg-brand-50');
-    }
-  });
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
 function initMobileMenu() {
   const menuBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');

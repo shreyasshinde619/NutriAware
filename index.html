@@ -279,9 +279,6 @@
           <button id="nav-link-dashboard" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
             📊 Analytics
           </button>
-          <button id="nav-link-about" onclick="switchTab('about')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            ℹ️ About Us
-          </button>
         </nav>
 
         <!-- Logged-in User & Reminders Control -->
@@ -650,158 +647,6 @@
     </main>
 
 
-    <!-- ==========================================================================
-         VIEW TAB 7: ABOUT US & PROJECT TEAM
-         ========================================================================== -->
-    <main id="view-about" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
-        <!-- Hero / Header -->
-        <div class="text-center max-w-3xl mx-auto space-y-3">
-          <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">
-            Official University Project
-          </span>
-          <h2 class="font-display text-4xl font-extrabold text-white">About NutriAware &amp; Our Team</h2>
-          <p class="text-slate-400 text-sm leading-relaxed">
-            Empowering healthier lifestyle choices through real-time AI food vision, intelligent macro tracking, and interactive nutrition awareness.
-          </p>
-        </div>
-
-        <!-- Project Information Card -->
-        <div class="dark-glass-card p-8 rounded-3xl border border-emerald-900/60 space-y-6 shadow-2xl">
-          <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-            <div class="w-12 h-12 rounded-2xl bg-brand-600 text-white flex items-center justify-center text-2xl shadow-lg">
-              <i class="fa-solid fa-bullseye"></i>
-            </div>
-            <div>
-              <h3 class="font-display text-xl font-extrabold text-white">Project Objective &amp; Problem Statement</h3>
-              <p class="text-xs text-brand-400 font-semibold">Selected Focus: Nutrition and Healthy Food Awareness System</p>
-            </div>
-          </div>
-
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Our core project focus is dedicated to solving the <strong>Nutrition and Healthy Food Awareness System</strong> problem. By combining WebRTC Live Camera AI meal recognition, personalized BMR computation, 100% plant-based and beef-free diet recipe recommendation engines, and interactive 30-question nutrition certification, NutriAware provides an end-to-end digital ecosystem for personal health awareness.
-          </p>
-        </div>
-
-        <!-- Official Team Members Grid -->
-        <div class="space-y-6">
-          <div class="text-center space-y-1">
-            <h3 class="font-display text-2xl font-extrabold text-white">Meet Our Project Team</h3>
-            <p class="text-xs text-slate-400">Dedicated Development Group</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <!-- Shreyas Shinde -->
-            <div class="dark-glass-card p-6 rounded-3xl border-2 border-emerald-400/80 space-y-4 shadow-xl relative overflow-hidden group hover:scale-[1.02] transition">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-brand-400 text-white font-extrabold flex items-center justify-center text-xl shadow-lg">
-                  SS
-                </div>
-                <div>
-                  <span class="bg-emerald-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Lead</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Shreyas Shinde</h4>
-                  <p class="text-xs text-emerald-400 font-medium">Team Lead &amp; System Architect</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                Lead developer responsible for full-stack architecture, 3D WebGL engine, and cloud database security.
-              </p>
-            </div>
-
-            <!-- Kunal Jejurkar -->
-            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-teal-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
-                  KJ
-                </div>
-                <div>
-                  <span class="bg-slate-800 text-teal-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Kunal Jejurkar</h4>
-                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                Systems analysis, domain research, and environmental protection integration.
-              </p>
-            </div>
-
-            <!-- Gayatri Bhuse -->
-            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-pink-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
-                  GB
-                </div>
-                <div>
-                  <span class="bg-slate-800 text-pink-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Gayatri Bhuse</h4>
-                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                Nutrition research, healthy diet recipe curation, and user experience design.
-              </p>
-            </div>
-
-            <!-- Sarthak Pawar -->
-            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
-                  SP
-                </div>
-                <div>
-                  <span class="bg-slate-800 text-indigo-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Sarthak Pawar</h4>
-                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                Database synchronization, authentication security, and data validation testing.
-              </p>
-            </div>
-
-            <!-- Ayush Bhosale -->
-            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-sky-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
-                  AB
-                </div>
-                <div>
-                  <span class="bg-slate-800 text-sky-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Ayush Bhosale</h4>
-                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                UI components development, mobile app view optimization, and chart analytics.
-              </p>
-            </div>
-
-            <!-- Vaishnavi Bongane -->
-            <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4 hover:border-emerald-700/60 transition group hover:scale-[1.02]">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-purple-600 text-white font-extrabold flex items-center justify-center text-xl shadow-md">
-                  VB
-                </div>
-                <div>
-                  <span class="bg-slate-800 text-purple-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Member</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Vaishnavi Bongane</h4>
-                  <p class="text-xs text-slate-400 font-medium">Project Team Member</p>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400 border-t border-slate-800/80 pt-3">
-                Quality assurance, 30-question quiz verification, and project documentation.
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </main>
-
-
     <!-- FOOTER SECTION -->
     <footer class="bg-slate-950 text-slate-500 py-12 border-t border-slate-900 mt-auto pb-24 md:pb-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-3">
@@ -829,10 +674,6 @@
     <button onclick="switchTab('quizzes')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
       <i class="fa-solid fa-brain text-lg"></i>
       <span>Quiz</span>
-    </button>
-    <button onclick="switchTab('about')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-circle-info text-lg"></i>
-      <span>About</span>
     </button>
   </div>
 
