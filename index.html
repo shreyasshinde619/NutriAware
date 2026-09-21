@@ -107,31 +107,21 @@
       </div>
 
       <!-- Account List -->
-      <div id="googleAccountsList" class="space-y-2">
-        <p class="text-xs text-slate-500 font-bold mb-2">Select Google Account to continue to NutriAware:</p>
+      <div id="googleAccountsList" class="space-y-3">
+        <p class="text-xs text-slate-500 font-bold">Sign in with your Google Account (Gmail):</p>
         
-        <button onclick="selectGoogleAccount('shreyasshinde619@gmail.com', 'Shreyas Shinde (Admin)')" class="w-full p-3 rounded-2xl hover:bg-emerald-50/80 border border-slate-200 transition flex items-center justify-between text-left group">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow">
-              SS
-            </div>
-            <div>
-              <h5 class="font-bold text-xs text-slate-900 group-hover:text-emerald-700">Shreyas Shinde (Admin)</h5>
-              <p class="text-[10px] text-slate-500">shreyasshinde619@gmail.com</p>
-            </div>
-          </div>
-          <span class="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">Admin Account</span>
-        </button>
-
-        <button onclick="promptCustomGoogleAccount()" class="w-full p-3 rounded-2xl hover:bg-slate-100 border border-dashed border-slate-300 transition flex items-center gap-3 text-left mt-2">
-          <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-sm">
-            <i class="fa-solid fa-user-plus"></i>
-          </div>
+        <form onsubmit="handleGoogleCustomSubmit(event)" class="space-y-3">
           <div>
-            <h5 class="font-bold text-xs text-slate-800">Use another Google Account</h5>
-            <p class="text-[10px] text-slate-500">Sign in with a different Gmail address</p>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Your Gmail Address</label>
+            <input type="email" id="googleCustomEmailInput" required placeholder="example@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
           </div>
-        </button>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24">
+              <path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            </svg>
+            Continue with Google Account
+          </button>
+        </form>
       </div>
 
       <!-- Signing state spinner -->
@@ -291,9 +281,6 @@
           </button>
           <button id="nav-link-about" onclick="switchTab('about')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
             ℹ️ About Us
-          </button>
-          <button id="nav-link-admin" onclick="switchTab('admin')" class="hidden px-3.5 py-2 rounded-xl text-amber-400 hover:bg-amber-950/40 border border-amber-500/40 font-bold transition flex items-center gap-1.5 shadow-sm">
-            🛡️ Admin Panel
           </button>
         </nav>
 
@@ -706,15 +693,15 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- Shreyas Shinde (Admin) -->
+            <!-- Shreyas Shinde -->
             <div class="dark-glass-card p-6 rounded-3xl border-2 border-emerald-400/80 space-y-4 shadow-xl relative overflow-hidden group hover:scale-[1.02] transition">
               <div class="flex items-center gap-4">
                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-brand-400 text-white font-extrabold flex items-center justify-center text-xl shadow-lg">
                   SS
                 </div>
                 <div>
-                  <span class="bg-emerald-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Admin &amp; Lead</span>
-                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Shreyas Shinde (Admin)</h4>
+                  <span class="bg-emerald-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Team Lead</span>
+                  <h4 class="font-display text-lg font-extrabold text-white mt-1">Shreyas Shinde</h4>
                   <p class="text-xs text-emerald-400 font-medium">Team Lead &amp; System Architect</p>
                 </div>
               </div>
@@ -815,304 +802,6 @@
     </main>
 
 
-    <!-- ==========================================================================
-         VIEW TAB 8: MASTER ADMIN PANEL (REGISTERED ACCOUNTS DASHBOARD)
-         ========================================================================== -->
-    <main id="view-admin" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        <!-- Admin Security Passcode Lock Modal (Appears if not authorized) -->
-        <div id="adminAuthModal" class="hidden dark-glass-card max-w-md mx-auto p-6 rounded-3xl border border-amber-500/40 text-center space-y-4 shadow-2xl">
-          <div class="w-14 h-14 bg-amber-500/20 text-amber-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-amber-500/40">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-          <div>
-            <h3 class="font-display text-xl font-extrabold text-white">Admin Portal Access</h3>
-            <p class="text-xs text-slate-400">Enter Admin Passcode to view live registered database.</p>
-          </div>
-          <div class="space-y-3 text-left">
-            <input type="password" id="adminPasscodeKey" placeholder="Enter Admin Passcode (Default: admin123)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
-            <button onclick="verifyAdminPasscode()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-key"></i> Unlock Admin Panel
-            </button>
-          </div>
-        </div>
-
-        <!-- Master Admin Content Dashboard -->
-        <div id="adminDashboardContent" class="space-y-8">
-          
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6">
-            <div>
-              <div class="inline-flex items-center gap-2 bg-amber-950/80 text-amber-300 px-3 py-1 rounded-full text-xs font-bold border border-amber-500/40 mb-2">
-                <i class="fa-solid fa-user-shield"></i> Supabase Master Control
-              </div>
-              <h2 class="font-display text-3xl font-extrabold text-white">Registered Accounts Registry</h2>
-              <p class="text-slate-400 text-xs">Live database of users who registered on NutriAware</p>
-            </div>
-
-            <div class="flex items-center gap-3">
-              <button onclick="fetchRegisteredUsers()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
-                <i class="fa-solid fa-rotate"></i> Refresh Database
-              </button>
-              <button onclick="exportUsersCSV()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-700 transition flex items-center gap-2">
-                <i class="fa-solid fa-file-csv"></i> Export CSV Report
-              </button>
-            </div>
-          </div>
-
-          <!-- Admin Metric Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="dark-glass-card p-5 rounded-2xl border border-emerald-900/50 space-y-2">
-              <div class="flex justify-between items-center text-slate-400 text-xs font-bold">
-                <span>Total Registered</span>
-                <i class="fa-solid fa-users text-emerald-400"></i>
-              </div>
-              <span id="adminTotalUsersCount" class="font-display text-3xl font-extrabold text-white">1</span>
-              <p class="text-[10px] text-emerald-400 font-semibold">Synced with Supabase Cloud</p>
-            </div>
-
-            <div class="dark-glass-card p-5 rounded-2xl border border-emerald-900/50 space-y-2">
-              <div class="flex justify-between items-center text-slate-400 text-xs font-bold">
-                <span>Database Host</span>
-                <i class="fa-solid fa-database text-sky-400"></i>
-              </div>
-              <span class="font-display text-xl font-extrabold text-white">Supabase Cloud</span>
-              <p class="text-[10px] text-sky-400 font-semibold">Project: xhihgjashxqtfdweytsj</p>
-            </div>
-
-            <div class="dark-glass-card p-5 rounded-2xl border border-emerald-900/50 space-y-2">
-              <div class="flex justify-between items-center text-slate-400 text-xs font-bold">
-                <span>Auth Encryption</span>
-                <i class="fa-solid fa-shield-check text-brand-400"></i>
-              </div>
-              <span class="font-display text-xl font-extrabold text-white">OAuth2 &amp; RLS</span>
-              <p class="text-[10px] text-brand-400 font-semibold">Google &amp; Supabase Auth</p>
-            </div>
-
-            <div class="dark-glass-card p-5 rounded-2xl border border-emerald-900/50 space-y-2">
-              <div class="flex justify-between items-center text-slate-400 text-xs font-bold">
-                <span>Latest Signup</span>
-                <i class="fa-solid fa-user-plus text-amber-400"></i>
-              </div>
-              <span id="adminLastUser" class="font-display text-sm font-extrabold text-white truncate block">Shreyas Shinde</span>
-              <p class="text-[10px] text-amber-400 font-semibold">Active Session</p>
-            </div>
-          </div>
-
-          <!-- Search & Registered Users Table -->
-          <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-4">
-            
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-              <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                <i class="fa-solid fa-table-list text-emerald-400"></i> Master User Table
-              </h3>
-              <div class="relative w-full sm:w-64">
-                <input type="text" id="adminUserSearch" oninput="filterAdminUsersTable()" placeholder="Search by name or email..." class="w-full bg-slate-900 border border-slate-800 text-xs text-white rounded-xl pl-8 pr-3 py-2 focus:outline-none focus:border-amber-500">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-              </div>
-            </div>
-
-            <div class="overflow-x-auto rounded-2xl border border-slate-800">
-              <table class="w-full text-left text-xs text-slate-300">
-                <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] font-extrabold border-b border-slate-800">
-                  <tr>
-                    <th class="p-3">#</th>
-                    <th class="p-3">Full Name</th>
-                    <th class="p-3">Email Address</th>
-                    <th class="p-3">Auth Method</th>
-                    <th class="p-3">Registered Date</th>
-                    <th class="p-3">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="adminUsersTableBody" class="divide-y divide-slate-800 bg-slate-950/60 font-medium">
-                  <!-- Populated dynamically via script.js -->
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-
-          <!-- PROJECT TEAM MEMBERS & LEADERSHIP INFO -->
-          <div class="dark-glass-card p-6 rounded-3xl border border-emerald-900/60 space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div>
-                <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">👥 University Project Group</span>
-                <h3 class="font-display text-xl font-extrabold text-white">Project Team Members &amp; Leadership</h3>
-              </div>
-              <span class="bg-emerald-950 text-emerald-300 border border-emerald-700/60 text-xs font-bold px-3 py-1 rounded-full">
-                Lead: Shreyas Shinde
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              
-              <!-- Leader Card -->
-              <div class="bg-gradient-to-br from-emerald-950/80 to-slate-900 p-4 rounded-2xl border border-emerald-500/40 space-y-2 relative overflow-hidden">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-emerald-500 text-slate-950 font-extrabold flex items-center justify-center text-sm shadow-md">
-                    SS
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Shreyas Shinde</h4>
-                    <p class="text-[11px] text-emerald-400 font-semibold">Team Lead &amp; Lead Developer</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] font-mono bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-700">@shreyasshinde619</span>
-              </div>
-
-              <!-- Member 2 -->
-              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    KJ
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Kunal Jejurkar</h4>
-                    <p class="text-[11px] text-slate-400">Project Team Member</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Research &amp; Systems Analysis</span>
-              </div>
-
-              <!-- Member 3 -->
-              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    AB
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Ayush Bhosale</h4>
-                    <p class="text-[11px] text-slate-400">Project Team Member</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">UI &amp; System Architecture</span>
-              </div>
-
-              <!-- Member 4 -->
-              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    SP
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Sarthak Pawar</h4>
-                    <p class="text-[11px] text-slate-400">Project Team Member</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Database &amp; Supabase Integration</span>
-              </div>
-
-              <!-- Member 5 -->
-              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-pink-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    GB
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Gayatri Bhuse</h4>
-                    <p class="text-[11px] text-slate-400">Project Team Member</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Nutrition &amp; Recipe Research</span>
-              </div>
-
-              <!-- Member 6 -->
-              <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 hover:border-emerald-700/50 transition">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    VB
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-white">Vaishnavi Bongane</h4>
-                    <p class="text-[11px] text-slate-400">Project Team Member</p>
-                  </div>
-                </div>
-                <span class="inline-block text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">Quality Assurance &amp; Documentation</span>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- PROJECT DOMAINS SCOPE & SELECTED TOPIC HIGHLIGHT -->
-          <div class="dark-glass-card p-6 rounded-3xl border border-brand-500/40 space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
-              <div>
-                <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400">📌 System Classification &amp; Project Scope</span>
-                <h3 class="font-display text-xl font-extrabold text-white">5 Main Project Systems &amp; Selected Topic</h3>
-              </div>
-              <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
-                <i class="fa-solid fa-star text-amber-400"></i> Primary Focus: Domain #1
-              </span>
-            </div>
-
-            <div class="space-y-4">
-              
-              <!-- SELECTED PRIMARY DOMAIN TOPIC CARD -->
-              <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-5 rounded-2xl border-2 border-emerald-400 shadow-xl space-y-3 relative overflow-hidden">
-                <div class="flex justify-between items-center">
-                  <span class="bg-emerald-500 text-slate-950 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                    ★ SELECTED PRIMARY PROJECT PROBLEM TOPIC
-                  </span>
-                  <span class="text-xs font-bold text-emerald-300">Domain 1 / 5</span>
-                </div>
-
-                <h4 class="font-display text-lg font-extrabold text-white">1. Nutrition and Healthy Food Awareness System</h4>
-                
-                <p class="text-xs text-slate-300 leading-relaxed">
-                  <strong>Selected Project Problem Implementation:</strong> Our platform NutriAware is specifically engineered to indulge and solve the <em>Nutrition and Healthy Food Awareness System</em> problem. Features WebRTC Live AI Camera meal scanning, 30-question certification quiz, personalized macro analytics, BMR computation, beef-free plant-based nutrition, water/protein hydration trackers, and cloud backend database persistence.
-                </p>
-              </div>
-
-              <!-- OTHER 4 SYSTEM SCOPE CARDS -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
-                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
-                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">2</span>
-                    <span>System Domain #2</span>
-                  </div>
-                  <h5 class="font-bold text-sm text-white">Community-Based Environmental Protection System</h5>
-                  <p class="text-[11px] text-slate-400">Community eco-awareness, local food waste reduction, and environmental footprint tracking.</p>
-                </div>
-
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
-                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
-                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">3</span>
-                    <span>System Domain #3</span>
-                  </div>
-                  <h5 class="font-bold text-sm text-white">Sustainable Packaging and Reuse System</h5>
-                  <p class="text-[11px] text-slate-400">Zero-waste meal prep guidelines, bio-degradable food packaging, and reusable utensil awareness.</p>
-                </div>
-
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
-                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
-                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">4</span>
-                    <span>System Domain #4</span>
-                  </div>
-                  <h5 class="font-bold text-sm text-white">Rural Connectivity and Service Access System</h5>
-                  <p class="text-[11px] text-slate-400">PWA offline service worker caching for seamless access in low-connectivity rural health centers.</p>
-                </div>
-
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1.5">
-                  <div class="flex items-center gap-2 text-slate-400 text-xs font-bold">
-                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-emerald-400 flex items-center justify-center font-mono">5</span>
-                    <span>System Domain #5</span>
-                  </div>
-                  <h5 class="font-bold text-sm text-white">Information System for Hiking Trails and Public Parks</h5>
-                  <p class="text-[11px] text-slate-400">Outdoor physical activity integration, hydration reminders during hikes, and public fitness awareness.</p>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </main>
-
-
     <!-- FOOTER SECTION -->
     <footer class="bg-slate-950 text-slate-500 py-12 border-t border-slate-900 mt-auto pb-24 md:pb-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-3">
@@ -1144,10 +833,6 @@
     <button onclick="switchTab('about')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
       <i class="fa-solid fa-circle-info text-lg"></i>
       <span>About</span>
-    </button>
-    <button id="mobile-bottom-admin" onclick="switchTab('admin')" class="hidden flex flex-col items-center gap-1 text-[10px] font-bold text-amber-400 hover:text-amber-300 transition">
-      <i class="fa-solid fa-user-shield text-lg"></i>
-      <span>Admin</span>
     </button>
   </div>
 

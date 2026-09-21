@@ -232,14 +232,7 @@ function switchTab(tabId) {
   const activeBtn = document.getElementById(`nav-link-${tabId}`);
   if (activeBtn) {
     activeBtn.classList.remove('text-slate-300');
-    activeBtn.classList.add('text-brand-400', 'font-bold');
-    if (tabId !== 'admin') {
-      activeBtn.classList.add('border-b-2', 'border-brand-400', 'bg-brand-950/60');
-    }
-  }
-
-  if (tabId === 'admin') {
-    initAdminPanel();
+    activeBtn.classList.add('text-brand-400', 'font-bold', 'border-b-2', 'border-brand-400', 'bg-brand-950/60');
   }
 }
 
@@ -333,6 +326,15 @@ function closeGoogleAccountPicker() {
   }
 }
 
+function handleGoogleCustomSubmit(event) {
+  event.preventDefault();
+  const customEmail = (document.getElementById('googleCustomEmailInput')?.value || '').trim().toLowerCase();
+  if (customEmail && customEmail.includes('@')) {
+    const customName = customEmail.split('@')[0];
+    selectGoogleAccount(customEmail, customName);
+  }
+}
+
 function promptCustomGoogleAccount() {
   const customEmail = prompt('Enter your Gmail address to sign in with Google:');
   if (customEmail && customEmail.includes('@')) {
@@ -397,155 +399,6 @@ function setLoggedInUser(name, email = '') {
 
   const nameEls = document.querySelectorAll('.user-display-name');
   nameEls.forEach(el => el.textContent = name);
-
-  // Admin Panel is STRICTLY visible only for Shreyas Shinde (Admin)
-  const isShreyasAdmin = (name.toLowerCase().includes('shreyas') || email.toLowerCase().includes('shreyas') || email.toLowerCase().includes('admin'));
-  
-  const adminDesktopNav = document.getElementById('nav-link-admin');
-  const adminMobileNav = document.getElementById('mobile-link-admin');
-  const adminBottomNav = document.getElementById('mobile-bottom-admin');
-
-  if (isShreyasAdmin || isAdminUnlocked) {
-    adminDesktopNav?.classList.remove('hidden');
-    adminMobileNav?.classList.remove('hidden');
-    adminBottomNav?.classList.remove('hidden');
-  } else {
-    adminDesktopNav?.classList.add('hidden');
-    adminMobileNav?.classList.add('hidden');
-    adminBottomNav?.classList.add('hidden');
-  }
-}
-
-/* ==========================================================================
-   ADMIN PANEL DASHBOARD & SUPABASE REGISTERED USERS MANAGEMENT
-   ========================================================================== */
-function initAdminPanel() {
-  const modal = document.getElementById('adminAuthModal');
-  const content = document.getElementById('adminDashboardContent');
-
-  if (!isAdminUnlocked) {
-    modal?.classList.remove('hidden');
-    content?.classList.add('hidden');
-  } else {
-    modal?.classList.add('hidden');
-    content?.classList.remove('hidden');
-    fetchRegisteredUsers();
-  }
-}
-
-function verifyAdminPasscode() {
-  const code = document.getElementById('adminPasscodeKey')?.value || '';
-  if (code === 'admin123' || code === '' || code === 'admin') {
-    isAdminUnlocked = true;
-    showToastNotification('🛡️ Admin Portal Unlocked', 'Master access granted to registered database.');
-    initAdminPanel();
-  } else {
-    showToastNotification('⚠️ Access Denied', 'Invalid Admin Passcode key.');
-  }
-}
-
-async function fetchRegisteredUsers() {
-  if (supabaseClient) {
-    try {
-      const { data, error } = await supabaseClient.from('users').select('*');
-      if (data && data.length > 0) {
-        data.forEach(dbUser => {
-          const exists = registeredUsersRegistry.some(u => u.email === dbUser.email);
-          if (!exists) {
-            registeredUsersRegistry.unshift({
-              id: dbUser.id || 'usr-' + Math.random().toString(36).substr(2, 5),
-              full_name: dbUser.full_name || 'Registered User',
-              email: dbUser.email,
-              provider: dbUser.auth_provider || 'Email/Pass',
-              created_at: dbUser.created_at || new Date().toISOString(),
-              status: 'Active'
-            });
-          }
-        });
-        localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
-      }
-    } catch (err) {
-      console.warn('Supabase fetch notice:', err);
-    }
-  }
-
-  renderAdminUsersTable(registeredUsersRegistry);
-}
-
-function renderAdminUsersTable(usersList) {
-  const tbody = document.getElementById('adminUsersTableBody');
-  const countEl = document.getElementById('adminTotalUsersCount');
-  const lastUserEl = document.getElementById('adminLastUser');
-
-  if (countEl) countEl.textContent = usersList.length;
-  if (lastUserEl && usersList.length > 0) lastUserEl.textContent = usersList[0].full_name;
-
-  if (!tbody) return;
-
-  if (usersList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center p-6 text-slate-500">No registered users found in backend.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = usersList.map((usr, idx) => {
-    const formattedDate = new Date(usr.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-    const isGoogle = (usr.provider || '').toLowerCase().includes('google');
-    const badgeColor = isGoogle ? 'bg-sky-950 text-sky-400 border-sky-800' : 'bg-emerald-950 text-emerald-400 border-emerald-800';
-
-    return `
-      <tr class="hover:bg-slate-900/80 transition">
-        <td class="p-3 font-mono text-slate-500">${idx + 1}</td>
-        <td class="p-3 font-bold text-white flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full ${isGoogle ? 'bg-sky-600' : 'bg-emerald-600'} text-white text-[10px] font-extrabold flex items-center justify-center">
-            ${usr.full_name.charAt(0).toUpperCase()}
-          </div>
-          ${usr.full_name}
-        </td>
-        <td class="p-3 text-slate-400 font-mono">${usr.email}</td>
-        <td class="p-3">
-          <span class="border ${badgeColor} px-2 py-0.5 rounded-full text-[10px] font-bold">
-            ${usr.provider || 'Email/Pass'}
-          </span>
-        </td>
-        <td class="p-3 text-slate-400">${formattedDate}</td>
-        <td class="p-3">
-          <span class="text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 w-fit">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Registered
-          </span>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function filterAdminUsersTable() {
-  const query = (document.getElementById('adminUserSearch')?.value || '').toLowerCase();
-  const filtered = registeredUsersRegistry.filter(u => 
-    u.full_name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)
-  );
-  renderAdminUsersTable(filtered);
-}
-
-function exportUsersCSV() {
-  if (registeredUsersRegistry.length === 0) {
-    showToastNotification('⚠️ Export Failed', 'No registered user records to export.');
-    return;
-  }
-
-  let csvContent = 'data:text/csv;charset=utf-8,ID,Full Name,Email,Auth Provider,Registered Date,Status\n';
-  registeredUsersRegistry.forEach(u => {
-    csvContent += `"${u.id}","${u.full_name}","${u.email}","${u.provider || 'Email'}","${u.created_at}","Active"\n`;
-  });
-
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement('a');
-  link.setAttribute('href', encodedUri);
-  link.setAttribute('download', `NutriAware_Registered_Users_${new Date().toISOString().slice(0,10)}.csv`);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  showToastNotification('📥 CSV Export Complete', 'Registered users database downloaded successfully!');
 }
 
 
@@ -1100,18 +953,12 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  // 1e. Admin Panel Access Guide
-  if (q.includes('admin') || q.includes('admin panel') || q.includes('admin login') || q.includes('shreyas shinde admin')) {
+  // 1e. Admin Panel Notice
+  if (q.includes('admin') || q.includes('admin panel') || q.includes('admin login')) {
     return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-user-shield text-amber-600"></i> Admin Panel Security
-        </h5>
-        <p class="text-slate-600">Admin Panel access is restricted exclusively to <strong>Shreyas Shinde (Admin)</strong>:</p>
-        <ul class="list-disc pl-4 space-y-1 text-slate-700">
-          <li>Authorized Email: <strong class="text-amber-700">shreyasshinde619@gmail.com</strong></li>
-          <li>Emergency Passcode: <code class="bg-slate-100 px-1 py-0.5 rounded text-amber-800">admin123</code></li>
-        </ul>
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-slate-900">🛡️ Admin Panel Notice</h5>
+        <p>The Admin Panel option has been removed from the platform. User access is managed strictly through mandatory registration and sign in on the portal.</p>
       </div>
     `;
   }
@@ -1132,16 +979,16 @@ function generateNutriAIResponse(query) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-graduation-cap text-emerald-600"></i> Development Team
+          <i class="fa-solid fa-graduation-cap text-emerald-600"></i> Project Team Members
         </h5>
-        <p class="text-slate-600">Created by Integrated MTech AIML students from Sanjivani University:</p>
+        <p class="text-slate-600">NutriAware Development Group Members:</p>
         <ul class="list-disc pl-4 space-y-1 text-slate-700">
-          <li><strong class="text-emerald-700">Sarthak Pawar:</strong> Team Leader</li>
-          <li><strong class="text-emerald-700">Shreyash Shinde:</strong> Web Developer / Admin (@shreyasshinde619)</li>
-          <li><strong>Kunal Jejurkar:</strong> Designer</li>
-          <li><strong>Ayush Bhosale:</strong> Team Member</li>
-          <li><strong>Vaishnavi Bongane:</strong> Team Member</li>
-          <li><strong>Gayatri Bhuse:</strong> Team Member</li>
+          <li><strong class="text-emerald-700">Kunal Jejurkar:</strong> Designer &amp; Systems Analysis</li>
+          <li><strong class="text-emerald-700">Shreyas Shinde:</strong> Lead Web Developer (@shreyasshinde619)</li>
+          <li><strong class="text-emerald-700">Sarthak Pawar:</strong> Database &amp; Security Integration</li>
+          <li><strong>Ayush Bhosale:</strong> UI &amp; System Architecture</li>
+          <li><strong>Gayatri Bhuse:</strong> Nutrition &amp; Recipe Research</li>
+          <li><strong>Vaishnavi Bongane:</strong> Quality Assurance &amp; Documentation</li>
         </ul>
       </div>
     `;
