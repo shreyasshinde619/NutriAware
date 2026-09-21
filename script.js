@@ -169,12 +169,10 @@ let registeredUsersRegistry = JSON.parse(localStorage.getItem('nutriaware_regist
 
 if (registeredUsersRegistry.length === 0) {
   registeredUsersRegistry = [
-    { id: 'usr-1', full_name: 'Shreyas Shinde (Admin)', email: 'shreyasshinde619@gmail.com', provider: 'Google Auth', created_at: new Date().toISOString(), status: 'Active' }
+    { id: 'usr-1', full_name: 'Shreyas Shinde', email: 'shreyasshinde619@gmail.com', provider: 'Google Auth', created_at: new Date().toISOString(), status: 'Active' }
   ];
   localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
 }
-
-let isAdminUnlocked = false;
 
 function showLoginPortal() {
   document.getElementById('loginPortal')?.classList.remove('hidden');
@@ -249,7 +247,7 @@ async function handleLoginSubmit(event) {
   // Strictly check if email is registered in local state or database
   const match = registeredUsersRegistry.find(u => (u.email || '').toLowerCase() === emailInput);
 
-  if (!match && emailInput !== 'shreyasshinde619@gmail.com') {
+  if (!match) {
     showToastNotification('❌ Access Denied', 'Account not found! Please click "Register Account" first.');
     return;
   }
