@@ -86,158 +86,9 @@
 
 
   <!-- ==========================================================================
-       AUTHENTIC GOOGLE ACCOUNT PICKER MODAL
+       MAIN APPLICATION DASHBOARD (OPEN ACCESS PLATFORM)
        ========================================================================== -->
-  <div id="googleAccountPickerModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-5 text-left relative">
-      
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2">
-          <svg class="w-6 h-6" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span class="font-extrabold text-sm text-slate-800">Sign in with Google</span>
-        </div>
-        <button onclick="closeGoogleAccountPicker()" class="text-slate-400 hover:text-slate-700">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Account List -->
-      <div id="googleAccountsList" class="space-y-3">
-        <p class="text-xs text-slate-500 font-bold">Sign in with your Google Account (Gmail):</p>
-        
-        <form onsubmit="handleGoogleCustomSubmit(event)" class="space-y-3">
-          <div>
-            <label class="block text-[11px] font-bold text-slate-700 mb-1">Your Gmail Address</label>
-            <input type="email" id="googleCustomEmailInput" required placeholder="example@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" viewBox="0 0 24 24">
-              <path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            </svg>
-            Continue with Google Account
-          </button>
-        </form>
-      </div>
-
-      <!-- Signing state spinner -->
-      <div id="googleSigningState" class="hidden text-center py-6 space-y-3">
-        <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="text-xs font-bold text-slate-700">Authenticating Google Account...</p>
-        <span id="signingEmailText" class="text-[10px] text-slate-400 block"></span>
-      </div>
-
-    </div>
-  </div>
-
-
-  <!-- ==========================================================================
-       LOGIN & REGISTER PORTAL (STRICT MANDATORY ACCESS LOCK)
-       ========================================================================== -->
-  <div id="loginPortal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center p-4">
-    <div class="bg-white/95 backdrop-blur-2xl w-full max-w-md rounded-3xl p-8 shadow-2xl border border-emerald-200 space-y-6 text-center relative overflow-hidden">
-      
-      <!-- Animated Ambient Background Glow -->
-      <div class="absolute -top-20 -right-20 w-48 h-48 bg-brand-300/30 rounded-full blur-2xl pointer-events-none animate-glow"></div>
-
-      <!-- Splash Logo Icon with Green N SVG -->
-      <div class="w-20 h-20 bg-gradient-to-tr from-brand-600 to-emerald-400 rounded-3xl mx-auto flex items-center justify-center text-white text-3xl shadow-xl shadow-brand-600/40 splash-logo-box">
-        <i class="fa-solid fa-leaf"></i>
-      </div>
-
-      <div class="space-y-1">
-        <span class="text-xs font-bold uppercase tracking-widest text-brand-600">⚡ 3D AI Health Portal</span>
-        <h2 class="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Welcome to NutriAware</h2>
-        <p class="text-xs text-slate-500 flex items-center justify-center gap-1">
-          <i class="fa-solid fa-shield-halved text-emerald-600"></i> Mandatory Authentication (Encrypted Health Portal)
-        </p>
-      </div>
-
-      <!-- Authentication Tabs: Sign In / Register -->
-      <div class="flex border-b border-slate-200 text-sm font-bold mb-4">
-        <button id="tabAuthLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 text-brand-600 border-b-2 border-brand-600 font-extrabold transition">
-          Sign In
-        </button>
-        <button id="tabAuthRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-slate-400 hover:text-brand-600 transition">
-          Register Account
-        </button>
-      </div>
-
-      <!-- Professional Google Sign-In Trigger (Visible only on Sign In Tab) -->
-      <div id="googleAuthBtnContainer" class="space-y-3">
-        <button onclick="openGoogleAccountPicker()" class="w-full google-btn py-3.5 px-4 rounded-2xl font-bold text-xs flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
-          <svg class="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span>Continue with Google Account</span>
-        </button>
-
-        <div class="flex items-center gap-3 my-2">
-          <div class="h-px bg-slate-200 flex-1"></div>
-          <span class="text-[11px] font-bold text-slate-400 uppercase">Or</span>
-          <div class="h-px bg-slate-200 flex-1"></div>
-        </div>
-      </div>
-
-      <!-- SIGN IN FORM -->
-      <div id="loginFormContainer">
-        <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-left">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Registered Email Address</label>
-            <input type="email" id="loginEmail" required placeholder="Enter your registered email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-right-to-bracket"></i> Sign In to Portal
-          </button>
-        </form>
-      </div>
-
-      <!-- REGISTER FORM (DIRECT REGISTRATION - SAVES TO BACKEND) -->
-      <div id="registerFormContainer" class="hidden">
-        <form onsubmit="handleRegisterSubmit(event)" class="space-y-3 text-left">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
-            <input type="text" id="regName" required placeholder="Enter your full name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-            <input type="email" id="regEmail" required placeholder="Enter your email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-            <input type="password" id="regPassword" required placeholder="Create a password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
-          </div>
-          <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-user-plus"></i> Create Registered Account
-          </button>
-        </form>
-      </div>
-
-      <div class="pt-2 border-t border-slate-100">
-        <p class="text-[11px] font-semibold text-slate-400">
-          🔒 Strict Security: You must sign in with a registered account to access NutriAware.
-        </p>
-      </div>
-
-    </div>
-  </div>
-
-
-  <!-- ==========================================================================
-       MAIN APPLICATION DASHBOARD (UNLOCKED AFTER LOGIN)
-       ========================================================================== -->
-  <div id="mainApp" class="hidden flex-1 flex flex-col relative z-10">
+  <div id="mainApp" class="flex-1 flex flex-col relative z-10">
 
     <!-- TOP ANNOUNCEMENT BANNER (PDF SPECIFICATION: TEAM 18, G18, SDG 3) -->
     <div class="bg-slate-900/95 backdrop-blur-md text-brand-300 py-2.5 px-4 text-xs md:text-sm text-center font-medium border-b border-slate-800 flex flex-wrap items-center justify-center gap-2">
@@ -287,7 +138,7 @@
           </button>
         </nav>
 
-        <!-- Logged-in User & Reminders Control -->
+        <!-- Controls & Reminders -->
         <div class="flex items-center gap-2">
           
           <button onclick="triggerWaterReminder()" title="Test Water Intake Notification" class="w-9 h-9 rounded-xl bg-sky-950/80 text-sky-400 hover:bg-sky-900 border border-sky-700/50 flex items-center justify-center font-bold text-xs transition">
@@ -298,16 +149,10 @@
             <i class="fa-solid fa-drumstick-bite"></i>
           </button>
 
-          <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl ml-1">
-            <div class="w-6 h-6 rounded-full bg-brand-600 text-white text-[10px] font-bold flex items-center justify-center">
-              <i class="fa-solid fa-user"></i>
-            </div>
-            <span class="user-display-name text-xs font-bold text-slate-200">User</span>
+          <div class="hidden sm:flex items-center gap-2 bg-emerald-950/60 border border-emerald-700/60 px-3 py-1.5 rounded-xl ml-1 text-emerald-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-bold">SDG 3 Platform</span>
           </div>
-
-          <button onclick="handleLogout()" title="Logout" class="text-xs font-bold text-red-400 hover:bg-red-950/80 px-3 py-2 rounded-xl border border-red-900/50 transition">
-            <i class="fa-solid fa-right-from-bracket"></i>
-          </button>
 
           <!-- Mobile Menu Toggle -->
           <button id="mobileMenuBtn" class="lg:hidden text-slate-200 hover:text-brand-400 p-2">
@@ -1459,8 +1304,8 @@
         <button onclick="sendQuickPrompt('Tell me about the Student Survey Results')" class="bg-purple-950/80 text-purple-300 hover:bg-purple-900 border border-purple-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
           📊 Survey Insights
         </button>
-        <button onclick="sendQuickPrompt('How to register or login?')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🔐 Login / Register
+        <button onclick="sendQuickPrompt('Explain the Healthy Plate portion tips')" class="bg-teal-950/80 text-teal-300 hover:bg-teal-900 border border-teal-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🍽️ Plate Portions
         </button>
       </div>
 
@@ -1471,7 +1316,7 @@
             <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
           </p>
           <p class="text-slate-300 leading-relaxed">
-            Welcome to the <strong>Nutrition and Healthy Food Awareness System</strong> (Team 18 / G18 — SDG 3)! 👋 I can explain our problem statement, WHO-WHAT-WHY matrix, 10 core features, canteen swaps, food label guidance, student survey findings, or assist you with registering and signing in. Click any chip above or ask me anything!
+            Welcome to the <strong>Nutrition and Healthy Food Awareness System</strong> (Team 18 / G18 — SDG 3)! 👋 This platform is completely open-access with no login required. I can explain our problem statement, WHO-WHAT-WHY matrix, 10 core features, canteen swaps, food label guidance, student survey findings, and portion balance tips. Click any chip above or ask me anything!
           </p>
         </div>
       </div>

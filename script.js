@@ -28,15 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNotificationSystem();
   initSpeechRecognition();
   
-  // Check session login state
-  const isLoggedIn = sessionStorage.getItem('nutriaware_logged_in');
-  const storedUser = sessionStorage.getItem('nutriaware_user_name');
-  if (isLoggedIn === 'true') {
-    if (storedUser) setLoggedInUser(storedUser);
-    showMainApp();
-  } else {
-    showLoginPortal();
-  }
+  // Direct open access - No login portal
+  showMainApp();
 });
 
 /* Service Worker Registration for PWA */
@@ -175,41 +168,14 @@ if (registeredUsersRegistry.length === 0) {
 }
 
 function showLoginPortal() {
-  document.getElementById('loginPortal')?.classList.remove('hidden');
-  document.getElementById('mainApp')?.classList.add('hidden');
+  // Login portal removed - direct open access
+  showMainApp();
 }
 
 function showMainApp() {
-  document.getElementById('loginPortal')?.classList.add('hidden');
-  document.getElementById('mainApp')?.classList.remove('hidden');
-  sessionStorage.setItem('nutriaware_logged_in', 'true');
+  const mainApp = document.getElementById('mainApp');
+  if (mainApp) mainApp.classList.remove('hidden');
   switchTab('home');
-}
-
-function switchAuthTab(mode) {
-  const loginForm = document.getElementById('loginFormContainer');
-  const registerForm = document.getElementById('registerFormContainer');
-  const googleBtnContainer = document.getElementById('googleAuthBtnContainer');
-  const tabLoginBtn = document.getElementById('tabAuthLogin');
-  const tabRegisterBtn = document.getElementById('tabAuthRegister');
-
-  if (mode === 'register') {
-    loginForm?.classList.add('hidden');
-    googleBtnContainer?.classList.add('hidden');
-    registerForm?.classList.remove('hidden');
-    tabLoginBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
-    tabLoginBtn?.classList.add('text-slate-400');
-    tabRegisterBtn?.classList.add('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
-    tabRegisterBtn?.classList.remove('text-slate-400');
-  } else {
-    registerForm?.classList.add('hidden');
-    loginForm?.classList.remove('hidden');
-    googleBtnContainer?.classList.remove('hidden');
-    tabRegisterBtn?.classList.remove('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
-    tabRegisterBtn?.classList.add('text-slate-400');
-    tabLoginBtn?.classList.add('border-b-2', 'border-brand-600', 'text-brand-600', 'font-extrabold');
-    tabLoginBtn?.classList.remove('text-slate-400');
-  }
 }
 
 function switchTab(tabId) {
@@ -234,171 +200,6 @@ function switchTab(tabId) {
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-async function handleLoginSubmit(event) {
-  event.preventDefault();
-  const emailInput = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
-  const passInput = document.getElementById('loginPassword')?.value || '';
-
-  if (!emailInput || !passInput) {
-    showToastNotification('⚠️ Login Required', 'Please enter your registered email address and password.');
-    return;
-  }
-
-  // Strictly check if email is registered in local state or database
-  const match = registeredUsersRegistry.find(u => (u.email || '').toLowerCase() === emailInput);
-
-  if (!match) {
-    showToastNotification('❌ Access Denied', 'Account not found! Please click "Register Account" first.');
-    return;
-  }
-
-  const displayName = match ? match.full_name : (emailInput.split('@')[0]);
-
-  if (supabaseClient) {
-    try {
-      await supabaseClient.auth.signInWithPassword({ email: emailInput, password: passInput });
-    } catch (err) {}
-  }
-
-  setLoggedInUser(displayName, emailInput);
-  showToastNotification('🔓 Authenticated Successfully', `Welcome back, ${displayName}!`);
-  showMainApp();
-}
-
-async function handleRegisterSubmit(event) {
-  event.preventDefault();
-  const nameInput = (document.getElementById('regName')?.value || '').trim() || 'Registered User';
-  const emailInput = (document.getElementById('regEmail')?.value || '').trim().toLowerCase() || 'user@example.com';
-  const passInput = document.getElementById('regPassword')?.value || 'password123';
-
-  // Check if account already exists
-  const existingIndex = registeredUsersRegistry.findIndex(u => u.email === emailInput);
-  const newRecord = {
-    id: 'usr-' + Math.random().toString(36).substr(2, 6),
-    full_name: nameInput,
-    email: emailInput,
-    provider: 'Email & Password',
-    created_at: new Date().toISOString(),
-    status: 'Active'
-  };
-
-  if (existingIndex >= 0) {
-    registeredUsersRegistry[existingIndex] = newRecord;
-  } else {
-    registeredUsersRegistry.unshift(newRecord);
-  }
-  localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
-
-  if (supabaseClient) {
-    try {
-      await supabaseClient.auth.signUp({
-        email: emailInput,
-        password: passInput,
-        options: { data: { full_name: nameInput } }
-      });
-
-      await supabaseClient.from('users').insert([
-        { full_name: nameInput, email: emailInput, auth_provider: 'email', created_at: new Date() }
-      ]).catch(() => {});
-    } catch (err) {}
-  }
-
-  showToastNotification('🎉 Account Registered & Saved!', `Welcome ${nameInput}! Your account is now active.`);
-  setLoggedInUser(nameInput, emailInput);
-  showMainApp();
-}
-
-function openGoogleAccountPicker() {
-  const modal = document.getElementById('googleAccountPickerModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-}
-
-function closeGoogleAccountPicker() {
-  const modal = document.getElementById('googleAccountPickerModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-}
-
-function handleGoogleCustomSubmit(event) {
-  event.preventDefault();
-  const customEmail = (document.getElementById('googleCustomEmailInput')?.value || '').trim().toLowerCase();
-  if (customEmail && customEmail.includes('@')) {
-    const customName = customEmail.split('@')[0];
-    selectGoogleAccount(customEmail, customName);
-  }
-}
-
-function promptCustomGoogleAccount() {
-  const customEmail = prompt('Enter your Gmail address to sign in with Google:');
-  if (customEmail && customEmail.includes('@')) {
-    const customName = customEmail.split('@')[0];
-    selectGoogleAccount(customEmail.trim().toLowerCase(), customName);
-  }
-}
-
-async function selectGoogleAccount(email, name) {
-  const statusBox = document.getElementById('googleSigningState');
-  const accountsBox = document.getElementById('googleAccountsList');
-
-  if (statusBox && accountsBox) {
-    accountsBox.classList.add('hidden');
-    statusBox.classList.remove('hidden');
-    document.getElementById('signingEmailText').textContent = email;
-
-    const newRecord = {
-      id: 'usr-' + Math.random().toString(36).substr(2, 6),
-      full_name: name,
-      email: email,
-      provider: 'Google Auth',
-      created_at: new Date().toISOString(),
-      status: 'Active'
-    };
-
-    const exists = registeredUsersRegistry.some(u => u.email === email);
-    if (!exists) {
-      registeredUsersRegistry.unshift(newRecord);
-      localStorage.setItem('nutriaware_registered_users', JSON.stringify(registeredUsersRegistry));
-    }
-
-    if (supabaseClient) {
-      try {
-        await supabaseClient.from('users').insert([
-          { full_name: name, email: email, auth_provider: 'google', created_at: new Date() }
-        ]).catch(() => {});
-      } catch (err) {}
-    }
-
-    setTimeout(() => {
-      closeGoogleAccountPicker();
-      accountsBox.classList.remove('hidden');
-      statusBox.classList.add('hidden');
-      setLoggedInUser(name, email);
-      showToastNotification('⚡ Google Authenticated', `Signed in successfully as ${name}`);
-      showMainApp();
-    }, 1200);
-  }
-}
-
-function handleLogout() {
-  sessionStorage.removeItem('nutriaware_logged_in');
-  sessionStorage.removeItem('nutriaware_user_name');
-  sessionStorage.removeItem('nutriaware_user_email');
-  showLoginPortal();
-}
-
-function setLoggedInUser(name, email = '') {
-  sessionStorage.setItem('nutriaware_user_name', name);
-  if (email) sessionStorage.setItem('nutriaware_user_email', email);
-
-  const nameEls = document.querySelectorAll('.user-display-name');
-  nameEls.forEach(el => el.textContent = name);
 }
 
 
@@ -817,39 +618,14 @@ function startVoiceChatInput() {
   };
 }
 
-function openRegistrationModalFromChat() {
-  showLoginPortal();
-  switchAuthTab('register');
-  const portal = document.getElementById('loginPortal');
-  if (portal) portal.scrollIntoView({ behavior: 'smooth' });
-  const regNameInput = document.getElementById('regName');
-  if (regNameInput) regNameInput.focus();
-}
-
-function openLoginModalFromChat() {
-  showLoginPortal();
-  switchAuthTab('login');
-  const portal = document.getElementById('loginPortal');
-  if (portal) portal.scrollIntoView({ behavior: 'smooth' });
-  const loginEmailInput = document.getElementById('loginEmail');
-  if (loginEmailInput) loginEmailInput.focus();
-}
-
-function triggerGoogleSignInHelp() {
-  showLoginPortal();
-  switchAuthTab('login');
-  openGoogleAccountPicker();
-}
-
 function generateNutriAIResponse(query) {
   const q = query.toLowerCase().trim();
 
   // 1. Greetings & Friendly Small Talk
   if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ') || q.startsWith('hey ') || q.includes('good morning') || q.includes('good evening') || q.includes('good afternoon') || q === 'yo' || q === 'sup') {
-    const currentUser = sessionStorage.getItem('nutriaware_user_name') || 'Friend';
     return `
-      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>Nutrition & Healthy Food Awareness System</strong> (Team 18 / G18 • SDG 3)!</p>
-      <p class="mt-1">I am your official assistant aligned with our project document. Ask me about <strong>Team 18</strong>, <em>SDG 3</em>, <em>Problem Statement</em>, <em>10 Features</em>, <em>Canteen Swaps</em>, <em>Food Label Guide</em>, <em>Survey Results</em>, or <em>Login/Register</em>!</p>
+      <p>Hello! 👋 Welcome to the <strong>Nutrition & Healthy Food Awareness System</strong> (Team 18 / G18 • SDG 3)!</p>
+      <p class="mt-1">I am your official assistant aligned with our project document. Ask me about <strong>Team 18</strong>, <em>SDG 3</em>, <em>Problem Statement</em>, <em>10 Features</em>, <em>Canteen Swaps</em>, <em>Food Label Guide</em>, <em>Survey Results</em>, or <em>Plate Portions</em>!</p>
       <div class="pt-2 flex flex-wrap gap-1.5">
         <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-xl text-[10px]">👥 Team 18 & SDG 3</button>
         <button onclick="sendQuickPrompt('What is the Problem Statement and Mission?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-xl text-[10px]">🎯 Problem & Mission</button>
@@ -857,85 +633,36 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  // 1b. Registration Help (Comprehensive Step-by-Step)
-  if (q.includes('register') || q.includes('registration') || q.includes('create account') || q.includes('sign up') || q.includes('new user') || q.includes('register portal') || q.includes('how to register')) {
+  // 1b. No Login or Registration Required Notice
+  if (q.includes('register') || q.includes('registration') || q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('create account') || q.includes('google account') || q.includes('portal') || q.includes('password')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-user-plus text-emerald-400"></i> How to Register an Account
+          <i class="fa-solid fa-unlock-keyhole text-emerald-400"></i> Open Access Platform (No Login Required)
         </h5>
-        <p class="text-slate-300">Registration is <strong>mandatory</strong> to access personal features on NutriAware:</p>
-        <ol class="list-decimal pl-4 space-y-1 text-slate-300">
-          <li>Click the button below to open the <strong class="text-emerald-400">"Register Account"</strong> tab on the portal.</li>
-          <li>Enter your <strong>Full Name</strong>, valid <strong>Email Address</strong>, and a <strong>Password</strong>.</li>
-          <li>Click <strong class="text-emerald-400">"Create Registered Account"</strong>.</li>
-          <li>Your credentials will be stored in our <em>Cloud Encrypted Database</em> so you can sign in anytime.</li>
-        </ol>
-        <div class="pt-2 flex flex-wrap gap-2">
-          <button onclick="openRegistrationModalFromChat()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
-            <i class="fa-solid fa-user-plus"></i> Open Registration Form Now
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  // 1c. Sign In / Login Help (Step-by-Step & Troubleshooting)
-  if (q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('access denied') || q.includes('cant login') || q.includes('account not found') || q.includes('forgot password') || q.includes('how to log in') || q.includes('how to sign in')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-right-to-bracket text-emerald-400"></i> How to Sign In
-        </h5>
-        <p class="text-slate-300">Follow these steps to log into NutriAware:</p>
-        <ol class="list-decimal pl-4 space-y-1 text-slate-300">
-          <li><strong>Pre-requisite:</strong> You must click <strong class="text-emerald-400">"Register Account"</strong> first if you haven't created an account yet.</li>
-          <li>Enter your registered <strong>Email Address</strong> and <strong>Password</strong> on the <strong>Sign In</strong> tab.</li>
-          <li>Or click <strong class="text-emerald-400">"Continue with Google Account"</strong> to choose your signed-in Google account.</li>
-          <li>Click <strong>"Sign In to Portal"</strong> to unlock your personal health dashboard!</li>
-        </ol>
-        <div class="pt-2 flex flex-wrap gap-2">
-          <button onclick="openLoginModalFromChat()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
-            <i class="fa-solid fa-key"></i> Go to Sign In Portal
-          </button>
-          <button onclick="triggerGoogleSignInHelp()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5 border border-slate-700">
-            <i class="fa-brands fa-google text-amber-400"></i> Sign in with Google
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  // 1d. Google Login Specific Help
-  if (q.includes('google') || q.includes('gmail') || q.includes('oauth') || q.includes('picker')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-brands fa-google text-red-400"></i> Google Account Sign-In Guide
-        </h5>
-        <p class="text-slate-300">NutriAware supports one-click Google Account sign-in:</p>
-        <ul class="list-disc pl-4 space-y-1 text-slate-300">
-          <li>Click <strong>"Continue with Google Account"</strong> on the Sign In portal.</li>
-          <li>A modal will display all active Google accounts logged in on your browser/device.</li>
-          <li>Click on your account to instantly authenticate!</li>
+        <p class="text-slate-300">
+          The login portal has been <strong>completely removed</strong>! NutriAware is now 100% open-access. You don't need to register or sign in to explore any feature.
+        </p>
+        <p class="text-emerald-300 font-semibold">You have immediate access to:</p>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
+          <li><strong>Canteen Nutrition Guide &amp; Swaps</strong></li>
+          <li><strong>Food Comparison Side-by-Side Tool</strong></li>
+          <li><strong>Interactive Student Survey</strong></li>
+          <li><strong>AI Scanner &amp; Camera Vision</strong></li>
+          <li><strong>30-Question Nutrition Quiz &amp; Certificates</strong></li>
         </ul>
-        <div class="pt-2">
-          <button onclick="triggerGoogleSignInHelp()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
-            <i class="fa-brands fa-google"></i> Open Google Account Picker
-          </button>
-        </div>
       </div>
     `;
   }
 
-  // 1e. Admin Panel Notice
+  // 1c. Admin Panel Notice
   if (q.includes('admin') || q.includes('admin panel') || q.includes('admin login')) {
     return `
       <div class="space-y-1.5 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5">
           <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel Notice
         </h5>
-        <p class="text-slate-300">The Admin Panel option has been completely removed from the platform as requested. User access is managed strictly through registration and sign in on the portal.</p>
+        <p class="text-slate-300">The Admin Panel option has been completely removed from the platform. The platform is now fully accessible directly without any login credentials.</p>
       </div>
     `;
   }
