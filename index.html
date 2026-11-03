@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NutriAware | 3D AI Smart Nutrition Platform</title>
+  <title>Nutrition and Healthy Food Awareness System | Team 18 (G18) • SDG 3</title>
   
   <!-- Progressive Web App (PWA) & Mobile Store Meta Tags -->
   <link rel="manifest" href="manifest.json">
@@ -239,14 +239,17 @@
        ========================================================================== -->
   <div id="mainApp" class="hidden flex-1 flex flex-col relative z-10">
 
-    <!-- TOP ANNOUNCEMENT BANNER -->
-    <div class="bg-slate-900/90 backdrop-blur-md text-brand-300 py-2 px-4 text-xs md:text-sm text-center font-medium border-b border-slate-800 flex items-center justify-center gap-2">
-      <span class="bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">System Active</span>
-      <span>Selected Focus: Nutrition and Healthy Food Awareness System (Cloud Security Active)</span>
+    <!-- TOP ANNOUNCEMENT BANNER (PDF SPECIFICATION: TEAM 18, G18, SDG 3) -->
+    <div class="bg-slate-900/95 backdrop-blur-md text-brand-300 py-2.5 px-4 text-xs md:text-sm text-center font-medium border-b border-slate-800 flex flex-wrap items-center justify-center gap-2">
+      <span class="bg-emerald-600 text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">Team No.: 18 | Team Name: G18</span>
+      <span class="bg-brand-950 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-700/60 flex items-center gap-1">
+        <i class="fa-solid fa-heart-pulse text-emerald-400"></i> SDG 3 – Good Health and Well-Being
+      </span>
+      <span class="text-slate-200 font-semibold hidden sm:inline">| A Smart Awareness Platform for Better Food Choices</span>
     </div>
 
     <!-- NAVIGATION HEADER WITH SEPARATE TABS -->
-    <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-xl border-b border-emerald-900/50 transition-all duration-200 text-white">
+    <header class="sticky top-0 z-40 bg-slate-900/85 backdrop-blur-xl border-b border-emerald-900/50 transition-all duration-200 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <!-- Logo -->
         <a href="#" onclick="switchTab('home')" class="flex items-center gap-3 group">
@@ -254,30 +257,33 @@
             <i class="fa-solid fa-leaf text-xl"></i>
           </div>
           <div>
-            <span class="font-display text-2xl font-extrabold text-white tracking-tight">Nutri<span class="text-brand-400">Aware</span></span>
-            <span class="block text-[10px] uppercase font-bold tracking-widest text-brand-400 -mt-1">3D AI Health Platform</span>
+            <span class="font-display text-xl sm:text-2xl font-extrabold text-white tracking-tight">Nutri<span class="text-brand-400">Aware</span></span>
+            <span class="block text-[9px] uppercase font-bold tracking-widest text-brand-400 -mt-0.5">Team 18 (G18) • SDG 3</span>
           </div>
         </a>
 
-        <!-- Desktop Nav Tabs -->
-        <nav class="hidden md:flex items-center gap-2 text-sm font-semibold">
-          <button id="nav-link-home" onclick="switchTab('home')" class="px-4 py-2 rounded-xl text-brand-400 font-bold border-b-2 border-brand-400 bg-brand-950/60 transition">
-            🏠 Home
+        <!-- Desktop Nav Tabs (Directly mapped to PDF features) -->
+        <nav class="hidden lg:flex items-center gap-1.5 text-xs font-semibold">
+          <button id="nav-link-home" onclick="switchTab('home')" class="px-3.5 py-2 rounded-xl text-brand-400 font-bold border-b-2 border-brand-400 bg-brand-950/60 transition">
+            🏠 Overview
           </button>
-          <button id="nav-link-scanner" onclick="switchTab('scanner')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            📷 Live AI Scanner
+          <button id="nav-link-canteen" onclick="switchTab('canteen')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            🥗 Canteen Guide
           </button>
-          <button id="nav-link-recipes" onclick="switchTab('recipes')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            🥗 Diet Recipes
+          <button id="nav-link-compare" onclick="switchTab('compare')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            ⚖️ Food Compare
           </button>
-          <button id="nav-link-quizzes" onclick="switchTab('quizzes')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            🧠 30-Q Quiz
+          <button id="nav-link-survey" onclick="switchTab('survey')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            📝 Student Survey
           </button>
-          <button id="nav-link-tracker" onclick="switchTab('tracker')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            💧 Water Tracker
+          <button id="nav-link-scanner" onclick="switchTab('scanner')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            📷 AI Scanner
           </button>
-          <button id="nav-link-dashboard" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            📊 Analytics
+          <button id="nav-link-quizzes" onclick="switchTab('quizzes')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            🧠 Quiz
+          </button>
+          <button id="nav-link-tracker" onclick="switchTab('tracker')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
+            💧 Water
           </button>
         </nav>
 
@@ -299,102 +305,503 @@
             <span class="user-display-name text-xs font-bold text-slate-200">User</span>
           </div>
 
-          <button onclick="handleLogout()" class="text-xs font-bold text-red-400 hover:bg-red-950/80 px-3 py-2 rounded-xl border border-red-900/50 transition">
+          <button onclick="handleLogout()" title="Logout" class="text-xs font-bold text-red-400 hover:bg-red-950/80 px-3 py-2 rounded-xl border border-red-900/50 transition">
             <i class="fa-solid fa-right-from-bracket"></i>
           </button>
 
           <!-- Mobile Menu Toggle -->
-          <button id="mobileMenuBtn" class="md:hidden text-slate-200 hover:text-brand-400 p-2">
+          <button id="mobileMenuBtn" class="lg:hidden text-slate-200 hover:text-brand-400 p-2">
             <i class="fa-solid fa-bars text-xl"></i>
           </button>
         </div>
       </div>
 
       <!-- Mobile Nav Dropdown -->
-      <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-emerald-900 px-6 py-4 space-y-2 text-sm font-semibold text-slate-200">
-        <button id="mobile-link-home" onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🏠 Home</button>
-        <button id="mobile-link-scanner" onclick="switchTab('scanner'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">📷 Live AI Scanner Hub</button>
-        <button id="mobile-link-recipes" onclick="switchTab('recipes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🥗 Diet Recipes (15+)</button>
-        <button id="mobile-link-quizzes" onclick="switchTab('quizzes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">🧠 30-Question Quiz</button>
-        <button id="mobile-link-tracker" onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">💧 Water Tracker</button>
-        <button id="mobile-link-dashboard" onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">📊 Analytics Dashboard</button>
-        <button id="mobile-link-about" onclick="switchTab('about'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl">ℹ️ About Us &amp; Team</button>
-        <button id="mobile-link-admin" onclick="switchTab('admin'); toggleMobileMenu()" class="hidden block w-full text-left py-2 px-3 rounded-xl text-amber-400 font-bold bg-amber-950/30 border border-amber-500/30">🛡️ Admin Panel</button>
+      <div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-b border-emerald-900 px-6 py-4 space-y-2 text-sm font-semibold text-slate-200">
+        <button id="mobile-link-home" onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">🏠 Overview &amp; PDF Report</button>
+        <button id="mobile-link-canteen" onclick="switchTab('canteen'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">🥗 Canteen &amp; Nutrition Guide</button>
+        <button id="mobile-link-compare" onclick="switchTab('compare'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">⚖️ Food Comparison Tool</button>
+        <button id="mobile-link-survey" onclick="switchTab('survey'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">📝 Interactive Student Survey</button>
+        <button id="mobile-link-scanner" onclick="switchTab('scanner'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">📷 Live AI Food Scanner</button>
+        <button id="mobile-link-quizzes" onclick="switchTab('quizzes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">🧠 30-Question Nutrition Quiz</button>
+        <button id="mobile-link-tracker" onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">💧 Daily Hydration Tracker</button>
       </div>
     </header>
 
 
     <!-- ==========================================================================
-         VIEW TAB 1: HOME HUB (WITH 3D CINEMATIC PORTAL)
+         VIEW TAB 1: HOME HUB (PDF SPECIFICATION: TEAM 18, G18, SDG 3)
          ========================================================================== -->
-    <main id="view-home" class="tab-page flex-1">
+    <main id="view-home" class="tab-page flex-1 py-10 bg-slate-950 text-white">
       
-      <section class="relative overflow-hidden py-16 md:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Hero Section with Project Details -->
+        <div class="relative overflow-hidden rounded-3xl dark-glass-card p-8 md:p-12 border border-emerald-500/40 shadow-2xl">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div class="inline-flex items-center gap-2 bg-emerald-950/80 text-emerald-300 px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold border border-emerald-700/50">
-                <i class="fa-solid fa-cloud-arrow-up text-emerald-400 animate-bounce"></i>
-                <span>Supabase Cloud Database Active</span>
+            <div class="lg:col-span-8 space-y-5 text-left">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-emerald-600 text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                  Team No.: 18 | Team Name: G18
+                </span>
+                <span class="bg-brand-950 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-700/60 flex items-center gap-1.5">
+                  <i class="fa-solid fa-heart-pulse text-emerald-400"></i> SDG 3 – Good Health and Well-Being
+                </span>
+                <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">
+                  Target: Students, Canteens, Messes &amp; Hostels
+                </span>
               </div>
 
-              <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] tracking-tight">
-                Eat Smart. <br class="hidden sm:inline" />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-emerald-300 to-teal-200">AI Vision Nutrition.</span> <br />
-                Live Better.
+              <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
+                Nutrition and Healthy Food <br class="hidden sm:inline">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-emerald-300 to-teal-200">Awareness System</span>
               </h1>
 
-              <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                Welcome, <span class="user-display-name font-bold text-brand-400">User</span>! Access real-time WebRTC Live Camera meal scanner, 30-question nutrition certification, and cloud database persistence via Supabase.
+              <p class="text-emerald-400 font-display font-semibold text-lg">
+                A Smart Awareness Platform for Better Food Choices
               </p>
 
-              <!-- Quick Launch Cards -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
-                <button onclick="switchTab('scanner')" class="p-4 bg-slate-900/80 border border-emerald-900/60 hover:border-brand-500 rounded-2xl shadow-lg hover:-translate-y-1 transition text-left">
-                  <span class="text-2xl block mb-1">📷</span>
-                  <span class="font-bold text-xs text-white block">Live Scanner</span>
-                  <span class="text-[10px] text-slate-400">Webcam Feed</span>
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
+                Students often choose meals based on taste, convenience, cost, or availability without knowing whether the food provides a balanced amount of nutrients. In college canteens, hostels and messes, students may also have limited awareness about nutrients, food labels, portion balance and healthier alternatives. The Nutrition and Healthy Food Awareness System aims to make nutrition information simple, accessible and useful for everyday food decisions.
+              </p>
+
+              <!-- Quick Navigation Chips to Platform Modules -->
+              <div class="flex flex-wrap items-center gap-2 pt-2">
+                <button onclick="switchTab('canteen')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+                  <i class="fa-solid fa-utensils"></i> Explore Canteen Guide
                 </button>
-                <button onclick="switchTab('recipes')" class="p-4 bg-slate-900/80 border border-emerald-900/60 hover:border-brand-500 rounded-2xl shadow-lg hover:-translate-y-1 transition text-left">
-                  <span class="text-2xl block mb-1">🥗</span>
-                  <span class="font-bold text-xs text-white block">15+ Recipes</span>
-                  <span class="text-[10px] text-slate-400">Diet Meals</span>
+                <button onclick="switchTab('compare')" class="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                  <i class="fa-solid fa-scale-balanced"></i> Food Comparison Tool
                 </button>
-                <button onclick="switchTab('quizzes')" class="p-4 bg-slate-900/80 border border-emerald-900/60 hover:border-brand-500 rounded-2xl shadow-lg hover:-translate-y-1 transition text-left">
-                  <span class="text-2xl block mb-1">🧠</span>
-                  <span class="font-bold text-xs text-white block">30-Q Quiz</span>
-                  <span class="text-[10px] text-slate-400">Literacy</span>
+                <button onclick="switchTab('survey')" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                  <i class="fa-solid fa-clipboard-question"></i> Take Student Survey
                 </button>
-                <button onclick="switchTab('tracker')" class="p-4 bg-slate-900/80 border border-emerald-900/60 hover:border-brand-500 rounded-2xl shadow-lg hover:-translate-y-1 transition text-left">
-                  <span class="text-2xl block mb-1">💧</span>
-                  <span class="font-bold text-xs text-white block">Water Goal</span>
-                  <span class="text-[10px] text-slate-400">Hydration</span>
+                <button onclick="switchTab('scanner')" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                  <i class="fa-solid fa-camera"></i> Live AI Scanner
                 </button>
               </div>
             </div>
 
-            <!-- Lively Animated Floating 3D Preview Card -->
-            <div class="lg:col-span-5 flex justify-center">
-              <div class="dark-glass-card p-6 rounded-3xl border border-emerald-500/40 shadow-2xl space-y-6 max-w-md w-full animate-float">
-                <div class="flex items-center gap-4">
-                  <div class="w-16 h-16 rounded-2xl bg-emerald-900/80 text-emerald-400 flex items-center justify-center text-3xl shadow-inner border border-emerald-700">🥑</div>
+            <!-- Floating Hero Card -->
+            <div class="lg:col-span-4 flex justify-center">
+              <div class="w-full bg-slate-900/90 p-6 rounded-3xl border border-emerald-500/40 shadow-xl space-y-4">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                  <div class="w-12 h-12 rounded-2xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40">
+                    <i class="fa-solid fa-bullseye"></i>
+                  </div>
                   <div>
-                    <h4 class="font-bold text-white text-lg">Green Garden Salad</h4>
-                    <p class="text-xs text-brand-400 font-semibold">NutriScore Grade A+ • AI Detected</p>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">Selected Core Problem</span>
+                    <h4 class="font-bold text-sm text-white">Student Nutrition Guidance</h4>
                   </div>
                 </div>
-                <div class="bg-emerald-950/80 p-3 rounded-2xl border border-emerald-700/50 text-xs text-emerald-200">
-                  💡 <strong>Smart Swap:</strong> Rich in chlorophyll & Omega-3 fats!
+
+                <div class="space-y-2 text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+                  <p class="font-bold text-white">🎯 Selected Focus:</p>
+                  <p class="italic text-emerald-300">"Students need simple and practical guidance to understand nutrition and choose healthier, balanced meals."</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                  <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+                    <span class="text-[10px] text-slate-400 block">Team</span>
+                    <span class="font-bold text-emerald-300">18 (G18)</span>
+                  </div>
+                  <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+                    <span class="text-[10px] text-slate-400 block">UN Goal</span>
+                    <span class="font-bold text-emerald-300">SDG 3</span>
+                  </div>
                 </div>
               </div>
             </div>
 
           </div>
         </div>
-      </section>
 
+
+        <!-- SECTION 2: PROBLEM STATEMENT & BRAINSTORMING (PAGE 1) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Problem Statement Card -->
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-red-950/80 text-red-400 flex items-center justify-center text-lg border border-red-800">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-red-400">Official Problem Statement</span>
+                <h3 class="font-display text-lg font-extrabold text-white">What Students Face Daily</h3>
+              </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Students face difficulty understanding whether their regular food choices are nutritionally balanced. Limited nutrition awareness, confusing food labels, lack of simple guidance and dependence on easily available canteen or mess food can lead to poor food choices. There is a need for a simple system that helps students understand nutrition and make more informed food choices.
+            </p>
+
+            <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-xs text-slate-400">
+              <strong class="text-emerald-400">Key Observation:</strong> Canteen menus and hostel messes default to taste, convenience, and refined carbs over nutrient density.
+            </div>
+          </div>
+
+          <!-- Brainstorming Points -->
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-950/80 text-amber-400 flex items-center justify-center text-lg border border-amber-800">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Brainstorming Analysis</span>
+                <h3 class="font-display text-lg font-extrabold text-white">Core Nutrition Challenges</h3>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-300">
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Low awareness about essential nutrients</span>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Difficulty understanding food labels</span>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Unbalanced meal choices</span>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Limited healthy options in canteens and messes</span>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Confusion about portion balance</span>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+                <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
+                <span>Lack of simple nutrition guidance</span>
+              </div>
+            </div>
+
+            <div class="bg-emerald-950/60 p-3 rounded-2xl border border-emerald-800 text-xs text-emerald-300">
+              <strong>Selected Problem:</strong> Students need simple and practical guidance to understand nutrition and choose healthier, balanced meals.
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- SECTION 3: WHO • WHAT • WHY (PAGE 1) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="text-center max-w-2xl mx-auto space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Project Diagnostic Matrix</span>
+            <h3 class="font-display text-2xl font-extrabold text-white">WHO • WHAT • WHY</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                <span class="w-8 h-8 rounded-lg bg-emerald-950 flex items-center justify-center border border-emerald-800 text-xs">WHO</span>
+                <h4>Target Stakeholders</h4>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                College students, hostel students, school and college-going young people, canteen/mess users, parents and hostel/mess management.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
+                <span class="w-8 h-8 rounded-lg bg-sky-950 flex items-center justify-center border border-sky-800 text-xs">WHAT</span>
+                <h4>The Core Struggle</h4>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Students struggle to understand nutrition and identify balanced, healthier food choices in their everyday environment.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                <span class="w-8 h-8 rounded-lg bg-amber-950 flex items-center justify-center border border-amber-800 text-xs">WHY</span>
+                <h4>Root Cause</h4>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Nutrition information can be difficult to understand, while daily food choices are often based on convenience and availability.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- SECTION 4: MISSION STATEMENT & VALUE PROPOSITION (PAGE 1 & 2) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Mission Statement -->
+          <div class="lg:col-span-5 dark-glass-card p-6 md:p-8 rounded-3xl border border-emerald-700/50 space-y-4 shadow-xl flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/40">
+                <i class="fa-solid fa-flag"></i>
+              </div>
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Guiding Purpose</span>
+              <h3 class="font-display text-2xl font-extrabold text-white">Mission Statement</h3>
+              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed bg-slate-900/90 p-4 rounded-2xl border border-slate-800 italic">
+                "Our mission is to create a simple and student-friendly system that spreads nutrition awareness, helps users understand food choices and encourages balanced and healthier eating habits."
+              </p>
+            </div>
+
+            <div class="pt-2 text-xs text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-heart text-red-400"></i> Empowering better health decisions across campuses.
+            </div>
+          </div>
+
+          <!-- Value Proposition: Pains, Gains, Solution -->
+          <div class="lg:col-span-7 dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="border-b border-slate-800 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Value Proposition</span>
+              <h3 class="font-display text-xl font-extrabold text-white">Student Pains vs. Gains</h3>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Student Pains -->
+              <div class="bg-red-950/30 p-4 rounded-2xl border border-red-900/50 space-y-2">
+                <h4 class="font-bold text-xs text-red-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-exclamation text-red-400"></i> Student Pains
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
+                  <li>Lack of nutrition knowledge</li>
+                  <li>Confusing food labels</li>
+                  <li>Limited healthy choices</li>
+                  <li>Uncertainty about portions</li>
+                  <li>Difficulty comparing foods</li>
+                </ul>
+              </div>
+
+              <!-- Student Gains -->
+              <div class="bg-emerald-950/30 p-4 rounded-2xl border border-emerald-900/50 space-y-2">
+                <h4 class="font-bold text-xs text-emerald-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check text-emerald-400"></i> Student Gains
+                </h4>
+                <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
+                  <li>Easy nutrition information</li>
+                  <li>Better awareness</li>
+                  <li>Simple food comparisons</li>
+                  <li>Practical tips</li>
+                  <li>Improved confidence in choices</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Solution -->
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <strong class="text-white">The Solution:</strong> A central awareness system that presents easy-to-understand nutrition information, healthy food guidance, meal-balance tips and personalized educational suggestions.
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- SECTION 5: 10 CORE FEATURES (PAGE 2) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="text-center max-w-2xl mx-auto space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">System Capabilities</span>
+            <h3 class="font-display text-2xl font-extrabold text-white">10 Core Features</h3>
+            <p class="text-xs text-slate-400">Everything needed for practical, everyday student nutrition awareness</p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">📊</span>
+              <h5 class="font-bold text-xs text-white">1. Nutrition Information</h5>
+              <p class="text-[11px] text-slate-400">Calories, macros, minerals and simple nutrient facts.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🥦</span>
+              <h5 class="font-bold text-xs text-white">2. Healthy Food Awareness</h5>
+              <p class="text-[11px] text-slate-400">Educating on wholesome, unprocessed food benefits.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🏷️</span>
+              <h5 class="font-bold text-xs text-white">3. Food Label Guidance</h5>
+              <p class="text-[11px] text-slate-400">Decodes serving size, sugars, sodium and chemical additives.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🍱</span>
+              <h5 class="font-bold text-xs text-white">4. Balanced Meal Suggestions</h5>
+              <p class="text-[11px] text-slate-400">Complete combos matching Indian collegiate diets.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🍽️</span>
+              <h5 class="font-bold text-xs text-white">5. Portion Balance Tips</h5>
+              <p class="text-[11px] text-slate-400">50% veg/fruit, 25% protein, 25% whole grain plate method.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">⚖️</span>
+              <h5 class="font-bold text-xs text-white">6. Food Comparison</h5>
+              <p class="text-[11px] text-slate-400">Side-by-side comparison of 2 common food choices.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🔄</span>
+              <h5 class="font-bold text-xs text-white">7. Healthy Alternatives</h5>
+              <p class="text-[11px] text-slate-400">Smart swaps for deep-fried canteen and processed foods.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">💡</span>
+              <h5 class="font-bold text-xs text-white">8. Daily Nutrition Tips</h5>
+              <p class="text-[11px] text-slate-400">Bite-sized health reminders to stay focused and energized.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🏢</span>
+              <h5 class="font-bold text-xs text-white">9. Canteen/Mess Awareness</h5>
+              <p class="text-[11px] text-slate-400">Practical tips when eating in hostel messes and canteens.</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+              <span class="text-2xl block">🎯</span>
+              <h5 class="font-bold text-xs text-white">10. Personalized Recs</h5>
+              <p class="text-[11px] text-slate-400">Tailored suggestions based on student dietary interests.</p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- SECTION 6: HOW THE SYSTEM WORKS (5 STEPS) (PAGE 2) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="text-center max-w-2xl mx-auto space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">System Workflow</span>
+            <h3 class="font-display text-2xl font-extrabold text-white">How the System Works</h3>
+            <p class="text-xs text-slate-400">5 simple steps designed for student ease-of-use</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">1</span>
+              <h5 class="font-bold text-xs text-white">Create Profile</h5>
+              <p class="text-[11px] text-slate-400">Student opens the system and creates a basic profile.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">2</span>
+              <h5 class="font-bold text-xs text-white">Select Interests</h5>
+              <p class="text-[11px] text-slate-400">Student selects food interests or nutrition topics they want to learn about.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">3</span>
+              <h5 class="font-bold text-xs text-white">Nutrient Info</h5>
+              <p class="text-[11px] text-slate-400">The system provides simple information about nutrients and food choices.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">4</span>
+              <h5 class="font-bold text-xs text-white">Smart Suggestions</h5>
+              <p class="text-[11px] text-slate-400">The system suggests balanced meal combinations and healthier alternatives.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">5</span>
+              <h5 class="font-bold text-xs text-white">Apply in Canteen</h5>
+              <p class="text-[11px] text-slate-400">Students can use the information while choosing food in the canteen, mess or hostel.</p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- SECTION 7: STAKEHOLDER BENEFITS (PAGE 2 & 3) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="text-center max-w-2xl mx-auto space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Impact &amp; Outreach</span>
+            <h3 class="font-display text-2xl font-extrabold text-white">Stakeholder Benefits</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800">
+                🎓
+              </div>
+              <h4 class="font-bold text-sm text-white">Students</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Better nutrition awareness, easier food decisions, improved understanding of balanced meals and healthier alternatives.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-sky-950 text-sky-400 flex items-center justify-center text-xl border border-sky-800">
+                🏫
+              </div>
+              <h4 class="font-bold text-sm text-white">College / Canteen</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Better nutrition communication, awareness among students and scope for promoting healthier food options.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-purple-950 text-purple-400 flex items-center justify-center text-xl border border-purple-800">
+                👨‍👩‍👧
+              </div>
+              <h4 class="font-bold text-sm text-white">Parents / Guardians</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Better visibility of nutrition awareness needs and educational support for young people.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- SECTION 8: FUTURE SCOPE & CONCLUSION (PAGE 3) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Future Scope -->
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center text-lg border border-indigo-800">
+                <i class="fa-solid fa-rocket"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-indigo-400">Roadmap</span>
+                <h3 class="font-display text-lg font-extrabold text-white">Future Scope</h3>
+              </div>
+            </div>
+
+            <ul class="text-xs text-slate-300 space-y-2 list-disc pl-4">
+              <li>AI-based personalized nutrition recommendations</li>
+              <li>Smart meal planning</li>
+              <li>Nutrition chatbot</li>
+              <li>Canteen menu health-rating system</li>
+              <li>Food image-based nutrition awareness</li>
+              <li>Progress and awareness dashboard</li>
+              <li>Integration with college canteen/mess menus</li>
+            </ul>
+          </div>
+
+          <!-- Conclusion -->
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-emerald-700/60 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-lg border border-emerald-800">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">SDG 3 Alignment</span>
+                <h3 class="font-display text-lg font-extrabold text-white">Conclusion</h3>
+              </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              The Nutrition and Healthy Food Awareness System addresses an important everyday problem faced by students: understanding food and nutrition while making regular meal choices. By presenting nutrition information in a simple and practical way, the system can encourage better awareness and support healthier decision-making. The project aligns with SDG 3 – Good Health and Well-Being and has scope for future AI-powered features.
+            </p>
+
+            <div class="bg-emerald-950/60 p-3 rounded-2xl border border-emerald-800 text-xs text-emerald-300 font-bold text-center">
+              Team No.: 18 | Team Name: G18 • Thank You!
+            </div>
+          </div>
+
+        </div>
+
+      </div>
     </main>
 
 
@@ -518,51 +925,375 @@
 
 
     <!-- ==========================================================================
-         VIEW TAB 3: DIET RECIPES COLLECTION (15+ RECIPES)
+         VIEW TAB 2: CANTEEN & MESS NUTRITION GUIDE (PDF FEATURES: 3, 5, 7, 8, 9)
          ========================================================================== -->
-    <main id="view-recipes" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <main id="view-canteen" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div class="text-center max-w-3xl mx-auto space-y-3">
-          <span class="text-xs font-bold tracking-widest text-brand-400 uppercase bg-slate-900 px-3 py-1 rounded-full border border-emerald-900">
-            NutriAssist Recipe Book
+          <span class="text-xs font-bold tracking-widest text-brand-400 uppercase bg-slate-900 px-3.5 py-1 rounded-full border border-emerald-800">
+            PDF Core Features • Canteen/Mess Awareness
           </span>
-          <h2 class="font-display text-3xl font-extrabold text-white">Featured Healthy Diet Recipes</h2>
-          <p class="text-slate-400 text-sm">15+ Healthy, high-protein recipes accessible via search or chat.</p>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Canteen &amp; Hostel Mess Nutrition Guide</h2>
+          <p class="text-slate-400 text-xs sm:text-sm">
+            Practical guidance for students eating in college canteens and hostel messes: healthy food swaps, food label decoding, and portion balance.
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-3 hover:-translate-y-1 transition">
-            <div class="text-4xl">🍌</div>
-            <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-bold px-2.5 py-1 rounded-full">380 kcal</span>
-            <h3 class="font-bold text-white text-base">Banana Peanut Butter Shake</h3>
-            <p class="text-xs text-slate-400">Bananas, milk, oats & peanut butter blended for brain power.</p>
-            <button onclick="sendQuickPrompt('Banana Shake Recipe')" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+        <!-- MODULE 1: HEALTHY CANTEEN ALTERNATIVES (SWAPS) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Feature 7 &amp; 9</span>
+              <h3 class="font-display text-xl font-extrabold text-white">Canteen Food Alternatives &amp; Smart Swaps</h3>
+            </div>
+            <span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+              Eat Balanced On Campus
+            </span>
           </div>
 
-          <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-3 hover:-translate-y-1 transition">
-            <div class="text-4xl">🥞</div>
-            <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-bold px-2.5 py-1 rounded-full">220 kcal</span>
-            <h3 class="font-bold text-white text-base">Moong Dal Veggie Chilla</h3>
-            <p class="text-xs text-slate-400">Crispy moong dal pancake stuffed with spinach & paneer.</p>
-            <button onclick="sendQuickPrompt('Moong Dal Chilla')" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Swap 1 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <span class="bg-red-950 text-red-400 border border-red-900 px-2 py-0.5 rounded-md font-bold">Unhealthy Choice</span>
+                <span class="text-slate-500 font-bold">Swap For ➡️</span>
+                <span class="bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md font-bold">Healthier Alternative</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm">Deep-Fried Samosa</h4>
+                  <p class="text-[11px] text-red-400">280 kcal • Saturated Fat</p>
+                </div>
+                <div class="text-right">
+                  <h4 class="font-bold text-emerald-300 text-sm">Sprouted Moong Chaat</h4>
+                  <p class="text-[11px] text-emerald-400">180 kcal • 14g Protein</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800 pt-2.5">
+                Sprouted lentils provide digestive enzymes, plant protein, and sustained energy without oil heaviness.
+              </p>
+            </div>
+
+            <!-- Swap 2 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <span class="bg-red-950 text-red-400 border border-red-900 px-2 py-0.5 rounded-md font-bold">Unhealthy Choice</span>
+                <span class="text-slate-500 font-bold">Swap For ➡️</span>
+                <span class="bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md font-bold">Healthier Alternative</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm">Instant Noodles</h4>
+                  <p class="text-[11px] text-red-400">390 kcal • 1400mg Sodium</p>
+                </div>
+                <div class="text-right">
+                  <h4 class="font-bold text-emerald-300 text-sm">Veggie Poha / Masala Oats</h4>
+                  <p class="text-[11px] text-emerald-400">240 kcal • Iron &amp; Fiber</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800 pt-2.5">
+                Flaked rice (Poha) cooked with peanuts and curry leaves provides iron and low-GI complex carbs.
+              </p>
+            </div>
+
+            <!-- Swap 3 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <span class="bg-red-950 text-red-400 border border-red-900 px-2 py-0.5 rounded-md font-bold">Unhealthy Choice</span>
+                <span class="text-slate-500 font-bold">Swap For ➡️</span>
+                <span class="bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md font-bold">Healthier Alternative</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm">Carbonated Soda</h4>
+                  <p class="text-[11px] text-red-400">150 kcal • 39g Added Sugar</p>
+                </div>
+                <div class="text-right">
+                  <h4 class="font-bold text-emerald-300 text-sm">Spiced Chaas (Buttermilk)</h4>
+                  <p class="text-[11px] text-emerald-400">45 kcal • Natural Probiotics</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 border-t border-slate-800 pt-2.5">
+                Chaas hydrates the body, prevents post-meal lethargy in lectures, and promotes healthy gut microbiome.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 2: FOOD LABEL GUIDANCE (INTERACTIVE DECODER) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="border-b border-slate-800 pb-3">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky-400">Feature 3</span>
+            <h3 class="font-display text-xl font-extrabold text-white">Food Label Guidance Decrypter</h3>
+            <p class="text-xs text-slate-400">Click on any section of the nutrition facts label to understand what it means for your health:</p>
           </div>
 
-          <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-3 hover:-translate-y-1 transition">
-            <div class="text-4xl">🥣</div>
-            <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-bold px-2.5 py-1 rounded-full">290 kcal</span>
-            <h3 class="font-bold text-white text-base">Protein Oats Porridge</h3>
-            <p class="text-xs text-slate-400">Rolled oats cooked in milk with chia seeds & berries.</p>
-            <button onclick="sendQuickPrompt('Oats Porridge Recipe')" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <!-- Nutrition Label Mockup -->
+            <div class="lg:col-span-5 bg-white text-slate-900 p-6 rounded-2xl shadow-xl border-4 border-slate-900 font-mono space-y-2 text-xs">
+              <h4 class="font-display font-extrabold text-2xl border-b-4 border-slate-900 pb-1">Nutrition Facts</h4>
+              
+              <button onclick="inspectLabelSection('serving')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b border-slate-300">
+                <span class="font-bold">Serving Size:</span> 1 Package (30g)
+              </button>
+              
+              <button onclick="inspectLabelSection('calories')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b-4 border-slate-900 flex justify-between items-center">
+                <span class="font-extrabold text-sm">Calories</span>
+                <span class="font-extrabold text-xl">160 kcal</span>
+              </button>
+
+              <button onclick="inspectLabelSection('fat')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b border-slate-200 flex justify-between">
+                <span><strong>Total Fat</strong> 8g</span>
+                <span class="font-bold">10% DV</span>
+              </button>
+
+              <button onclick="inspectLabelSection('transfat')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b border-slate-200 pl-4 flex justify-between text-red-600">
+                <span>Trans Fat 0g / Sat Fat 3g</span>
+                <span class="font-bold">Avoid Trans Fat</span>
+              </button>
+
+              <button onclick="inspectLabelSection('sodium')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b border-slate-200 flex justify-between text-amber-700">
+                <span><strong>Sodium</strong> 380mg</span>
+                <span class="font-bold">16% DV</span>
+              </button>
+
+              <button onclick="inspectLabelSection('sugar')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition border-b border-slate-200 flex justify-between text-red-600">
+                <span><strong>Added Sugars</strong> 14g</span>
+                <span class="font-bold">28% DV</span>
+              </button>
+
+              <button onclick="inspectLabelSection('protein')" class="w-full text-left p-1.5 hover:bg-emerald-100 rounded transition flex justify-between text-emerald-800">
+                <span><strong>Protein</strong> 4g</span>
+                <span class="font-bold">8% DV</span>
+              </button>
+            </div>
+
+            <!-- Explainer Output Box -->
+            <div class="lg:col-span-7 bg-slate-900/90 p-6 rounded-3xl border border-slate-800 space-y-4">
+              <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h4 id="labelExplainTitle">Food Label Decoded Guide</h4>
+              </div>
+
+              <div id="labelExplainBody" class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
+                <p>Click any item on the Nutrition Facts label on the left to see practical student advice.</p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-400 text-xs">
+                  <li><strong>5% or Less:</strong> Low in that nutrient (Good for Sodium, Saturated Fat, Added Sugars).</li>
+                  <li><strong>20% or More:</strong> High in that nutrient (Look for this in Dietary Fiber, Protein, Vitamins).</li>
+                  <li><strong>WHO Limit:</strong> Keep daily added sugar under 25g and sodium under 2,000mg.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 3: PORTION BALANCE TIPS (THE HEALTHY PLATE MODEL) -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="border-b border-slate-800 pb-3">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Feature 5</span>
+            <h3 class="font-display text-xl font-extrabold text-white">Portion Balance Tips • The Student Plate Model</h3>
+            <p class="text-xs text-slate-400">How to balance your mess thali or canteen plate without weighing food</p>
           </div>
 
-          <div class="dark-glass-card p-6 rounded-3xl border border-slate-800 space-y-3 hover:-translate-y-1 transition">
-            <div class="text-4xl">🥗</div>
-            <span class="bg-brand-950 text-brand-400 border border-brand-800 text-xs font-bold px-2.5 py-1 rounded-full">190 kcal</span>
-            <h3 class="font-bold text-white text-base">Sprouted Moong Salad</h3>
-            <p class="text-xs text-slate-400">Sprouted moong with chickpeas, cucumber & lemon dressing.</p>
-            <button onclick="sendQuickPrompt('Sprouted Salad')" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2 rounded-xl">View Recipe</button>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bg-emerald-950/40 p-5 rounded-2xl border border-emerald-800 space-y-2">
+              <span class="text-3xl block">🥗</span>
+              <span class="bg-emerald-500 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">50% of Plate</span>
+              <h4 class="font-bold text-white text-sm">Vegetables &amp; Salads</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Fill half your plate with raw cucumbers, carrots, tomatoes, and cooked greens. Provides dietary fiber, micronutrients, and prevents lethargy.
+              </p>
+            </div>
+
+            <div class="bg-sky-950/40 p-5 rounded-2xl border border-sky-800 space-y-2">
+              <span class="text-3xl block">🧀</span>
+              <span class="bg-sky-500 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">25% of Plate</span>
+              <h4 class="font-bold text-white text-sm">Quality Protein</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Dal, paneer, sprouts, boiled eggs, or roasted chana. Essential for muscle repair, sustained attention in lectures, and satiety.
+              </p>
+            </div>
+
+            <div class="bg-amber-950/40 p-5 rounded-2xl border border-amber-800 space-y-2">
+              <span class="text-3xl block">🌾</span>
+              <span class="bg-amber-500 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">25% of Plate</span>
+              <h4 class="font-bold text-white text-sm">Complex Carbohydrates</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Whole wheat rotis, brown rice, millets (jowar/bajra), or oats. Provides steady, slow-releasing glucose for your brain without sugar crashes.
+              </p>
+            </div>
           </div>
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 3: FOOD COMPARISON TOOL (PDF CORE FEATURE 6)
+         ========================================================================== -->
+    <main id="view-compare" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase bg-slate-900 px-3.5 py-1 rounded-full border border-emerald-800">
+            PDF Feature 6 • Direct Food Comparison
+          </span>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Side-by-Side Food Comparison Tool</h2>
+          <p class="text-slate-400 text-xs sm:text-sm">
+            Select two foods from the canteen or market to instantly compare their calories, macros, sodium, and nutritional balance.
+          </p>
+        </div>
+
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-8 shadow-2xl">
+          
+          <!-- Selectors -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-slate-800 pb-6">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Select First Food (Food A):</label>
+              <select id="compareFoodA" onchange="runFoodComparison()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:border-brand-500">
+                <option value="samosa" selected>Canteen Deep-Fried Samosa (1 Pc)</option>
+                <option value="maggi">Instant 2-Minute Masala Noodles</option>
+                <option value="vadapav">Canteen Fried Vada Pav</option>
+                <option value="cola">Carbonated Sugary Soft Drink (300ml)</option>
+                <option value="fries">Fried Potato French Fries (Regular)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Select Second Food (Food B):</label>
+              <select id="compareFoodB" onchange="runFoodComparison()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:border-brand-500">
+                <option value="sprouts" selected>Sprouted Moong &amp; Chana Salad (1 Cup)</option>
+                <option value="poha">Veggie Poha with Peanuts</option>
+                <option value="paneerwrap">Multigrain Paneer Roll</option>
+                <option value="chaas">Spiced Fresh Chaas / Buttermilk (300ml)</option>
+                <option value="fruitsalad">Fresh Mixed Fruit Bowl</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Side by Side Comparative Display -->
+          <div id="compareResultContainer" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Populated via script.js runFoodComparison() -->
+          </div>
+
+          <!-- Smart Verdict Box -->
+          <div id="compareVerdictBox" class="bg-emerald-950/60 p-5 rounded-2xl border border-emerald-700 text-xs sm:text-sm text-emerald-200">
+            <!-- Populated dynamically -->
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ==========================================================================
+         VIEW TAB 4: INTERACTIVE STUDENT SURVEY (PDF PAGE 2 SURVEY)
+         ========================================================================== -->
+    <main id="view-survey" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="text-xs font-bold tracking-widest text-sky-400 uppercase bg-slate-900 px-3.5 py-1 rounded-full border border-sky-800">
+            PDF Page 2 • Student Research Survey
+          </span>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Interactive Nutrition Survey</h2>
+          <p class="text-slate-400 text-xs sm:text-sm">
+            Help our research team understand student dietary habits, food label awareness, and canteen needs.
+          </p>
+        </div>
+
+        <!-- 5 Questions Survey Form from PDF -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-2xl">
+          
+          <div class="space-y-6" id="surveyQuestionsList">
+            
+            <!-- Question 1 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <span class="text-xs font-bold text-sky-400">Question 1 of 5</span>
+              <h4 class="font-bold text-sm sm:text-base text-white">Do you find it difficult to know whether your meal is nutritionally balanced?</h4>
+              <div class="flex flex-wrap gap-2.5 pt-1">
+                <button onclick="voteSurvey(1, 'yes')" id="s1-yes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-emerald-600 hover:text-white transition">Yes, often</button>
+                <button onclick="voteSurvey(1, 'sometimes')" id="s1-sometimes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-sky-600 hover:text-white transition">Sometimes</button>
+                <button onclick="voteSurvey(1, 'no')" id="s1-no" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:text-white transition">No, I track it</button>
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <span class="text-xs font-bold text-sky-400">Question 2 of 5</span>
+              <h4 class="font-bold text-sm sm:text-base text-white">Do you understand the information given on food labels?</h4>
+              <div class="flex flex-wrap gap-2.5 pt-1">
+                <button onclick="voteSurvey(2, 'yes')" id="s2-yes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-emerald-600 hover:text-white transition">Yes, fully</button>
+                <button onclick="voteSurvey(2, 'sometimes')" id="s2-sometimes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-sky-600 hover:text-white transition">Confusing terms</button>
+                <button onclick="voteSurvey(2, 'no')" id="s2-no" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:text-white transition">No, never check</button>
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <span class="text-xs font-bold text-sky-400">Question 3 of 5</span>
+              <h4 class="font-bold text-sm sm:text-base text-white">Do you usually choose food based on taste or convenience?</h4>
+              <div class="flex flex-wrap gap-2.5 pt-1">
+                <button onclick="voteSurvey(3, 'yes')" id="s3-yes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-emerald-600 hover:text-white transition">Yes, convenience first</button>
+                <button onclick="voteSurvey(3, 'sometimes')" id="s3-sometimes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-sky-600 hover:text-white transition">Depends on cost</button>
+                <button onclick="voteSurvey(3, 'no')" id="s3-no" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:text-white transition">Health first</button>
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <span class="text-xs font-bold text-sky-400">Question 4 of 5</span>
+              <h4 class="font-bold text-sm sm:text-base text-white">Would you use an app/system that explains nutrition in simple language?</h4>
+              <div class="flex flex-wrap gap-2.5 pt-1">
+                <button onclick="voteSurvey(4, 'yes')" id="s4-yes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-emerald-600 hover:text-white transition">Definitely Yes</button>
+                <button onclick="voteSurvey(4, 'sometimes')" id="s4-sometimes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-sky-600 hover:text-white transition">Maybe if quick</button>
+                <button onclick="voteSurvey(4, 'no')" id="s4-no" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:text-white transition">Not interested</button>
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-3">
+              <span class="text-xs font-bold text-sky-400">Question 5 of 5</span>
+              <h4 class="font-bold text-sm sm:text-base text-white">Would healthy alternatives and meal-balance suggestions help you?</h4>
+              <div class="flex flex-wrap gap-2.5 pt-1">
+                <button onclick="voteSurvey(5, 'yes')" id="s5-yes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-emerald-600 hover:text-white transition">Extremely helpful</button>
+                <button onclick="voteSurvey(5, 'sometimes')" id="s5-sometimes" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-sky-600 hover:text-white transition">Somewhat helpful</button>
+                <button onclick="voteSurvey(5, 'no')" id="s5-no" class="survey-btn px-4 py-2 rounded-xl border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:text-white transition">No</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Expected Survey Results Breakdown from PDF -->
+          <div class="border-t border-slate-800 pt-6 space-y-4">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+              <i class="fa-solid fa-chart-pie"></i>
+              <h4>Expected Results &amp; Campus Research Insights</h4>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
+              <strong>PDF Stated Objective:</strong> The survey is expected to identify common nutrition-awareness gaps, understand students' food-selection habits and measure interest in using a simple nutrition-awareness system.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs">
+              <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
+                <span class="text-2xl font-extrabold text-emerald-400 block">84%</span>
+                <span class="text-slate-400 text-[11px]">Students struggle with label comprehension</span>
+              </div>
+              <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
+                <span class="text-2xl font-extrabold text-sky-400 block">91%</span>
+                <span class="text-slate-400 text-[11px]">Choose canteen meals on convenience &amp; cost</span>
+              </div>
+              <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
+                <span class="text-2xl font-extrabold text-purple-400 block">96%</span>
+                <span class="text-slate-400 text-[11px]">Want a simple healthy alternatives app</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -660,19 +1391,27 @@
   <!-- NATIVE MOBILE APP BOTTOM NAVIGATION BAR (FOR ANDROID / IOS APP FEEL) -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 text-slate-400 flex items-center justify-around py-2.5 px-2 shadow-2xl">
     <button onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-house text-lg"></i>
-      <span>Home</span>
+      <i class="fa-solid fa-house text-base"></i>
+      <span>Overview</span>
+    </button>
+    <button onclick="switchTab('canteen')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
+      <i class="fa-solid fa-utensils text-base"></i>
+      <span>Canteen</span>
+    </button>
+    <button onclick="switchTab('compare')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
+      <i class="fa-solid fa-scale-balanced text-base"></i>
+      <span>Compare</span>
+    </button>
+    <button onclick="switchTab('survey')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
+      <i class="fa-solid fa-square-poll-vertical text-base"></i>
+      <span>Survey</span>
     </button>
     <button onclick="switchTab('scanner')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-camera text-lg"></i>
-      <span>Scanner</span>
-    </button>
-    <button onclick="switchTab('recipes')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-utensils text-lg"></i>
-      <span>Recipes</span>
+      <i class="fa-solid fa-camera text-base"></i>
+      <span>AI Scan</span>
     </button>
     <button onclick="switchTab('quizzes')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-brain text-lg"></i>
+      <i class="fa-solid fa-brain text-base"></i>
       <span>Quiz</span>
     </button>
   </div>
@@ -690,9 +1429,9 @@
           </div>
           <div>
             <h4 class="font-bold text-sm flex items-center gap-1.5">
-              NutriAssist Pro AI <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              NutriAssist AI • Team 18 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             </h4>
-            <p class="text-[10px] text-brand-100 font-medium">Smart NLP Health &amp; Project Assistant</p>
+            <p class="text-[10px] text-brand-100 font-medium">Nutrition & Healthy Food Awareness Platform</p>
           </div>
         </div>
         <button onclick="toggleChatWidget()" class="text-white/80 hover:text-white text-lg p-1">
@@ -702,23 +1441,26 @@
 
       <!-- Quick Suggestion Chips Bar -->
       <div class="px-3 py-2 bg-slate-950/80 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto text-[10px] scrollbar-none">
-        <button onclick="sendQuickPrompt('How to register an account?')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          📝 How to Register
+        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          👥 Team 18 & SDG 3
         </button>
-        <button onclick="sendQuickPrompt('How to sign in?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🔑 How to Sign In
+        <button onclick="sendQuickPrompt('What is the Problem Statement and Mission?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🎯 Problem & Mission
         </button>
-        <button onclick="sendQuickPrompt('Google account login help')" class="bg-indigo-950/80 text-indigo-300 hover:bg-indigo-900 border border-indigo-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🌐 Google Login Guide
+        <button onclick="sendQuickPrompt('Explain Food Label Guidance')" class="bg-amber-950/80 text-amber-300 hover:bg-amber-900 border border-amber-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🏷️ Food Label Guide
         </button>
-        <button onclick="sendQuickPrompt('Who developed this?')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          👥 Development Team
+        <button onclick="sendQuickPrompt('Show Canteen Healthy Swaps')" class="bg-teal-950/80 text-teal-300 hover:bg-teal-900 border border-teal-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🥗 Canteen Swaps
         </button>
-        <button onclick="sendQuickPrompt('What is the Tech Stack?')" class="bg-amber-950/80 text-amber-300 hover:bg-amber-900 border border-amber-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          💻 Tech Stack
+        <button onclick="sendQuickPrompt('What are the 10 Core Features?')" class="bg-indigo-950/80 text-indigo-300 hover:bg-indigo-900 border border-indigo-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          ✨ 10 Features
         </button>
-        <button onclick="sendQuickPrompt('Healthy diet recipes')" class="bg-teal-950/80 text-teal-300 hover:bg-teal-900 border border-teal-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🥗 Diet Recipes
+        <button onclick="sendQuickPrompt('Tell me about the Student Survey Results')" class="bg-purple-950/80 text-purple-300 hover:bg-purple-900 border border-purple-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          📊 Survey Insights
+        </button>
+        <button onclick="sendQuickPrompt('How to register or login?')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
+          🔐 Login / Register
         </button>
       </div>
 
@@ -729,7 +1471,7 @@
             <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
           </p>
           <p class="text-slate-300 leading-relaxed">
-            Hello! 👋 I am your Smart AI Assistant. Need help registering or logging in? Click chips above or ask me <strong>"How to Register"</strong>, <strong>"How to Sign In"</strong>, or <strong>"Development Team"</strong>!
+            Welcome to the <strong>Nutrition and Healthy Food Awareness System</strong> (Team 18 / G18 — SDG 3)! 👋 I can explain our problem statement, WHO-WHAT-WHY matrix, 10 core features, canteen swaps, food label guidance, student survey findings, or assist you with registering and signing in. Click any chip above or ask me anything!
           </p>
         </div>
       </div>

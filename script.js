@@ -848,11 +848,11 @@ function generateNutriAIResponse(query) {
   if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ') || q.startsWith('hey ') || q.includes('good morning') || q.includes('good evening') || q.includes('good afternoon') || q === 'yo' || q === 'sup') {
     const currentUser = sessionStorage.getItem('nutriaware_user_name') || 'Friend';
     return `
-      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>NutriAware AI Assistant</strong>!</p>
-      <p class="mt-1">I am here to guide you with <strong>Registration &amp; Sign-In</strong>, <em>Development Team</em>, <em>Tech Stack</em>, <em>Key Features</em>, or <em>Healthy Recipes</em>!</p>
+      <p>Hello ${escapeHTML(currentUser)}! 👋 Welcome to <strong>Nutrition & Healthy Food Awareness System</strong> (Team 18 / G18 • SDG 3)!</p>
+      <p class="mt-1">I am your official assistant aligned with our project document. Ask me about <strong>Team 18</strong>, <em>SDG 3</em>, <em>Problem Statement</em>, <em>10 Features</em>, <em>Canteen Swaps</em>, <em>Food Label Guide</em>, <em>Survey Results</em>, or <em>Login/Register</em>!</p>
       <div class="pt-2 flex flex-wrap gap-1.5">
-        <button onclick="sendQuickPrompt('How to register an account?')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold px-2.5 py-1 rounded-xl text-[10px]">📝 How to Register</button>
-        <button onclick="sendQuickPrompt('How to sign in?')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold px-2.5 py-1 rounded-xl text-[10px]">🔑 How to Sign In</button>
+        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-xl text-[10px]">👥 Team 18 & SDG 3</button>
+        <button onclick="sendQuickPrompt('What is the Problem Statement and Mission?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-xl text-[10px]">🎯 Problem & Mission</button>
       </div>
     `;
   }
@@ -861,18 +861,18 @@ function generateNutriAIResponse(query) {
   if (q.includes('register') || q.includes('registration') || q.includes('create account') || q.includes('sign up') || q.includes('new user') || q.includes('register portal') || q.includes('how to register')) {
     return `
       <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-user-plus text-emerald-600"></i> How to Register an Account
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-user-plus text-emerald-400"></i> How to Register an Account
         </h5>
-        <p class="text-slate-600">Registration is <strong>mandatory</strong> to access NutriAware. Follow these steps:</p>
-        <ol class="list-decimal pl-4 space-y-1 text-slate-700">
-          <li>Click the button below to open the <strong class="text-emerald-700">"Register Account"</strong> tab on the portal.</li>
+        <p class="text-slate-300">Registration is <strong>mandatory</strong> to access personal features on NutriAware:</p>
+        <ol class="list-decimal pl-4 space-y-1 text-slate-300">
+          <li>Click the button below to open the <strong class="text-emerald-400">"Register Account"</strong> tab on the portal.</li>
           <li>Enter your <strong>Full Name</strong>, valid <strong>Email Address</strong>, and a <strong>Password</strong>.</li>
-          <li>Click <strong class="text-emerald-700">"Create Registered Account"</strong>.</li>
+          <li>Click <strong class="text-emerald-400">"Create Registered Account"</strong>.</li>
           <li>Your credentials will be stored in our <em>Cloud Encrypted Database</em> so you can sign in anytime.</li>
         </ol>
         <div class="pt-2 flex flex-wrap gap-2">
-          <button onclick="openRegistrationModalFromChat()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+          <button onclick="openRegistrationModalFromChat()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
             <i class="fa-solid fa-user-plus"></i> Open Registration Form Now
           </button>
         </div>
@@ -884,21 +884,21 @@ function generateNutriAIResponse(query) {
   if (q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('access denied') || q.includes('cant login') || q.includes('account not found') || q.includes('forgot password') || q.includes('how to log in') || q.includes('how to sign in')) {
     return `
       <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-right-to-bracket text-emerald-600"></i> How to Sign In
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-right-to-bracket text-emerald-400"></i> How to Sign In
         </h5>
-        <p class="text-slate-600">Follow these steps to log into NutriAware:</p>
-        <ol class="list-decimal pl-4 space-y-1 text-slate-700">
-          <li><strong>Pre-requisite:</strong> You must click <strong class="text-emerald-700">"Register Account"</strong> first if you haven't created an account yet.</li>
+        <p class="text-slate-300">Follow these steps to log into NutriAware:</p>
+        <ol class="list-decimal pl-4 space-y-1 text-slate-300">
+          <li><strong>Pre-requisite:</strong> You must click <strong class="text-emerald-400">"Register Account"</strong> first if you haven't created an account yet.</li>
           <li>Enter your registered <strong>Email Address</strong> and <strong>Password</strong> on the <strong>Sign In</strong> tab.</li>
-          <li>Or click <strong class="text-emerald-700">"Continue with Google Account"</strong> to choose your signed-in Google account.</li>
+          <li>Or click <strong class="text-emerald-400">"Continue with Google Account"</strong> to choose your signed-in Google account.</li>
           <li>Click <strong>"Sign In to Portal"</strong> to unlock your personal health dashboard!</li>
         </ol>
         <div class="pt-2 flex flex-wrap gap-2">
-          <button onclick="openLoginModalFromChat()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+          <button onclick="openLoginModalFromChat()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
             <i class="fa-solid fa-key"></i> Go to Sign In Portal
           </button>
-          <button onclick="triggerGoogleSignInHelp()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+          <button onclick="triggerGoogleSignInHelp()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow transition flex items-center gap-1.5 border border-slate-700">
             <i class="fa-brands fa-google text-amber-400"></i> Sign in with Google
           </button>
         </div>
@@ -910,17 +910,17 @@ function generateNutriAIResponse(query) {
   if (q.includes('google') || q.includes('gmail') || q.includes('oauth') || q.includes('picker')) {
     return `
       <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-brands fa-google text-red-500"></i> Google Account Sign-In Guide
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-brands fa-google text-red-400"></i> Google Account Sign-In Guide
         </h5>
-        <p class="text-slate-600">NutriAware supports one-click Google Account sign-in:</p>
-        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+        <p class="text-slate-300">NutriAware supports one-click Google Account sign-in:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-300">
           <li>Click <strong>"Continue with Google Account"</strong> on the Sign In portal.</li>
           <li>A modal will display all active Google accounts logged in on your browser/device.</li>
-          <li>Click on your account (e.g., <em>Shreyas Shinde</em> or <em>Sainath Developer</em>) to instantly log in!</li>
+          <li>Click on your account to instantly authenticate!</li>
         </ul>
         <div class="pt-2">
-          <button onclick="triggerGoogleSignInHelp()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+          <button onclick="triggerGoogleSignInHelp()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition flex items-center gap-1.5">
             <i class="fa-brands fa-google"></i> Open Google Account Picker
           </button>
         </div>
@@ -932,141 +932,687 @@ function generateNutriAIResponse(query) {
   if (q.includes('admin') || q.includes('admin panel') || q.includes('admin login')) {
     return `
       <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">🛡️ Admin Panel Notice</h5>
-        <p>The Admin Panel option has been removed from the platform. User access is managed strictly through mandatory registration and sign in on the portal.</p>
+        <h5 class="font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel Notice
+        </h5>
+        <p class="text-slate-300">The Admin Panel option has been completely removed from the platform as requested. User access is managed strictly through registration and sign in on the portal.</p>
       </div>
     `;
   }
 
-  // 2. Platform Identity & Target Audience
-  if (q.includes('identity') || q.includes('audience') || q.includes('target') || q.includes('who is this for') || q.includes('purpose')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">🥗 Platform Identity &amp; Target Audience</h5>
-        <p><strong>Identity:</strong> NutriAware is a mobile and web platform that combines AI, nutrition information, education, and healthy alternatives.</p>
-        <p class="text-slate-600"><strong>Target Audience:</strong> Designed for students, young people, and busy individuals who lack practical knowledge about the nutritional value of everyday foods or default to convenient processed options.</p>
-      </div>
-    `;
-  }
-
-  // 3. Development Team (Sanjivani University MTech AIML)
-  if (q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('developer') || q.includes('creator') || q.includes('team') || q.includes('sanjivani') || q.includes('university') || q.includes('shreyas') || q.includes('sarthak') || q.includes('kunal') || q.includes('gayatri') || q.includes('ayush') || q.includes('vaishnavi')) {
+  // 2. Team 18 / G18 & SDG 3
+  if (q.includes('team 18') || q.includes('g18') || q.includes('sdg 3') || q.includes('sustainable development') || q.includes('sanjivani') || q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('team') || q.includes('developer') || q.includes('members') || q.includes('shreyas') || q.includes('sarthak') || q.includes('kunal') || q.includes('gayatri') || q.includes('ayush') || q.includes('vaishnavi')) {
     return `
       <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-graduation-cap text-emerald-600"></i> Project Team Members
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-users text-emerald-400"></i> Team 18 (G18) • Project Overview
         </h5>
-        <p class="text-slate-600">NutriAware Development Group Members:</p>
-        <ul class="list-disc pl-4 space-y-1 text-slate-700">
-          <li><strong class="text-emerald-700">Kunal Jejurkar:</strong> Designer &amp; Systems Analysis</li>
-          <li><strong class="text-emerald-700">Shreyas Shinde:</strong> Lead Web Developer (@shreyasshinde619)</li>
-          <li><strong class="text-emerald-700">Sarthak Pawar:</strong> Database &amp; Security Integration</li>
-          <li><strong>Ayush Bhosale:</strong> UI &amp; System Architecture</li>
-          <li><strong>Gayatri Bhuse:</strong> Nutrition &amp; Recipe Research</li>
-          <li><strong>Vaishnavi Bongane:</strong> Quality Assurance &amp; Documentation</li>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/30 text-emerald-300 text-[11px] font-semibold">
+          🏆 Team No.: 18 | Team Name: G18 | UN SDG Alignment: SDG 3 (Good Health and Well-Being)
+        </div>
+        <p class="text-slate-300 font-semibold">Integrated MTech AIML Project Team:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-300">
+          <li><strong class="text-emerald-400">Sarthak Pawar:</strong> Team Leader</li>
+          <li><strong class="text-emerald-400">Kunal Jejurkar:</strong> Designer</li>
+          <li><strong class="text-emerald-400">Shreyas Shinde:</strong> Web Developer (@shreyasshinde619)</li>
+          <li><strong>Ayush Bhosale:</strong> Team Member</li>
+          <li><strong>Vaishnavi Bongane:</strong> Team Member</li>
+          <li><strong>Gayatri Bhuse:</strong> Team Member</li>
+        </ul>
+        <p class="text-[11px] text-slate-400">Institution: Sanjivani University, Department of Integrated MTech AI & ML.</p>
+      </div>
+    `;
+  }
+
+  // 3. Problem Statement & Brainstorming Pain Points
+  if (q.includes('problem') || q.includes('problem statement') || q.includes('brainstorm') || q.includes('pain point') || q.includes('selected problem')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Problem Statement (PDF Page 1)
+        </h5>
+        <p class="text-slate-300 leading-relaxed">
+          Students often choose food based on <strong>taste, convenience, and cost</strong> rather than nutritional value. Many are unaware of daily nutrient requirements, struggle to understand food labels, and lack guidance on making balanced choices in canteens and messes.
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+          <p class="font-bold text-emerald-400">6 Brainstorming Pain Points:</p>
+          <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
+            <li>1. Junk food reliance due to convenience & schedules.</li>
+            <li>2. Lack of understanding about balanced diets.</li>
+            <li>3. Difficulty reading and interpreting packaged food nutrition labels.</li>
+            <li>4. Limited healthy choices in college canteens and messes.</li>
+            <li>5. Skipping meals & irregular eating routines.</li>
+            <li>6. Low awareness of long-term impact on academics and energy.</li>
+          </ul>
+        </div>
+        <div class="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200">
+          <strong>Selected Core Problem:</strong> College students face difficulties in making healthy food choices due to lack of awareness, confusing nutrition labels, and limited guidance on balanced meals in daily life.
+        </div>
+      </div>
+    `;
+  }
+
+  // 4. WHO - WHAT - WHY Diagnostic Framework
+  if (q.includes('who') && (q.includes('what') || q.includes('why')) || q.includes('diagnostic') || q.includes('framework')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-sitemap text-teal-400"></i> WHO • WHAT • WHY Framework (Page 1)
+        </h5>
+        <div class="space-y-1.5 text-slate-300">
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-emerald-400 font-bold uppercase text-[10px]">WHO (Stakeholders):</span>
+            <p class="text-[11px]">College & university students, young adults living in hostels/PGs, canteen operators, mess managers, and youth in transition to independent living.</p>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-amber-400 font-bold uppercase text-[10px]">WHAT (The Challenge):</span>
+            <p class="text-[11px]">Lack of practical nutrition awareness, confusion decoding packaged labels, default reliance on high-sugar & fried foods, and no simple mechanism to balance canteen meals.</p>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-sky-400 font-bold uppercase text-[10px]">WHY (The Root Cause):</span>
+            <p class="text-[11px]">Academic pressure, tight student budgets, aggressive marketing of ultra-processed snacks, and absence of an accessible digital guide tailored to college dining environments.</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 5. Mission Statement & Value Proposition
+  if (q.includes('mission') || q.includes('value proposition') || q.includes('gain') || q.includes('pain') || q.includes('solution')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-bullseye text-rose-400"></i> Mission Statement & Value Proposition
+        </h5>
+        <p class="text-slate-300 leading-relaxed">
+          <strong class="text-emerald-400">Mission:</strong> To empower students with practical nutritional knowledge, simple food label guidance, and smart canteen meal alternatives to make healthier everyday choices.
+        </p>
+        <div class="grid grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2 rounded-xl bg-rose-950/40 border border-rose-800/60">
+            <span class="font-bold text-rose-400 block mb-0.5">Student Pains:</span>
+            Confusing labels, afternoon energy crashes, limited healthy canteen options, budget constraints.
+          </div>
+          <div class="p-2 rounded-xl bg-emerald-950/40 border border-emerald-800/60">
+            <span class="font-bold text-emerald-400 block mb-0.5">Student Gains:</span>
+            Sustained academic energy, quick healthy swaps, simple label decoder, better physical well-being.
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 6. 10 Core Features (PDF Page 1 & 2)
+  if (q.includes('10 feature') || q.includes('ten feature') || q.includes('core feature') || (q.includes('feature') && !q.includes('login'))) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-list-check text-brand-400"></i> 10 Core System Features (PDF Specifications)
+        </h5>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[11px] text-slate-300">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>1.</strong> Nutrition Info Display</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>2.</strong> Healthy Food Awareness</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>3.</strong> Food Label Guidance</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>4.</strong> Balanced Meal Suggestions</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>5.</strong> Portion Balance Tips (50/25/25)</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>6.</strong> Food Comparison Tool</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>7.</strong> Healthy Alternatives Swaps</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>8.</strong> Daily Nutrition Tips</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>9.</strong> Canteen / Mess Awareness</div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><strong>10.</strong> Personalized Recommendations</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 7. How the System Works (5 Steps Pipeline)
+  if (q.includes('how system works') || q.includes('5 step') || q.includes('pipeline') || q.includes('steps')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-arrows-spin text-emerald-400"></i> How the System Works (5 Steps)
+        </h5>
+        <ol class="list-decimal pl-4 space-y-1.5 text-slate-300 text-[11px]">
+          <li><strong>Profile &amp; Goals:</strong> Student inputs physical metrics, activity level, and dietary objectives.</li>
+          <li><strong>Interests &amp; Preferences:</strong> System records food preferences, budget ranges, and dining habits.</li>
+          <li><strong>Nutrient Lookup:</strong> User inspects packaged food labels or scans cafeteria food items.</li>
+          <li><strong>Balanced Suggestions:</strong> System calculates macros, flags excesses (sugar/sodium), and provides alternatives.</li>
+          <li><strong>Canteen &amp; Mess Application:</strong> Student applies actionable swaps directly in their college dining hall.</li>
+        </ol>
+      </div>
+    `;
+  }
+
+  // 8. Student Survey Results (Page 2)
+  if (q.includes('survey') || q.includes('question') || q.includes('research') || q.includes('survey result')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-square-poll-vertical text-purple-400"></i> Student Survey Insights (PDF Page 2)
+        </h5>
+        <p class="text-slate-300">5 Survey Questions &amp; Expected Analysis:</p>
+        <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+          <li><strong>Q1 Balanced Meals:</strong> >70% of students struggle to determine if their daily meals are balanced.</li>
+          <li><strong>Q2 Food Labels:</strong> >65% find packaged food labels confusing and difficult to interpret.</li>
+          <li><strong>Q3 Food Choice Driver:</strong> >80% default to taste, cost, or convenience over nutrition.</li>
+          <li><strong>Q4 Simple Nutrition Tool:</strong> >90% would actively use an app explaining nutrition in simple language.</li>
+          <li><strong>Q5 Canteen Alternatives:</strong> >85% expressed high interest in healthy canteen alternatives.</li>
+        </ul>
+        <button onclick="switchTab('survey')" class="w-full mt-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-1.5 rounded-xl transition text-[11px]">
+          📊 Open Live Student Survey Tab
+        </button>
+      </div>
+    `;
+  }
+
+  // 9. Stakeholder Benefits
+  if (q.includes('benefit') || q.includes('stakeholder') || q.includes('parent') || q.includes('college')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-award text-amber-400"></i> Stakeholder Benefits (PDF Page 2 & 3)
+        </h5>
+        <div class="space-y-1.5 text-[11px] text-slate-300">
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-emerald-400">👨‍🎓 For Students:</strong> Better energy, sharper academic focus, sustainable lifelong dietary habits, and immunity boost.
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-sky-400">🏫 For Colleges & Canteens:</strong> Healthier campus dining culture, demand data for nutritious meal items, improved student well-being.
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+            <strong class="text-purple-400">👨‍👩‍👧 For Parents:</strong> Peace of mind knowing their children have reliable guidance for hostel dining nutrition.
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 10. Future Scope & Conclusion
+  if (q.includes('future') || q.includes('scope') || q.includes('conclusion') || q.includes('roadmap')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-rocket text-indigo-400"></i> Future Scope & Conclusion (Page 3)
+        </h5>
+        <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+          <li><strong>AI Smart Recommendations:</strong> Deep learning model tailored to regional Indian student diets.</li>
+          <li><strong>Personalized Meal Planning:</strong> Budget-conscious hostel grocery and mess meal planners.</li>
+          <li><strong>Campus Canteen Rating:</strong> Student-driven digital nutrition scorecards for cafeteria menus.</li>
+          <li><strong>Smartwatch Sync:</strong> Automatic synchronization with fitness wearables.</li>
+        </ul>
+        <div class="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200">
+          <strong>Conclusion:</strong> NutriAware directly advances <em>SDG 3 (Good Health and Well-Being)</em> by shifting youth dining from reactive illness treatment to proactive nutritional literacy.
+        </div>
+      </div>
+    `;
+  }
+
+  // 11. Canteen Swaps & Food Label Guidance
+  if (q.includes('swap') || q.includes('canteen') || q.includes('mess') || q.includes('samosa') || q.includes('sprout') || q.includes('chaas') || q.includes('poha')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-utensils text-emerald-400"></i> Top Canteen Healthy Swaps
+        </h5>
+        <div class="space-y-1 text-[11px] text-slate-300">
+          <p>🥟 <strong>Samosa (262 kcal, 17g fat)</strong> ➡️ <strong>Sprouted Moong Salad (145 kcal, 12g protein)</strong></p>
+          <p>🍜 <strong>Instant Noodles (380 kcal, 980mg sodium)</strong> ➡️ <strong>Veggie Poha (180 kcal, 4g fiber)</strong></p>
+          <p>🥤 <strong>Sugary Cola (140 kcal, 39g sugar)</strong> ➡️ <strong>Spiced Chaas (45 kcal, natural probiotic)</strong></p>
+        </div>
+        <button onclick="switchTab('canteen')" class="w-full mt-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded-xl transition text-[11px]">
+          🥗 Open Canteen Guide Tab
+        </button>
+      </div>
+    `;
+  }
+
+  if (q.includes('label') || q.includes('sugar') || q.includes('sodium') || q.includes('trans fat')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-tag text-amber-400"></i> Food Label Quick Tips (Feature 3)
+        </h5>
+        <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+          <li><strong>Check Serving Size:</strong> Packets often hide high calories by splitting into 3 servings.</li>
+          <li><strong>5/20 Rule:</strong> 5% DV or less is LOW; 20% DV or more is HIGH.</li>
+          <li><strong>Sodium Warning:</strong> Keep single snack under 200mg sodium (Daily max: 2,000mg).</li>
+          <li><strong>Added Sugars:</strong> WHO cap is 25g/day. One soda has 39g!</li>
+        </ul>
+        <button onclick="switchTab('canteen')" class="w-full mt-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 rounded-xl transition text-[11px]">
+          🏷️ Open Interactive Label Decoder
+        </button>
+      </div>
+    `;
+  }
+
+  // 12. Tech Stack
+  if (q.includes('tech') || q.includes('technology') || q.includes('stack') || q.includes('tensorflow') || q.includes('flutter') || q.includes('node') || q.includes('python')) {
+    return `
+      <div class="space-y-1.5 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-microchip text-sky-400"></i> Technology Stack
+        </h5>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
+          <li><strong>UI Frontend:</strong> Flutter (Mobile) + Modern HTML5/Tailwind Web Portal</li>
+          <li><strong>Backend Services:</strong> Node.js, Express &amp; Supabase Cloud Auth</li>
+          <li><strong>Database:</strong> Cloud PostgreSQL (Supabase) / MySQL / Firestore</li>
+          <li><strong>AI Engine:</strong> Python with TensorFlow (CNN / Transfer Learning)</li>
         </ul>
       </div>
     `;
   }
 
-  // 4. Technology Stack
-  if (q.includes('tech') || q.includes('technology') || q.includes('stack') || q.includes('tensorflow') || q.includes('flutter') || q.includes('firebase') || q.includes('node') || q.includes('python')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">💻 Technology Stack</h5>
-        <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
-          <li><strong>UI Frontend:</strong> Flutter (Mobile App) + HTML5/Tailwind &amp; Three.js WebGL (Web)</li>
-          <li><strong>Backend:</strong> Firebase &amp; Node.js</li>
-          <li><strong>Database:</strong> Firestore / MySQL &amp; Supabase Cloud Database</li>
-          <li><strong>AI Image Recognition:</strong> Python with TensorFlow (CNN / Transfer Learning)</li>
-        </ul>
-      </div>
-    `;
-  }
-
-  // 5. Core Workflow & Key Features
-  if (q.includes('workflow') || q.includes('how it works') || q.includes('feature') || q.includes('scanner') || q.includes('quiz') || q.includes('dashboard') || q.includes('reminder')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">⚡ Core Workflow &amp; Key Features</h5>
-        <p><strong>Core Workflow:</strong> Users scan or search for food, the AI recognizes the item, provides nutrition info, explains benefits/concerns, and recommends a healthier alternative.</p>
-        <p><strong>Key Features:</strong> AI Food Scanner, Interactive 30-Q Quizzes, Water Reminders, Smart Notifications, Personalized Suggestions, and Progress Dashboard.</p>
-      </div>
-    `;
-  }
-
-  // 6. Platform Goals
-  if (q.includes('goal') || q.includes('objective') || q.includes('aim') || q.includes('medical') || q.includes('diagnosis')) {
-    return `
-      <div class="space-y-1 text-xs">
-        <h5 class="font-bold text-slate-900">🎯 Platform Goals</h5>
-        <p>The main objectives are to increase nutrition awareness, promote hydration, and encourage healthy habits.</p>
-        <p class="text-emerald-700 font-semibold mt-1">⚠️ Disclaimer: NutriAware focuses purely on awareness and informed choices, not medical diagnosis.</p>
-      </div>
-    `;
-  }
-
-  // 7. Future Enhancements
-  if (q.includes('future') || q.includes('enhancement') || q.includes('scope') || q.includes('upcoming') || q.includes('roadmap') || q.includes('wearable') || q.includes('multilingual')) {
-    return `
-      <div class="space-y-1.5 text-xs">
-        <h5 class="font-bold text-slate-900">🚀 Future Enhancements</h5>
-        <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
-          <li>Regional Indian food recognition &amp; nutritional mapping</li>
-          <li>Voice-based AI assistant integration</li>
-          <li>Multilingual language support</li>
-          <li>Wearable device &amp; smartwatch integration</li>
-          <li>Personalized AI meal planning engines</li>
-        </ul>
-      </div>
-    `;
-  }
-
-  // 8. How are you / Silly / Friendly questions
-  if (q.includes('how are you') || q.includes('how r u')) {
-    return `
-      <p>I am feeling 100% healthy, hydrated, and ready to assist you! 🥗 How are you doing today? Don't forget to drink a glass of water!</p>
-    `;
-  }
-
-  if (q.includes('who are you') || q.includes('what is your name')) {
-    return `
-      <p>I am <strong>NutriAssist Pro AI</strong> 🤖, the official support chatbot for NutriAware (Smart Nutrition Awareness Platform)!</p>
-    `;
-  }
-
-  if (q.includes('joke') || q.includes('funny')) {
-    return `
-      <div class="space-y-1">
-        <p class="font-bold text-slate-800">😄 Healthy Joke:</p>
-        <p class="italic text-brand-700">"Why did the tomato blush? ... Because it saw the salad dressing!" 🥗🍅</p>
-      </div>
-    `;
-  }
-
-  if (q.includes('banana') || q.includes('shake')) {
-    return `
-      <div class="space-y-1.5">
-        <h5 class="font-bold text-slate-900 text-sm">🍌 High-Protein Banana Peanut Butter Shake</h5>
-        <p class="text-xs text-brand-700 font-semibold">Macros: 380 kcal | Protein: 18g | Carbs: 52g | Fats: 12g</p>
-        <p class="text-xs">Blend 1 ripe banana, 1 cup milk, 1 tbsp peanut butter &amp; 2 tbsp oats for 45s!</p>
-      </div>
-    `;
-  }
-
-  // General Catch-all Project Information
+  // Fallback Catch-All
   return `
-    <div class="space-y-1 text-xs">
-      <p>I am <strong>NutriAssist Pro AI</strong>! You can ask me about:</p>
-      <ul class="list-disc pl-4 space-y-0.5 text-slate-700">
-        <li><strong>Development Team</strong> (Sanjivani University MTech AIML)</li>
-        <li><strong>Tech Stack</strong> (Flutter, TensorFlow, Node.js, Python, Supabase)</li>
-        <li><strong>Core Workflow &amp; Key Features</strong></li>
-        <li><strong>Future Scope &amp; Enhancements</strong></li>
+    <div class="space-y-1.5 text-xs text-slate-300">
+      <p class="text-white font-bold">NutriAssist AI • Team 18 (G18) • SDG 3</p>
+      <p>I can help answer questions from our official project specification document:</p>
+      <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-400">
+        <li><strong>Team 18 &amp; SDG 3</strong> (Team members &amp; University info)</li>
+        <li><strong>Problem Statement &amp; Mission</strong> (6 pain points &amp; WHO-WHAT-WHY)</li>
+        <li><strong>10 Core Features</strong> (Detailed specifications)</li>
+        <li><strong>Canteen Swaps &amp; Food Labels</strong> (Practical dining advice)</li>
+        <li><strong>Student Survey Results</strong> (5 questions &amp; expected analysis)</li>
+        <li><strong>Login &amp; Registration</strong> (Secure authentication guide)</li>
       </ul>
     </div>
   `;
 }
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+}
+
+
+/* ==========================================================================
+   FEATURE IMPLEMENTATIONS ALIGNED WITH PDF SPECIFICATION
+   ========================================================================== */
+
+// 1. Food Label Interactive Decoder
+function inspectLabelSection(section) {
+  const titleEl = document.getElementById('labelExplainTitle');
+  const bodyEl = document.getElementById('labelExplainBody');
+  if (!titleEl || !bodyEl) return;
+
+  const data = {
+    serving: {
+      title: "Serving Size & Container Reality",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-bold border border-blue-500/30">Step 1: The Multiplier Trap</span>
+          <p class="text-slate-200">All numbers shown on nutrition labels represent <strong>only ONE single serving</strong>, not the entire packet! Many student snack packs contain 2 to 3 servings. If you consume the full pack, you must multiply all calories, sodium, and fats accordingly.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-emerald-400 font-medium">
+            💡 Practical Tip: Look at "Servings Per Container" first before checking calories.
+          </div>
+        </div>
+      `
+    },
+    calories: {
+      title: "Calories & Student Energy Balance",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">Energy Density</span>
+          <p class="text-slate-200">Calories measure food energy. Young adults typically need <strong>2,000 to 2,400 kcal per day</strong>. Highly processed snacks offer "empty calories" with little micronutrient density, leading to sudden sugar crashes and tiredness during lectures.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-emerald-400 font-medium">
+            💡 Practical Tip: A healthy snack should be between 150-200 kcal with at least 4g protein or fiber.
+          </div>
+        </div>
+      `
+    },
+    fat: {
+      title: "Total Fat & Saturated Fat Limits",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">Lipid Balance</span>
+          <p class="text-slate-200">Fat provides 9 kcal per gram. While unsaturated fats (nuts, seeds) promote brain health, saturated fats from palm oil and reused frying oil should stay below <strong>20g per day</strong>.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-300 font-medium">
+            ⚠️ Canteen Watch: Fried samosas and pakoras often absorb heavy saturated fat from repeated frying cycles.
+          </div>
+        </div>
+      `
+    },
+    transfat: {
+      title: "Trans Fat (Zero Tolerance Rule)",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[10px] font-bold border border-red-500/30">Strict Avoidance</span>
+          <p class="text-slate-200">Trans fats are produced by hydrogenating oils (vanaspati / bakery shortenings). They raise LDL (bad) cholesterol and lower HDL (good) cholesterol, directly threatening cardiovascular health.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-red-500/30 text-xs text-rose-300 font-medium">
+            🚫 Golden Rule: If the ingredient list mentions "partially hydrogenated vegetable oil" or "vanaspati", put it back on the shelf!
+          </div>
+        </div>
+      `
+    },
+    sodium: {
+      title: "Sodium (Salt) & Daily Blood Pressure",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-bold border border-sky-500/30">Max 2,000 mg/day</span>
+          <p class="text-slate-200">The WHO recommended daily limit for sodium is under <strong>2,000 mg</strong> (about 1 teaspoon of table salt). A single bowl of instant canteen noodles can contain <strong>900 to 1,200 mg</strong> — more than half your entire day's allowance!</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-sky-300 font-medium">
+            💡 Practical Tip: Low sodium = 140 mg or less per serving. High sodium = 400 mg or more.
+          </div>
+        </div>
+      `
+    },
+    sugar: {
+      title: "Added Sugars & The Afternoon Slump",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-bold border border-purple-500/30">WHO Cap: 25g/day</span>
+          <p class="text-slate-200">4 grams of sugar equals approximately 1 full teaspoon of sugar. A single 330ml can of soda has <strong>39g of added sugar (nearly 10 teaspoons!)</strong>. This causes rapid glucose spikes followed by severe fatigue and sleepiness.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-purple-300 font-medium">
+            💡 Practical Tip: Choose spiced chaas, lemon water, or fresh fruit over canned sweetened beverages.
+          </div>
+        </div>
+      `
+    },
+    protein: {
+      title: "Protein & Dietary Fiber (Satiety Power)",
+      content: `
+        <div class="space-y-2">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">Muscle & Focus</span>
+          <p class="text-slate-200">Protein and dietary fiber slow down digestion, keeping you satisfied and focused for hours. Look for snacks providing at least <strong>5g of protein and 3g of fiber</strong>.</p>
+          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-emerald-300 font-medium">
+            💡 Practical Tip: Sprouts, roasted chana, peanuts, and paneer wraps are the top affordable college protein sources.
+          </div>
+        </div>
+      `
+    }
+  };
+
+  const item = data[section] || data['serving'];
+  titleEl.textContent = item.title;
+  bodyEl.innerHTML = item.content;
+}
+
+
+// 2. Side-by-Side Food Comparison Engine
+const comparisonItems = {
+  samosa: {
+    name: "Canteen Fried Samosa (1 Pc)",
+    category: "Fried Canteen Snack",
+    calories: 262,
+    protein: 3.5,
+    carbs: 24,
+    fat: 17.0,
+    fiber: 1.8,
+    sodium: 420,
+    grade: "D",
+    gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
+    tags: ["High Saturated Fat", "Refined Maida", "Reused Oil"]
+  },
+  maggi: {
+    name: "Instant 2-Minute Masala Noodles",
+    category: "Ultra-Processed Food",
+    calories: 380,
+    protein: 7.0,
+    carbs: 54,
+    fat: 15.0,
+    fiber: 2.1,
+    sodium: 980,
+    grade: "F",
+    gradeColor: "text-rose-400 bg-rose-500/20 border-rose-500/40",
+    tags: ["Excessive Sodium (49% DV)", "Refined Flour", "Preservatives"]
+  },
+  vadapav: {
+    name: "Canteen Fried Vada Pav",
+    category: "High Carb / Fried",
+    calories: 290,
+    protein: 4.5,
+    carbs: 38,
+    fat: 13.5,
+    fiber: 2.0,
+    sodium: 510,
+    grade: "D",
+    gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
+    tags: ["High Glycemic Index", "Deep Fried Potato", "Refined Pav"]
+  },
+  cola: {
+    name: "Carbonated Sugary Soft Drink (300ml)",
+    category: "Liquid Sugar Spike",
+    calories: 140,
+    protein: 0.0,
+    carbs: 39,
+    fat: 0.0,
+    fiber: 0.0,
+    sodium: 45,
+    grade: "F",
+    gradeColor: "text-rose-400 bg-rose-500/20 border-rose-500/40",
+    tags: ["10 tsp Added Sugar", "Empty Calories", "Acid Enamel Erosion"]
+  },
+  fries: {
+    name: "Fried Potato French Fries (Regular)",
+    category: "Deep Fried Starch",
+    calories: 312,
+    protein: 3.4,
+    carbs: 41,
+    fat: 15.0,
+    fiber: 3.8,
+    sodium: 320,
+    grade: "D",
+    gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
+    tags: ["High Acrylamide", "Reused Frying Oil", "High Glycemic Load"]
+  },
+  sprouts: {
+    name: "Sprouted Moong & Chana Salad (1 Cup)",
+    category: "Living Superfood Alternative",
+    calories: 145,
+    protein: 12.0,
+    carbs: 22,
+    fat: 1.5,
+    fiber: 7.5,
+    sodium: 60,
+    grade: "A+",
+    gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
+    tags: ["Active Plant Enzymes", "High Dietary Fiber", "Clean Plant Protein"]
+  },
+  poha: {
+    name: "Veggie Poha with Peanuts",
+    category: "Wholesome Breakfast",
+    calories: 180,
+    protein: 4.8,
+    carbs: 33,
+    fat: 4.2,
+    fiber: 4.1,
+    sodium: 180,
+    grade: "A",
+    gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
+    tags: ["Natural Bio-Iron", "Antioxidant Turmeric", "Peanut Healthy Fats"]
+  },
+  paneerwrap: {
+    name: "Multigrain Paneer Roll",
+    category: "High-Protein Energy Lunch",
+    calories: 230,
+    protein: 14.5,
+    carbs: 26,
+    fat: 7.0,
+    fiber: 5.2,
+    sodium: 240,
+    grade: "A+",
+    gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
+    tags: ["Whole Wheat Base", "Fresh Paneer Casein", "Crunchy Veggie Fiber"]
+  },
+  chaas: {
+    name: "Spiced Fresh Chaas / Buttermilk (300ml)",
+    category: "Natural Probiotic Hydration",
+    calories: 45,
+    protein: 3.2,
+    carbs: 4.8,
+    fat: 1.2,
+    fiber: 0.2,
+    sodium: 120,
+    grade: "A+",
+    gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
+    tags: ["Zero Added Sugar", "Live Probiotic Cultures", "Cooling Cumin & Mint"]
+  },
+  fruitsalad: {
+    name: "Fresh Mixed Fruit Bowl",
+    category: "Natural Vitamin & Hydration",
+    calories: 95,
+    protein: 1.2,
+    carbs: 24,
+    fat: 0.3,
+    fiber: 3.5,
+    sodium: 5,
+    grade: "A",
+    gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
+    tags: ["Natural Fruit Fiber", "Vitamin C & Potassium", "Zero Processed Fats"]
+  }
+};
+
+function runFoodComparison() {
+  const selA = document.getElementById('compareFoodA')?.value || 'samosa';
+  const selB = document.getElementById('compareFoodB')?.value || 'sprouts';
+  const container = document.getElementById('compareResultContainer');
+  const verdictBox = document.getElementById('compareVerdictBox');
+  if (!container || !verdictBox) return;
+
+  const itemA = comparisonItems[selA] || comparisonItems['samosa'];
+  const itemB = comparisonItems[selB] || comparisonItems['sprouts'];
+
+  const calDiff = itemA.calories - itemB.calories;
+  const protDiff = (itemB.protein - itemA.protein).toFixed(1);
+  const fatDiff = (itemA.fat - itemB.fat).toFixed(1);
+
+  container.innerHTML = `
+    <!-- Food A (Option 1) -->
+    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Option 1</span>
+          <h4 class="font-extrabold text-white text-base mt-1">${itemA.name}</h4>
+          <p class="text-xs text-slate-400">${itemA.category}</p>
+        </div>
+        <span class="text-xs font-black px-2.5 py-1 rounded-full border ${itemA.gradeColor}">Grade ${itemA.grade}</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+          <p class="text-[10px] text-slate-400 uppercase">Calories</p>
+          <p class="text-sm font-extrabold text-white">${itemA.calories} kcal</p>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+          <p class="text-[10px] text-slate-400 uppercase">Protein</p>
+          <p class="text-sm font-extrabold text-emerald-400">${itemA.protein}g</p>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+          <p class="text-[10px] text-slate-400 uppercase">Fat</p>
+          <p class="text-sm font-extrabold ${itemA.fat > 10 ? 'text-rose-400' : 'text-amber-400'}">${itemA.fat}g</p>
+        </div>
+      </div>
+
+      <div class="space-y-1.5 text-xs text-slate-300">
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Carbohydrates:</span>
+          <span class="font-bold">${itemA.carbs}g</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Dietary Fiber:</span>
+          <span class="font-bold text-emerald-400">${itemA.fiber}g</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Sodium (Salt):</span>
+          <span class="font-bold ${itemA.sodium > 400 ? 'text-rose-400' : 'text-slate-300'}">${itemA.sodium}mg</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        ${itemA.tags.map(t => `<span class="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <!-- Food B (Option 2 - Alternative) -->
+    <div class="bg-emerald-950/20 p-6 rounded-2xl border border-emerald-500/40 space-y-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Option 2 (Healthier Swap)</span>
+          <h4 class="font-extrabold text-white text-base mt-1">${itemB.name}</h4>
+          <p class="text-xs text-emerald-300 font-medium">${itemB.category}</p>
+        </div>
+        <span class="text-xs font-black px-2.5 py-1 rounded-full border ${itemB.gradeColor}">Grade ${itemB.grade}</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-emerald-900/60">
+          <p class="text-[10px] text-slate-400 uppercase">Calories</p>
+          <p class="text-sm font-extrabold text-white">${itemB.calories} kcal</p>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-emerald-900/60">
+          <p class="text-[10px] text-slate-400 uppercase">Protein</p>
+          <p class="text-sm font-extrabold text-emerald-400">${itemB.protein}g</p>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-emerald-900/60">
+          <p class="text-[10px] text-slate-400 uppercase">Fat</p>
+          <p class="text-sm font-extrabold text-emerald-400">${itemB.fat}g</p>
+        </div>
+      </div>
+
+      <div class="space-y-1.5 text-xs text-slate-300">
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Carbohydrates:</span>
+          <span class="font-bold">${itemB.carbs}g</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Dietary Fiber:</span>
+          <span class="font-bold text-emerald-400">${itemB.fiber}g</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-800">
+          <span>Sodium (Salt):</span>
+          <span class="font-bold text-emerald-400">${itemB.sodium}mg</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        ${itemB.tags.map(t => `<span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-900/60 text-emerald-200 border border-emerald-700/50">${t}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  verdictBox.innerHTML = `
+    <div class="flex items-center gap-2 text-emerald-400 font-bold mb-1">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span>AI Comparison Verdict • Team 18 SDG 3 Guidance:</span>
+    </div>
+    <p class="leading-relaxed">
+      Switching from <strong>${itemA.name}</strong> to <strong>${itemB.name}</strong> saves 
+      <strong class="text-emerald-400">${Math.abs(calDiff)} calories</strong>, cuts 
+      <strong class="text-emerald-400">${Math.abs(fatDiff)}g of total fats</strong>, and provides 
+      <strong class="text-emerald-400">${Math.abs(protDiff)}g ${protDiff >= 0 ? 'more' : 'less'} clean protein</strong>! 
+      This switch directly enhances mental clarity, eliminates afternoon lethargy, and prevents digestive inflammation.
+    </p>
+  `;
+}
+
+// 3. Interactive Student Survey Voting
+const recordedSurveyVotes = {};
+
+function voteSurvey(qIndex, choice) {
+  recordedSurveyVotes[qIndex] = choice;
+  
+  const choices = ['yes', 'sometimes', 'no'];
+  choices.forEach(c => {
+    const btn = document.getElementById(`s${qIndex}-${c}`);
+    if (btn) {
+      btn.classList.remove('bg-emerald-600', 'bg-sky-600', 'bg-slate-700', 'text-white', 'border-emerald-500');
+      btn.classList.add('border-slate-700', 'text-slate-300');
+    }
+  });
+
+  const selectedBtn = document.getElementById(`s${qIndex}-${choice}`);
+  if (selectedBtn) {
+    selectedBtn.classList.remove('border-slate-700', 'text-slate-300');
+    selectedBtn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-500', 'font-bold');
+  }
+
+  showToastNotification('✅ Response Recorded!', `Thank you! Your vote for Question ${qIndex} has been logged in Team 18's SDG 3 dataset.`);
+}
+
+// Automatically initialize comparison on script execution
+setTimeout(() => {
+  if (typeof runFoodComparison === 'function') {
+    runFoodComparison();
+  }
+}, 300);
 
 function escapeHTML(str) {
   return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
