@@ -161,3 +161,13 @@
 .animate-modal {
   animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Sleek High-Tech Navigation Taskbar */
+.taskbar-slot {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.taskbar-slot:hover {
+  transform: translateY(-1px);
+}

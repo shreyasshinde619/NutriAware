@@ -199,16 +199,36 @@ function switchTab(tabId) {
     targetPage.classList.remove('hidden');
   }
 
-  const navBtns = document.querySelectorAll('header nav button');
+  // Taskbar slots active state management (Sleek High-Tech Taskbar)
+  const navBtns = document.querySelectorAll('#appTaskbar button, header nav button');
   navBtns.forEach(btn => {
-    btn.classList.remove('border-b-2', 'border-brand-400', 'text-brand-400', 'bg-brand-950/60');
-    btn.classList.add('text-slate-300');
+    btn.classList.remove(
+      'text-brand-400', 'text-rose-400', 'font-bold',
+      'bg-brand-950/80', 'bg-rose-950/80',
+      'border-brand-500/40', 'border-rose-500/40', 'shadow-sm',
+      'border-b-2', 'border-brand-400', 'bg-brand-950/60'
+    );
+    btn.classList.add('text-slate-300', 'border-transparent');
   });
 
   const activeBtn = document.getElementById(`nav-link-${tabId}`);
   if (activeBtn) {
-    activeBtn.classList.remove('text-slate-300');
-    activeBtn.classList.add('text-brand-400', 'font-bold', 'border-b-2', 'border-brand-400', 'bg-brand-950/60');
+    activeBtn.classList.remove('text-slate-300', 'border-transparent');
+    if (tabId === 'doomscrolling') {
+      activeBtn.classList.add('text-rose-400', 'font-bold', 'bg-rose-950/80', 'border-rose-500/40', 'shadow-sm');
+    } else {
+      activeBtn.classList.add('text-brand-400', 'font-bold', 'bg-brand-950/80', 'border-brand-500/40', 'shadow-sm');
+    }
+  }
+
+  // Mobile dropdown taskbar buttons
+  const mobileBtns = document.querySelectorAll('#mobileMenu button');
+  mobileBtns.forEach(btn => {
+    btn.classList.remove('bg-slate-800', 'text-brand-400', 'text-rose-400', 'font-bold');
+  });
+  const activeMobile = document.getElementById(`mobile-link-${tabId}`);
+  if (activeMobile) {
+    activeMobile.classList.add('bg-slate-800', tabId === 'doomscrolling' ? 'text-rose-400' : 'text-brand-400', 'font-bold');
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -999,6 +1019,27 @@ function generateNutriAIResponse(query) {
           <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel Notice
         </h5>
         <p class="text-slate-300">The Admin Panel option has been completely removed from the platform. The platform is now fully accessible directly without any login credentials.</p>
+      </div>
+    `;
+  }
+
+  // 1d. Doom Scrolling & Mindless Late-Night Eating
+  if (q.includes('doom') || q.includes('scroll') || q.includes('midnight') || q.includes('night snack') || q.includes('reel') || q.includes('bed')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-rose-300 flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-mobile-screen-button text-rose-400"></i> Late-Night Doom Scrolling & Mindless Snacking
+        </h5>
+        <p class="text-slate-300 leading-relaxed">
+          When hostel students scroll through reels or shorts between 11 PM and 2 AM, screen blue light suppresses sleep <strong>melatonin</strong> and elevates <strong>cortisol</strong>. 
+          Your brain seeks cheap dopamine and confuses tiredness with hunger!
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-rose-900/50 text-[11px] text-rose-200">
+          💡 <strong>Scientific Tip:</strong> Take the <strong>HALT test</strong> (Hungry, Anxious, Lonely, or Tired?). 90% of the time, drinking a glass of water (250ml) and putting the phone face down eliminates the craving completely.
+        </div>
+        <button onclick="switchTab('doomscrolling'); closeChatModal()" class="w-full bg-rose-950/80 hover:bg-rose-900 border border-rose-700/60 text-rose-300 text-xs font-bold py-1.5 rounded-xl transition">
+          📱 Open Doom Scrolling Buster Tab
+        </button>
       </div>
     `;
   }
@@ -1952,4 +1993,140 @@ function initProgressChart() {
       }
     }
   });
+}
+
+/* ==========================================================================
+   10. DOOM SCROLLING & MINDLESS SNACKING INTERACTIVE TOOLS
+   ========================================================================== */
+
+function runHALTCheck(type) {
+  const resultText = document.getElementById('haltResultText');
+  if (!resultText) return;
+
+  playChime('general');
+
+  switch (type) {
+    case 'hungry':
+      resultText.innerHTML = `
+        <span class="text-emerald-400 font-bold">✅ Physical Hunger (H):</span> Your stomach is genuinely empty. 
+        Instead of ultra-processed midnight chips, opt for <strong>roasted chana</strong>, a handful of <strong>almonds</strong>, 
+        or a warm cup of water with lemon. Avoid fried carbs that disrupt REM sleep!
+      `;
+      break;
+    case 'anxious':
+      resultText.innerHTML = `
+        <span class="text-rose-400 font-bold">⚠️ Emotional Anxiety (A):</span> You are scrolling to numb exam or assignment stress. 
+        High cortisol tricks your amygdala into screaming for high-fat sugar. 
+        <strong>Action:</strong> Close the phone, take 10 slow box breaths (4s in, 4s hold, 4s out), and drink 250ml water!
+      `;
+      break;
+    case 'lonely':
+      resultText.innerHTML = `
+        <span class="text-sky-400 font-bold">⚠️ Boredom & Dopamine Seeking (L):</span> You are seeking cheap screen dopamine, not sustenance. 
+        Eating snacks while staring at reels creates a mindless eating trance where you won't even taste the food. 
+        <strong>Action:</strong> Set a 5-minute phone detox timer or listen to calming instrumental music instead.
+      `;
+      break;
+    case 'tired':
+      resultText.innerHTML = `
+        <span class="text-purple-400 font-bold">🛑 Brain Exhaustion (T):</span> Blue light from the phone is suppressing melatonin, 
+        confusing your brain into thinking it's daylight and demanding instant glucose. 
+        <strong>Action:</strong> Put the phone face down, turn off room lights, and let your body enter natural sleep!
+      `;
+      break;
+  }
+}
+
+function calcScrollCalories(mins) {
+  const calEl = document.getElementById('calcDoomCalories');
+  const sleepEl = document.getElementById('calcDoomSleep');
+  const fatigueEl = document.getElementById('calcDoomFatigue');
+  if (!calEl || !sleepEl || !fatigueEl) return;
+
+  playChime('general');
+
+  if (mins === 30) {
+    calEl.textContent = '~140 kcal (Half pack chips)';
+    sleepEl.textContent = '+30 mins insomnia';
+    fatigueEl.textContent = 'MODERATE (Delayed Sleep)';
+  } else if (mins === 60) {
+    calEl.textContent = '~280 kcal (1 Full Canteen Samosa)';
+    sleepEl.textContent = '+60 mins insomnia';
+    fatigueEl.textContent = 'HIGH (Morning Lecture Fog)';
+  } else if (mins === 120) {
+    calEl.textContent = '~520 kcal (Noodles + Cold Drink)';
+    sleepEl.textContent = '+120 mins insomnia';
+    fatigueEl.textContent = 'VERY HIGH (Afternoon Crash)';
+  } else {
+    calEl.textContent = '~780+ kcal (Double Midnight Binge)';
+    sleepEl.textContent = '+180 mins severe sleep debt';
+    fatigueEl.textContent = 'CHRONIC (Inflammation & Brain Fatigue)';
+  }
+}
+
+let detoxInterval = null;
+let detoxRemainingSeconds = 300; // 5 minutes
+let isDetoxRunning = false;
+
+function startDoomDetoxTimer() {
+  switchTab('doomscrolling');
+  setTimeout(() => {
+    const el = document.getElementById('detoxTimerDisplay');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!isDetoxRunning) toggleDetoxTimer();
+  }, 250);
+}
+
+function toggleDetoxTimer() {
+  const btn = document.getElementById('btnStartDetox');
+  const statusEl = document.getElementById('detoxStatusText');
+
+  if (isDetoxRunning) {
+    clearInterval(detoxInterval);
+    isDetoxRunning = false;
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1"></i> Resume Reset';
+    if (statusEl) statusEl.textContent = 'Paused • Take a breath';
+  } else {
+    isDetoxRunning = true;
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-pause mr-1"></i> Pause Reset';
+    if (statusEl) statusEl.textContent = 'Screen Facedown • Focus on your breath';
+    playChime('general');
+
+    detoxInterval = setInterval(() => {
+      detoxRemainingSeconds--;
+      updateDetoxDisplay();
+
+      if (detoxRemainingSeconds <= 0) {
+        clearInterval(detoxInterval);
+        isDetoxRunning = false;
+        playChime('success');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Reset Complete!';
+        if (statusEl) statusEl.textContent = '🎉 Great job breaking the doom loop! Drink water and rest.';
+        showToastNotification(
+          '🧘 5-Minute Detox Complete',
+          'You successfully interrupted the late-night dopamine loop. Drink a glass of water and get some rest!',
+          'water'
+        );
+      }
+    }, 1000);
+  }
+}
+
+function resetDetoxTimer() {
+  clearInterval(detoxInterval);
+  isDetoxRunning = false;
+  detoxRemainingSeconds = 300;
+  updateDetoxDisplay();
+  const btn = document.getElementById('btnStartDetox');
+  const statusEl = document.getElementById('detoxStatusText');
+  if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1"></i> Start 5-Min Reset';
+  if (statusEl) statusEl.textContent = 'Ready to Start';
+}
+
+function updateDetoxDisplay() {
+  const display = document.getElementById('detoxTimerDisplay');
+  if (!display) return;
+  const m = Math.floor(detoxRemainingSeconds / 60).toString().padStart(2, '0');
+  const s = (detoxRemainingSeconds % 60).toString().padStart(2, '0');
+  display.textContent = `${m}:${s}`;
 }
