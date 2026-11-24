@@ -204,145 +204,7 @@ function switchTab(tabId) {
 
 
 /* ==========================================================================
-   3. WEBRTC LIVE CAMERA & AI VISION FOOD RECOGNITION
-   ========================================================================== */
-let mediaStream = null;
-
-async function startLiveCamera() {
-  const videoEl = document.getElementById('webcamVideo');
-  const initBox = document.getElementById('scanInitialState');
-  const resultsBox = document.getElementById('scanResultsState');
-  const camBtn = document.getElementById('startCamBtn');
-  const capBtn = document.getElementById('captureCamBtn');
-
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    showToastNotification('⚠️ Camera Access Failed', 'Webcam is not supported on this browser.');
-    return;
-  }
-
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
-    });
-
-    if (videoEl) {
-      videoEl.srcObject = mediaStream;
-      videoEl.classList.remove('hidden');
-      initBox?.classList.add('hidden');
-      resultsBox?.classList.add('hidden');
-      camBtn?.classList.add('hidden');
-      capBtn?.classList.remove('hidden');
-    }
-  } catch (err) {
-    showToastNotification('⚠️ Camera Permission Denied', 'Please allow camera permission in browser.');
-  }
-}
-
-function stopLiveCamera() {
-  if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop());
-    mediaStream = null;
-  }
-  document.getElementById('webcamVideo')?.classList.add('hidden');
-  document.getElementById('startCamBtn')?.classList.remove('hidden');
-  document.getElementById('captureCamBtn')?.classList.add('hidden');
-}
-
-function captureAndAnalyzeCamera() {
-  const videoEl = document.getElementById('webcamVideo');
-  const canvasEl = document.getElementById('snapshotCanvas');
-
-  if (!videoEl || !canvasEl) return;
-
-  const ctx = canvasEl.getContext('2d');
-  canvasEl.width = videoEl.videoWidth || 640;
-  canvasEl.height = videoEl.videoHeight || 480;
-  ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
-
-  stopLiveCamera();
-
-  const imageData = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
-  const detected = classifyImageData(imageData);
-
-  selectSampleFood(detected.name, detected.cals, detected.prot, detected.carbs, detected.fats, detected.grade, detected.tip);
-}
-
-function handleFileUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvasEl = document.getElementById('snapshotCanvas');
-      const ctx = canvasEl.getContext('2d');
-      canvasEl.width = img.width;
-      canvasEl.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const imageData = ctx.getImageData(0, 0, img.width, img.height);
-      const detected = classifyImageData(imageData);
-      selectSampleFood(detected.name, detected.cals, detected.prot, detected.carbs, detected.fats, detected.grade, detected.tip);
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function classifyImageData(imageData) {
-  const data = imageData.data;
-  let rSum = 0, gSum = 0, bSum = 0;
-  const totalPixels = data.length / 4;
-
-  for (let i = 0; i < data.length; i += 16) {
-    rSum += data[i];
-    gSum += data[i + 1];
-    bSum += data[i + 2];
-  }
-
-  const rAvg = rSum / (totalPixels / 4);
-  const gAvg = gSum / (totalPixels / 4);
-  const bAvg = bSum / (totalPixels / 4);
-
-  if (gAvg > rAvg && gAvg > bAvg) {
-    return { name: "Green Garden Avocado Salad", cals: 390, prot: "16g", carbs: "38g", fats: "18g", grade: "A+", tip: "Rich in chlorophyll, fiber, and healthy Omega-3 fats!" };
-  } else if (rAvg > 140 && gAvg > 100 && bAvg < 90) {
-    return { name: "Veggie Protein Burger", cals: 460, prot: "22g", carbs: "52g", fats: "14g", grade: "B+", tip: "Swap refined bun for Whole Wheat or Multigrain Bun." };
-  } else if (rAvg > 130 && bAvg > 110 && gAvg < 110) {
-    return { name: "Berry Antioxidant Yogurt Bowl", cals: 280, prot: "15g", carbs: "34g", fats: "5g", grade: "A", tip: "Probiotics in yogurt enhance gut health & immunity." };
-  } else {
-    return { name: "Quinoa & Roasted Veggie Grain Bowl", cals: 480, prot: "24g", carbs: "62g", fats: "11g", grade: "A+", tip: "Complete protein profile with all 9 essential amino acids!" };
-  }
-}
-
-function selectSampleFood(name, cals, prot, carbs, fats, grade, tip) {
-  const scanLine = document.getElementById('scanLine');
-  const initialState = document.getElementById('scanInitialState');
-  const resultsState = document.getElementById('scanResultsState');
-
-  if (!initialState || !resultsState || !scanLine) return;
-
-  scanLine.classList.remove('hidden');
-  initialState.classList.add('hidden');
-
-  setTimeout(() => {
-    scanLine.classList.add('hidden');
-    resultsState.classList.remove('hidden');
-
-    document.getElementById('detectedFoodName').textContent = name;
-    document.getElementById('detectedGrade').textContent = `NutriScore: Grade ${grade}`;
-    document.getElementById('detectedCals').textContent = `${cals} kcal`;
-    document.getElementById('detectedProt').textContent = prot;
-    document.getElementById('detectedCarbs').textContent = carbs;
-    document.getElementById('detectedFats').textContent = fats;
-    document.getElementById('detectedTip').textContent = `Smart Alternative Swap: ${tip}`;
-  }, 1000);
-}
-
-
-/* ==========================================================================
-   4. BMR & TDEE HEALTH CALCULATOR ENGINE ("NutriCalc 3D")
+   3. BMR & TDEE HEALTH CALCULATOR ENGINE ("NutriCalc 3D")
    ========================================================================== */
 function calculateHealthMetrics(event) {
   if (event) event.preventDefault();
@@ -648,7 +510,7 @@ function generateNutriAIResponse(query) {
           <li><strong>Canteen Nutrition Guide &amp; Swaps</strong></li>
           <li><strong>Food Comparison Side-by-Side Tool</strong></li>
           <li><strong>Interactive Student Survey</strong></li>
-          <li><strong>AI Scanner &amp; Camera Vision</strong></li>
+          <li><strong>Daily Hydration &amp; Water Tracker</strong></li>
           <li><strong>30-Question Nutrition Quiz &amp; Certificates</strong></li>
         </ul>
       </div>

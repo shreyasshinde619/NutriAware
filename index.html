@@ -127,9 +127,6 @@
           <button id="nav-link-survey" onclick="switchTab('survey')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
             📝 Student Survey
           </button>
-          <button id="nav-link-scanner" onclick="switchTab('scanner')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
-            📷 AI Scanner
-          </button>
           <button id="nav-link-quizzes" onclick="switchTab('quizzes')" class="px-3.5 py-2 rounded-xl text-slate-300 hover:text-brand-400 transition">
             🧠 Quiz
           </button>
@@ -167,7 +164,6 @@
         <button id="mobile-link-canteen" onclick="switchTab('canteen'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">🥗 Canteen &amp; Nutrition Guide</button>
         <button id="mobile-link-compare" onclick="switchTab('compare'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">⚖️ Food Comparison Tool</button>
         <button id="mobile-link-survey" onclick="switchTab('survey'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">📝 Interactive Student Survey</button>
-        <button id="mobile-link-scanner" onclick="switchTab('scanner'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">📷 Live AI Food Scanner</button>
         <button id="mobile-link-quizzes" onclick="switchTab('quizzes'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">🧠 30-Question Nutrition Quiz</button>
         <button id="mobile-link-tracker" onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-slate-800">💧 Daily Hydration Tracker</button>
       </div>
@@ -222,8 +218,8 @@
                 <button onclick="switchTab('survey')" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
                   <i class="fa-solid fa-clipboard-question"></i> Take Student Survey
                 </button>
-                <button onclick="switchTab('scanner')" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                  <i class="fa-solid fa-camera"></i> Live AI Scanner
+                <button onclick="switchTab('quizzes')" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                  <i class="fa-solid fa-brain"></i> 30-Q Nutrition Quiz
                 </button>
               </div>
             </div>
@@ -641,125 +637,6 @@
 
             <div class="bg-emerald-950/60 p-3 rounded-2xl border border-emerald-800 text-xs text-emerald-300 font-bold text-center">
               Team No.: 18 | Team Name: G18 • Thank You!
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </main>
-
-
-    <!-- ==========================================================================
-         VIEW TAB 2: SMART FEATURES & WEBRTC LIVE CAMERA AI SCANNER
-         ========================================================================== -->
-    <main id="view-scanner" class="tab-page hidden flex-1 py-12 bg-slate-950 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
-        <div class="text-center max-w-3xl mx-auto space-y-3">
-          <span class="text-xs font-bold tracking-widest text-brand-400 uppercase bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
-            WebRTC Live Camera Vision AI
-          </span>
-          <h2 class="font-display text-3xl font-extrabold text-white">AI Food Recognition &amp; Portion Analyzer</h2>
-          <p class="text-slate-400 text-sm">Turn on your device camera or upload dish photos for instant nutritional breakdown.</p>
-        </div>
-
-        <div class="dark-glass-card p-8 rounded-3xl border border-emerald-500/30 shadow-2xl space-y-8 max-w-4xl mx-auto">
-          
-          <!-- Controls Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Live Input Method:</span>
-            
-            <div class="flex items-center gap-3">
-              <button id="startCamBtn" onclick="startLiveCamera()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-2 transition">
-                <i class="fa-solid fa-video"></i> Start Live Camera
-              </button>
-
-              <button id="captureCamBtn" onclick="captureAndAnalyzeCamera()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-2 transition animate-pulse">
-                <i class="fa-solid fa-camera"></i> Capture &amp; Analyze Meal
-              </button>
-
-              <button onclick="document.getElementById('fileUploadInput').click()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-2 transition">
-                <i class="fa-solid fa-upload"></i> Upload Image File
-              </button>
-
-              <input type="file" id="fileUploadInput" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
-            </div>
-          </div>
-
-          <!-- Sample Dish Selectors -->
-          <div>
-            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Or Choose Sample Dish:</label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <button onclick="selectSampleFood('Avocado Salad', 420, '18g', '42g', '16g', 'A', 'Add Chia seeds for extra Omega-3')" class="p-3 bg-slate-900 border border-slate-800 hover:border-brand-500 rounded-2xl text-left transition">
-                <span class="text-2xl block mb-1">🥑</span>
-                <span class="font-bold text-xs block text-white">Avocado Salad</span>
-                <span class="text-[10px] text-slate-400">420 kcal</span>
-              </button>
-              <button onclick="selectSampleFood('Quinoa Protein Bowl', 510, '26g', '58g', '12g', 'A+', 'Perfect post-study energy meal!')" class="p-3 bg-slate-900 border border-slate-800 hover:border-brand-500 rounded-2xl text-left transition">
-                <span class="text-2xl block mb-1">🥗</span>
-                <span class="font-bold text-xs block text-white">Quinoa Bowl</span>
-                <span class="text-[10px] text-slate-400">510 kcal</span>
-              </button>
-              <button onclick="selectSampleFood('Veggie Cheeseburger', 450, '18g', '48g', '14g', 'B', 'Swap refined bun with Multigrain Bun')" class="p-3 bg-slate-900 border border-slate-800 hover:border-brand-500 rounded-2xl text-left transition">
-                <span class="text-2xl block mb-1">🍔</span>
-                <span class="font-bold text-xs block text-white">Veggie Burger</span>
-                <span class="text-[10px] text-slate-400">450 kcal</span>
-              </button>
-              <button onclick="selectSampleFood('Berry Yogurt Parfait', 290, '14g', '36g', '6g', 'A', 'Greek yogurt base provides probiotics')" class="p-3 bg-slate-900 border border-slate-800 hover:border-brand-500 rounded-2xl text-left transition">
-                <span class="text-2xl block mb-1">🫐</span>
-                <span class="font-bold text-xs block text-white">Yogurt Parfait</span>
-                <span class="text-[10px] text-slate-400">290 kcal</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Viewport Frame -->
-          <div id="scannerViewport" class="relative bg-slate-900 h-72 rounded-3xl overflow-hidden flex items-center justify-center text-white border-2 border-brand-500/50 shadow-inner">
-            
-            <video id="webcamVideo" class="hidden" autoplay playsinline></video>
-            <canvas id="snapshotCanvas" class="hidden"></canvas>
-
-            <div id="scanLine" class="hidden absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent shadow-[0_0_15px_#10b981] animate-scan z-10"></div>
-            
-            <div id="scanInitialState" class="text-center p-4">
-              <i class="fa-solid fa-camera text-5xl text-brand-400 mb-3 animate-pulse"></i>
-              <p class="font-bold text-base">Click 'Start Live Camera' or select a dish</p>
-              <p class="text-xs text-slate-400">Supports Mobile Webcams, Laptop Cameras &amp; Image Uploads</p>
-            </div>
-
-            <div id="scanResultsState" class="hidden w-full h-full p-6 bg-slate-900/95 flex flex-col justify-between z-20">
-              <div class="flex justify-between items-center">
-                <div>
-                  <span id="detectedFoodName" class="font-display font-bold text-xl text-brand-300">Avocado Salad</span>
-                  <span id="detectedGrade" class="ml-2 bg-brand-500 text-white text-xs font-bold px-2.5 py-1 rounded">Grade A</span>
-                </div>
-                <span class="text-xs text-slate-400">AI Confidence: 99.4%</span>
-              </div>
-
-              <div class="grid grid-cols-4 gap-3 text-center my-2">
-                <div class="bg-slate-800/70 p-3 rounded-2xl border border-slate-700">
-                  <span class="block text-[10px] text-slate-400">Calories</span>
-                  <span id="detectedCals" class="font-bold text-sm text-white">420 kcal</span>
-                </div>
-                <div class="bg-slate-800/70 p-3 rounded-2xl border border-slate-700">
-                  <span class="block text-[10px] text-slate-400">Protein</span>
-                  <span id="detectedProt" class="font-bold text-sm text-white">18g</span>
-                </div>
-                <div class="bg-slate-800/70 p-3 rounded-2xl border border-slate-700">
-                  <span class="block text-[10px] text-slate-400">Carbs</span>
-                  <span id="detectedCarbs" class="font-bold text-sm text-white">42g</span>
-                </div>
-                <div class="bg-slate-800/70 p-3 rounded-2xl border border-slate-700">
-                  <span class="block text-[10px] text-slate-400">Fats</span>
-                  <span id="detectedFats" class="font-bold text-sm text-white">16g</span>
-                </div>
-              </div>
-
-              <div class="bg-brand-950/80 p-3 rounded-xl border border-brand-700/50 flex items-center gap-2 text-xs text-brand-200">
-                <i class="fa-solid fa-lightbulb text-brand-400"></i>
-                <span id="detectedTip">Smart Alternative Swap: Add Chia seeds for extra Omega-3.</span>
-              </div>
             </div>
           </div>
 
@@ -1251,13 +1128,13 @@
       <i class="fa-solid fa-square-poll-vertical text-base"></i>
       <span>Survey</span>
     </button>
-    <button onclick="switchTab('scanner')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
-      <i class="fa-solid fa-camera text-base"></i>
-      <span>AI Scan</span>
-    </button>
     <button onclick="switchTab('quizzes')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
       <i class="fa-solid fa-brain text-base"></i>
       <span>Quiz</span>
+    </button>
+    <button onclick="switchTab('tracker')" class="flex flex-col items-center gap-1 text-[10px] font-bold hover:text-emerald-400 transition">
+      <i class="fa-solid fa-droplet text-base"></i>
+      <span>Water</span>
     </button>
   </div>
 
