@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuizPortal();
   registerPWA();
   initNotificationSystem();
+  initStudentProfile();
   initSpeechRecognition();
   
   // Direct open access - No login portal
@@ -283,24 +284,283 @@ function initSpeechRecognition() {
 
 
 /* ==========================================================================
-   6. DAILY PROTEIN & WATER NOTIFICATION SYSTEM
+   6. SINGLE STUDENT SESSION (LOGICQ RULE) & HYDRATION & NOTIFICATION SYSTEM
    ========================================================================== */
+
+// LogicQ Single-Student Profile State (Default: Target Persona Aarav Kulkarni)
+const DEFAULT_STUDENT_PROFILE = {
+  name: "Aarav Kulkarni",
+  prn: "24UET101",
+  hostel: "Sanjivani Boys Hostel (M.Tech)",
+  target: 2500,
+  registeredAt: new Date().toISOString()
+};
+
+let hydrationSnoozeTimer = null;
+
+function getActiveStudent() {
+  try {
+    const data = localStorage.getItem('nutriaware_active_student');
+    if (data) return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading student profile:', err);
+  }
+  return DEFAULT_STUDENT_PROFILE;
+}
+
+function initStudentProfile() {
+  const student = getActiveStudent();
+  updateStudentUI(student);
+}
+
+function updateStudentUI(student) {
+  if (!student) return;
+  
+  // Header badge
+  const headerName = document.getElementById('headerStudentName');
+  if (headerName) headerName.textContent = student.name;
+
+  // Hydration card badge
+  const badgeEl = document.getElementById('hydrationStudentBadge');
+  if (badgeEl) badgeEl.textContent = `Student: ${student.name.split(' ')[0]}`;
+
+  // Modal active student card
+  const dispName = document.getElementById('dispStudentName');
+  const dispMeta = document.getElementById('dispStudentMeta');
+  const dispGoal = document.getElementById('dispStudentGoal');
+  if (dispName) dispName.textContent = student.name;
+  if (dispMeta) dispMeta.textContent = `PRN: ${student.prn || '24UET101'} • ${student.hostel || 'Hostel Resident'}`;
+  if (dispGoal) dispGoal.textContent = `${student.target || 2500} ml / day`;
+
+  // Update target water intake if configured
+  if (student.target) {
+    window.targetWaterIntake = Number(student.target);
+  }
+}
+
+function openStudentModal() {
+  const modal = document.getElementById('studentSessionModal');
+  if (!modal) return;
+
+  const student = getActiveStudent();
+  const warning = document.getElementById('studentConflictWarning');
+  const activeCard = document.getElementById('activeStudentCard');
+  const form = document.getElementById('studentRegistrationForm');
+
+  if (warning) warning.classList.add('hidden');
+
+  // If a student is registered, show active card and hide registration form
+  if (student && student.name) {
+    if (activeCard) activeCard.classList.remove('hidden');
+    if (form) form.classList.add('hidden');
+    updateStudentUI(student);
+  } else {
+    if (activeCard) activeCard.classList.add('hidden');
+    if (form) form.classList.remove('hidden');
+  }
+
+  modal.classList.remove('hidden');
+  playChime('general');
+}
+
+function closeStudentModal() {
+  const modal = document.getElementById('studentSessionModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function showStudentSignupForm(isEdit = false) {
+  const student = getActiveStudent();
+  const warning = document.getElementById('studentConflictWarning');
+  const activeCard = document.getElementById('activeStudentCard');
+  const form = document.getElementById('studentRegistrationForm');
+
+  // LogicQ rule: If user tries to create another user without editing/switching
+  if (student && student.name && !isEdit) {
+    if (warning) {
+      warning.classList.remove('hidden');
+      warning.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    return;
+  }
+
+  if (warning) warning.classList.add('hidden');
+  if (activeCard) activeCard.classList.add('hidden');
+  if (form) {
+    form.classList.remove('hidden');
+    if (student) {
+      document.getElementById('inputStudentName').value = student.name || '';
+      document.getElementById('inputStudentPRN').value = student.prn || '';
+      document.getElementById('inputStudentHostel').value = student.hostel || '';
+      document.getElementById('inputStudentTarget').value = student.target || 2500;
+    }
+  }
+}
+
+function cancelStudentForm() {
+  const student = getActiveStudent();
+  const activeCard = document.getElementById('activeStudentCard');
+  const form = document.getElementById('studentRegistrationForm');
+  const warning = document.getElementById('studentConflictWarning');
+
+  if (warning) warning.classList.add('hidden');
+
+  if (student && student.name) {
+    if (activeCard) activeCard.classList.remove('hidden');
+    if (form) form.classList.add('hidden');
+  } else {
+    closeStudentModal();
+  }
+}
+
+function handleStudentSignup(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('inputStudentName')?.value?.trim();
+  const prn = document.getElementById('inputStudentPRN')?.value?.trim();
+  const hostel = document.getElementById('inputStudentHostel')?.value?.trim() || 'Hostel Resident';
+  const target = Number(document.getElementById('inputStudentTarget')?.value) || 2500;
+
+  if (!name || !prn) {
+    alert('Please enter your full name and PRN.');
+    return;
+  }
+
+  const newProfile = {
+    name,
+    prn,
+    hostel,
+    target,
+    registeredAt: new Date().toISOString()
+  };
+
+  localStorage.setItem('nutriaware_active_student', JSON.stringify(newProfile));
+  updateStudentUI(newProfile);
+  closeStudentModal();
+
+  playChime('success');
+  showToastNotification(
+    '🎓 Student Profile Active',
+    `Session locked for ${name} (${prn}). LogicQ single-student integrity active!`,
+    'general'
+  );
+}
+
+function confirmSwitchStudent() {
+  const current = getActiveStudent();
+  const confirmed = confirm(
+    `LogicQ Single-Student Rule:\nOnly 1 student can be active on this device at a time.\n\nDo you want to end the active session for "${current.name}" and register a new student?`
+  );
+
+  if (confirmed) {
+    localStorage.removeItem('nutriaware_active_student');
+    const warning = document.getElementById('studentConflictWarning');
+    const activeCard = document.getElementById('activeStudentCard');
+    const form = document.getElementById('studentRegistrationForm');
+
+    if (warning) warning.classList.add('hidden');
+    if (activeCard) activeCard.classList.add('hidden');
+    if (form) {
+      form.reset();
+      form.classList.remove('hidden');
+    }
+
+    // Default fields to empty
+    document.getElementById('inputStudentName').value = '';
+    document.getElementById('inputStudentPRN').value = '';
+    document.getElementById('inputStudentHostel').value = '';
+
+    playChime('general');
+    showToastNotification(
+      '🔄 Session Reset',
+      'Previous student session ended. Enter details for the new student.',
+      'general'
+    );
+  }
+}
+
+// --------------------------------------------------------------------------
+// INTERACTIVE HYDRATION SYSTEM WITH 3 USER CHOICES (YES / SNOOZE / NO)
+// --------------------------------------------------------------------------
 function initNotificationSystem() {
   if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
     setTimeout(() => { Notification.requestPermission(); }, 4000);
   }
 
+  // Periodic reminder interval: triggers hydration or protein check
   setInterval(() => {
-    Math.random() > 0.5 ? triggerWaterReminder() : triggerProteinReminder();
+    Math.random() > 0.4 ? triggerWaterReminder() : triggerProteinReminder();
   }, 240000);
+
+  // Check for 5:00 PM evening snack nudge
+  check5PMSnackSchedule();
 }
 
 function triggerWaterReminder() {
-  const title = '💧 Hydration Alert';
-  const msg = `Time to drink a glass of water (250 ml)! Stay hydrated to hit your 2,500 ml goal.`;
-  showToastNotification(title, msg, 'water');
+  const student = getActiveStudent();
+  const card = document.getElementById('hydrationPromptCard');
+  const badgeEl = document.getElementById('hydrationStudentBadge');
+
+  if (badgeEl && student) {
+    badgeEl.textContent = `Student: ${student.name.split(' ')[0]}`;
+  }
+
+  if (card) {
+    card.classList.remove('hidden');
+    card.classList.add('animate-toast');
+  }
+
+  playChime('general');
+
   if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification(title, { body: msg, icon: 'app-icon.svg' });
+    new Notification('💧 Hydration Check-In', {
+      body: `Did you drink a glass of water, ${student ? student.name.split(' ')[0] : 'Student'}? Keep hydrated!`,
+      icon: 'app-icon.svg'
+    });
+  }
+}
+
+function dismissHydrationPrompt() {
+  const card = document.getElementById('hydrationPromptCard');
+  if (card) card.classList.add('hidden');
+}
+
+function respondHydration(choice) {
+  dismissHydrationPrompt();
+  const student = getActiveStudent();
+  const studentFirst = student ? student.name.split(' ')[0] : 'Student';
+
+  if (choice === 'yes') {
+    // 1. Yes, I drank water (+250ml)
+    if (typeof addWater === 'function') {
+      addWater(250);
+    }
+    playChime('success');
+    showToastNotification(
+      '💧 Hydration Recorded!',
+      `Awesome job, ${studentFirst}! +250 ml added to your daily tracker.`,
+      'water'
+    );
+  } else if (choice === 'snooze') {
+    // 2. Remind me after 5 mins
+    if (hydrationSnoozeTimer) clearTimeout(hydrationSnoozeTimer);
+    hydrationSnoozeTimer = setTimeout(() => {
+      triggerWaterReminder();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    playChime('general');
+    showToastNotification(
+      '⏰ Reminder Snoozed',
+      `Got it, ${studentFirst}! We'll prompt you again in 5 minutes with a fresh glass reminder.`,
+      'water'
+    );
+  } else if (choice === 'no') {
+    // 3. No, not yet
+    playChime('general');
+    showToastNotification(
+      '💡 Study Hydration Tip',
+      `No worries, ${studentFirst}! Keep a water bottle on your study desk. Drink whenever you take your next short break.`,
+      'general'
+    );
   }
 }
 
@@ -310,6 +570,44 @@ function triggerProteinReminder() {
   showToastNotification(title, msg, 'protein');
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification(title, { body: msg, icon: 'app-icon.svg' });
+  }
+}
+
+// --------------------------------------------------------------------------
+// 5:00 PM EVENING SNACK NUDGE (EXPERIMENT 8 PPT SLIDE 3 SCREEN 6)
+// --------------------------------------------------------------------------
+function trigger5PMSnackNudge() {
+  const modal = document.getElementById('snackNudgeModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    playChime('general');
+  }
+
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('🕒 5:00 PM Healthy Snack Nudge', {
+      body: 'Hostel evening hunger striking? Swap oily samosas for sprouted moong chaat or roasted chana!',
+      icon: 'app-icon.svg'
+    });
+  }
+}
+
+function closeSnackNudge() {
+  const modal = document.getElementById('snackNudgeModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function check5PMSnackSchedule() {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  
+  // If between 4:50 PM and 5:15 PM, and not nudged yet today
+  const todayKey = `nutriaware_snack_nudge_${now.toDateString()}`;
+  if (hours === 17 && !localStorage.getItem(todayKey)) {
+    localStorage.setItem(todayKey, 'true');
+    setTimeout(() => {
+      trigger5PMSnackNudge();
+    }, 1500);
   }
 }
 
@@ -1128,6 +1426,8 @@ const comparisonItems = {
     carbs: 24,
     fat: 17.0,
     fiber: 1.8,
+    sugar: 2.1,
+    sugarSpoons: 0.5,
     sodium: 420,
     grade: "D",
     gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
@@ -1141,6 +1441,8 @@ const comparisonItems = {
     carbs: 54,
     fat: 15.0,
     fiber: 2.1,
+    sugar: 3.0,
+    sugarSpoons: 0.8,
     sodium: 980,
     grade: "F",
     gradeColor: "text-rose-400 bg-rose-500/20 border-rose-500/40",
@@ -1154,6 +1456,8 @@ const comparisonItems = {
     carbs: 38,
     fat: 13.5,
     fiber: 2.0,
+    sugar: 3.2,
+    sugarSpoons: 0.8,
     sodium: 510,
     grade: "D",
     gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
@@ -1167,6 +1471,8 @@ const comparisonItems = {
     carbs: 39,
     fat: 0.0,
     fiber: 0.0,
+    sugar: 39.0,
+    sugarSpoons: 10.0,
     sodium: 45,
     grade: "F",
     gradeColor: "text-rose-400 bg-rose-500/20 border-rose-500/40",
@@ -1180,6 +1486,8 @@ const comparisonItems = {
     carbs: 41,
     fat: 15.0,
     fiber: 3.8,
+    sugar: 0.4,
+    sugarSpoons: 0.1,
     sodium: 320,
     grade: "D",
     gradeColor: "text-amber-400 bg-amber-500/20 border-amber-500/40",
@@ -1193,6 +1501,8 @@ const comparisonItems = {
     carbs: 22,
     fat: 1.5,
     fiber: 7.5,
+    sugar: 1.2,
+    sugarSpoons: 0.0,
     sodium: 60,
     grade: "A+",
     gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
@@ -1206,6 +1516,8 @@ const comparisonItems = {
     carbs: 33,
     fat: 4.2,
     fiber: 4.1,
+    sugar: 1.5,
+    sugarSpoons: 0.0,
     sodium: 180,
     grade: "A",
     gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
@@ -1219,6 +1531,8 @@ const comparisonItems = {
     carbs: 26,
     fat: 7.0,
     fiber: 5.2,
+    sugar: 2.0,
+    sugarSpoons: 0.5,
     sodium: 240,
     grade: "A+",
     gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
@@ -1232,6 +1546,8 @@ const comparisonItems = {
     carbs: 4.8,
     fat: 1.2,
     fiber: 0.2,
+    sugar: 0.0,
+    sugarSpoons: 0.0,
     sodium: 120,
     grade: "A+",
     gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
@@ -1245,6 +1561,8 @@ const comparisonItems = {
     carbs: 24,
     fat: 0.3,
     fiber: 3.5,
+    sugar: 18.0,
+    sugarSpoons: 4.5,
     sodium: 5,
     grade: "A",
     gradeColor: "text-emerald-400 bg-emerald-500/20 border-emerald-500/40",
@@ -1265,6 +1583,7 @@ function runFoodComparison() {
   const calDiff = itemA.calories - itemB.calories;
   const protDiff = (itemB.protein - itemA.protein).toFixed(1);
   const fatDiff = (itemA.fat - itemB.fat).toFixed(1);
+  const sugarSaved = (itemA.sugarSpoons - itemB.sugarSpoons).toFixed(1);
 
   container.innerHTML = `
     <!-- Food A (Option 1) -->
@@ -1291,6 +1610,17 @@ function runFoodComparison() {
           <p class="text-[10px] text-slate-400 uppercase">Fat</p>
           <p class="text-sm font-extrabold ${itemA.fat > 10 ? 'text-rose-400' : 'text-amber-400'}">${itemA.fat}g</p>
         </div>
+      </div>
+
+      <!-- PPT Slide 3 Screen 4: Visual Sugar Spoon Count -->
+      <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 uppercase font-bold">Visual Sugar Spoon Count</span>
+          <span class="text-xs font-black ${itemA.sugarSpoons >= 4 ? 'text-rose-400' : (itemA.sugarSpoons > 0 ? 'text-amber-400' : 'text-emerald-400')}">
+            ${itemA.sugarSpoons === 0 ? '🥄 × 0' : '🥄'.repeat(Math.min(10, Math.max(1, Math.round(itemA.sugarSpoons))))} (${itemA.sugarSpoons} spoons)
+          </span>
+        </div>
+        <p class="text-[10px] text-slate-400 mt-1">Replaced grams with spoons for instant visual awareness (Slide 4 revision)</p>
       </div>
 
       <div class="space-y-1.5 text-xs text-slate-300">
@@ -1339,6 +1669,17 @@ function runFoodComparison() {
         </div>
       </div>
 
+      <!-- PPT Slide 3 Screen 4: Visual Sugar Spoon Count -->
+      <div class="p-3 rounded-xl bg-slate-950 border border-emerald-900/60">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 uppercase font-bold">Visual Sugar Spoon Count</span>
+          <span class="text-xs font-black ${itemB.sugarSpoons >= 4 ? 'text-rose-400' : (itemB.sugarSpoons > 0 ? 'text-amber-400' : 'text-emerald-400')}">
+            ${itemB.sugarSpoons === 0 ? '🥄 × 0' : '🥄'.repeat(Math.min(10, Math.max(1, Math.round(itemB.sugarSpoons))))} (${itemB.sugarSpoons} spoons)
+          </span>
+        </div>
+        <p class="text-[10px] text-emerald-400 mt-1">Clean nutritional alternative with zero / low added sugar</p>
+      </div>
+
       <div class="space-y-1.5 text-xs text-slate-300">
         <div class="flex justify-between py-1 border-b border-slate-800">
           <span>Carbohydrates:</span>
@@ -1368,7 +1709,8 @@ function runFoodComparison() {
     <p class="leading-relaxed">
       Switching from <strong>${itemA.name}</strong> to <strong>${itemB.name}</strong> saves 
       <strong class="text-emerald-400">${Math.abs(calDiff)} calories</strong>, cuts 
-      <strong class="text-emerald-400">${Math.abs(fatDiff)}g of total fats</strong>, and provides 
+      <strong class="text-emerald-400">${Math.abs(fatDiff)}g of total fats</strong>, 
+      saves <strong class="text-emerald-400">${Math.max(0, parseFloat(sugarSaved))} spoons of sugar (🥄)</strong>, and provides 
       <strong class="text-emerald-400">${Math.abs(protDiff)}g ${protDiff >= 0 ? 'more' : 'less'} clean protein</strong>! 
       This switch directly enhances mental clarity, eliminates afternoon lethargy, and prevents digestive inflammation.
     </p>
