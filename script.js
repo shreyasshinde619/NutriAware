@@ -30,6 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Direct open access - No login portal
   showMainApp();
+
+  // LogicQ-style Onboarding Popover Guide (appears on first visit)
+  if (!localStorage.getItem('nutriaware_radial_guide_seen')) {
+    setTimeout(() => {
+      const popover = document.getElementById('radialGuidePopover');
+      if (popover && !isRadialOpen) popover.classList.remove('hidden');
+    }, 1500);
+  }
+
+  // Pre-load welcome message in Socratic AI Chatbot
+  renderWelcomeGreeting();
 });
 
 /* Service Worker Registration for PWA */
@@ -351,27 +362,189 @@ function toggleMobileMenu() {
 
 
 /* ==========================================================================
-   8. ADVANCED SMART AI CHATBOT ("NutriAssist Pro AI")
+   8. LOGICQ-INSPIRED SOCRATIC AI CHATBOT & RADIAL SPEED-DIAL QUICK HUB
    ========================================================================== */
-let isChatOpen = false;
 
-function toggleChatWidget() {
-  const chatBox = document.getElementById('chatBox');
-  if (!chatBox) return;
+// 1. Web Audio API Sound Synthesizer (Exact LogicQ Zero-Asset Chimes)
+function playSoundChime(type) {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-  isChatOpen = !isChatOpen;
-  if (isChatOpen) {
-    chatBox.classList.remove('hidden');
-    chatBox.classList.add('flex');
-    document.getElementById('chatInput')?.focus();
-  } else {
-    chatBox.classList.add('hidden');
-    chatBox.classList.remove('flex');
+    osc.type = 'sine';
+    const now = ctx.currentTime;
+
+    if (type === 'open') {
+      // Ascending tech chime (320 Hz -> 640 Hz in 80ms)
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(640, now + 0.08);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    } else {
+      // Descending dismiss chime (540 Hz -> 260 Hz in 80ms)
+      osc.frequency.setValueAtTime(540, now);
+      osc.frequency.exponentialRampToValueAtTime(260, now + 0.08);
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    }
+  } catch (e) {
+    // Audio context silently ignored if user hasn't interacted with page yet
   }
 }
 
+// 2. Radial Speed-Dial Expansion Menu (Exact LogicQ Trigonometry Arc)
+let isRadialOpen = false;
+
+function toggleRadialMenu() {
+  isRadialOpen = !isRadialOpen;
+  const fabIcon = document.getElementById('fabIcon');
+  const pingRing = document.getElementById('fabPingRing');
+  const newBadge = document.getElementById('fabNewBadge');
+  const guidePopover = document.getElementById('radialGuidePopover');
+  if (guidePopover) guidePopover.classList.add('hidden');
+
+  const items = [
+    document.getElementById('radialBtnChat'),
+    document.getElementById('radialBtnCanteen'),
+    document.getElementById('radialBtnCompare'),
+    document.getElementById('radialBtnSurvey'),
+    document.getElementById('radialBtnQuiz'),
+    document.getElementById('radialBtnTracker')
+  ].filter(Boolean);
+
+  if (isRadialOpen) {
+    playSoundChime('open');
+    if (fabIcon) fabIcon.style.transform = 'rotate(135deg)';
+    if (pingRing) pingRing.style.display = 'none';
+    if (newBadge) newBadge.style.display = 'none';
+
+    // Deploy items along arc (-90° to -180°) with radius 114px
+    const radius = 114;
+    const count = items.length;
+    items.forEach((btn, index) => {
+      const angleDeg = -90 - index * (90 / (count - 1));
+      const angleRad = (angleDeg * Math.PI) / 180;
+      const x = Math.round(radius * Math.cos(angleRad));
+      const y = Math.round(radius * Math.sin(angleRad));
+
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity = '1';
+      btn.style.transform = `translate(${x}px, ${y}px) scale(1)`;
+      btn.style.transitionDelay = `${index * 40}ms`;
+    });
+  } else {
+    playSoundChime('close');
+    if (fabIcon) fabIcon.style.transform = 'rotate(0deg)';
+    const count = items.length;
+    items.forEach((btn, index) => {
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0';
+      btn.style.transform = `translate(0px, 0px) scale(0.5)`;
+      btn.style.transitionDelay = `${(count - 1 - index) * 25}ms`;
+    });
+  }
+}
+
+function dismissRadialGuide() {
+  const guide = document.getElementById('radialGuidePopover');
+  if (guide) guide.classList.add('hidden');
+  localStorage.setItem('nutriaware_radial_guide_seen', 'true');
+}
+
+function selectRadialTab(tabId) {
+  if (isRadialOpen) toggleRadialMenu();
+  switchTab(tabId);
+}
+
+function openChatModalFromRadial() {
+  if (isRadialOpen) toggleRadialMenu();
+  openChatModal();
+}
+
+// 3. Socratic AI Chatbot Modal Controller
+function openChatModal() {
+  const modal = document.getElementById('chatModalBackdrop');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  playSoundChime('open');
+
+  const messagesContainer = document.getElementById('chatMessages');
+  if (messagesContainer && messagesContainer.children.length === 0) {
+    renderWelcomeGreeting();
+  }
+
+  setTimeout(() => {
+    document.getElementById('chatInput')?.focus();
+  }, 150);
+}
+
+function closeChatModal() {
+  const modal = document.getElementById('chatModalBackdrop');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  playSoundChime('close');
+}
+
+function toggleChatWidget() {
+  const modal = document.getElementById('chatModalBackdrop');
+  if (modal && !modal.classList.contains('hidden')) {
+    closeChatModal();
+  } else {
+    openChatModal();
+  }
+}
+
+// 4. Conversation Rendering & State Management
+function renderWelcomeGreeting() {
+  const messagesContainer = document.getElementById('chatMessages');
+  if (!messagesContainer) return;
+  const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  messagesContainer.innerHTML = `
+    <div class="flex items-start gap-3">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 text-white shadow-sm mt-0.5 border border-emerald-400/30">
+        <i class="fa-solid fa-brain text-xs"></i>
+      </div>
+      <div class="max-w-[85%] rounded-2xl rounded-tl-sm px-4 py-3.5 bg-slate-800/90 border border-slate-700/60 text-slate-200 text-sm leading-relaxed shadow-sm space-y-2">
+        <p class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+          <i class="fa-solid fa-sparkles"></i> NutriAware Socratic AI Mentor
+        </p>
+        <p class="text-slate-200">
+          Hello! 👋 I am your <strong>NutriAware Socratic AI Mentor</strong> (Team 18 / G18 — UN SDG 3).
+        </p>
+        <p class="text-slate-300 text-xs leading-relaxed">
+          I won't just dump generic calorie numbers. Instead, I help you understand <em>why</em> foods make you tired, guide you with <strong>smart canteen swaps</strong>, decode confusing package labels, and teach you how to balance your daily mess plate!
+        </p>
+        <p class="text-slate-300 text-xs">
+          Click any suggestion prompt above or ask a question below. How can I help with your food choices today?
+        </p>
+        <span class="block text-[9px] text-slate-400 text-right pt-1">${timeStr}</span>
+      </div>
+    </div>
+  `;
+}
+
+function resetChatConversation() {
+  playSoundChime('open');
+  renderWelcomeGreeting();
+  showToastNotification('🔄 Chat Cleared', 'Conversation history has been reset.');
+}
+
 function sendQuickPrompt(promptText) {
-  if (!isChatOpen) toggleChatWidget();
+  openChatModal();
   const chatInput = document.getElementById('chatInput');
   if (chatInput) {
     chatInput.value = promptText;
@@ -397,60 +570,63 @@ function handleChatSubmit(event) {
     removeTypingIndicator(typingId);
     const aiResponse = generateNutriAIResponse(userQuery);
     appendChatMessage('ai', aiResponse);
-  }, 700);
+  }, 600);
 }
 
 function appendChatMessage(sender, text) {
   const messagesContainer = document.getElementById('chatMessages');
+  if (!messagesContainer) return;
   const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   const messageWrapper = document.createElement('div');
-  messageWrapper.className = `flex items-start gap-2 max-w-[90%] ${sender === 'user' ? 'ml-auto flex-row-reverse' : ''}`;
+  messageWrapper.className = `flex items-start gap-3 max-w-[88%] ${sender === 'user' ? 'ml-auto flex-row-reverse' : ''}`;
 
   if (sender === 'user') {
     messageWrapper.innerHTML = `
-      <div class="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs shrink-0 mt-1">
+      <div class="w-8 h-8 rounded-xl bg-slate-800 text-slate-200 flex items-center justify-center text-xs shrink-0 mt-0.5 border border-slate-700">
         <i class="fa-solid fa-user"></i>
       </div>
-      <div class="bg-brand-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm space-y-1">
+      <div class="rounded-2xl rounded-tr-sm px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm leading-relaxed shadow-md shadow-emerald-600/15 space-y-1">
         <p>${escapeHTML(text)}</p>
-        <span class="block text-[9px] text-brand-200 text-right">${timeStr}</span>
+        <span class="block text-[9px] text-emerald-200 text-right">${timeStr}</span>
       </div>
     `;
+    messagesContainer.appendChild(messageWrapper);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   } else {
     messageWrapper.innerHTML = `
-      <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
-        <i class="fa-solid fa-brain"></i>
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 text-white shadow-sm mt-0.5 border border-emerald-400/30">
+        <i class="fa-solid fa-brain text-xs"></i>
       </div>
-      <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-700 space-y-2 leading-relaxed">
-        <p class="font-bold text-brand-700 flex items-center gap-1.5">
-          <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
+      <div class="rounded-2xl rounded-tl-sm px-4 py-3.5 bg-slate-800/90 border border-slate-700/60 text-slate-200 text-sm leading-relaxed shadow-sm space-y-2 flex-1">
+        <p class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+          <i class="fa-solid fa-sparkles"></i> NutriAware Socratic AI Mentor
         </p>
-        <div>${text}</div>
-        <span class="block text-[9px] text-slate-400 text-right">${timeStr}</span>
+        <div class="bot-response-content space-y-2">${text}</div>
+        <span class="block text-[9px] text-slate-400 text-right pt-1">${timeStr}</span>
       </div>
     `;
+    messagesContainer.appendChild(messageWrapper);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
-
-  messagesContainer.appendChild(messageWrapper);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 function appendTypingIndicator() {
   const messagesContainer = document.getElementById('chatMessages');
+  if (!messagesContainer) return null;
   const typingId = 'typing_' + Date.now();
 
   const typingWrapper = document.createElement('div');
   typingWrapper.id = typingId;
-  typingWrapper.className = 'flex items-start gap-2 max-w-[85%]';
+  typingWrapper.className = 'flex items-start gap-3 max-w-[85%]';
   typingWrapper.innerHTML = `
-    <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs shrink-0 mt-1">
-      <i class="fa-solid fa-brain"></i>
+    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 text-white shadow-sm mt-0.5 border border-emerald-400/30">
+      <i class="fa-solid fa-brain text-xs"></i>
     </div>
-    <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 shadow-sm text-slate-400 flex items-center gap-1">
-      <span class="animate-bounce">●</span>
-      <span class="animate-bounce delay-100">●</span>
-      <span class="animate-bounce delay-200">●</span>
+    <div class="rounded-2xl rounded-tl-sm px-4 py-3 bg-slate-800/90 border border-slate-700/60 shadow-sm flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style="animation-delay: 0ms"></span>
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style="animation-delay: 150ms"></span>
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style="animation-delay: 300ms"></span>
     </div>
   `;
 
@@ -460,7 +636,7 @@ function appendTypingIndicator() {
 }
 
 function removeTypingIndicator(id) {
-  document.getElementById(id)?.remove();
+  if (id) document.getElementById(id)?.remove();
 }
 
 function startVoiceChatInput() {
@@ -773,7 +949,34 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  // 12. Tech Stack
+  // 12. Socratic Diet Debugger (LogicQ-Style Conceptual Guidance)
+  if (q.includes('sleepy') || q.includes('tired') || q.includes('afternoon') || q.includes('slump') || q.includes('crash') || q.includes('debugger') || q.includes('socratic')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-bolt text-amber-400"></i> Socratic Diet Debugger • The 2:00 PM Energy Crash
+        </h5>
+        <p class="text-slate-300 leading-relaxed">
+          Let's analyze why afternoon college lectures feel so draining. Consider your usual lunch:
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+          <p class="font-bold text-rose-400">🔍 Root Cause Hypothesis:</p>
+          <p class="text-slate-300 text-[11px]">
+            Did your meal consist predominantly of <strong>refined rice, maida rotis, fried samosas/pakoras, or sweet tea/soda</strong>?
+          </p>
+        </div>
+        <p class="text-slate-300 leading-relaxed text-[11px]">
+          High-glycemic simple carbohydrates cause a rapid surge in blood glucose, prompting the pancreas to release high levels of insulin. This triggers a sharp blood glucose drop (<em>reactive hypoglycemia</em>), starving your brain of steady glucose and causing sudden brain fog and sleepiness.
+        </p>
+        <div class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200 space-y-1">
+          <p class="font-bold text-emerald-400">💡 The Socratic Fix (The 50/25/25 Plate Model):</p>
+          <p>Swap half of your simple starch for fiber and protein: enjoy a glass of <strong>Spiced Chaas (Buttermilk)</strong> and a cup of <strong>Sprouted Moong Salad</strong> before having grains. This slows gastric emptying and keeps your academic focus razor-sharp!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 13. Tech Stack
   if (q.includes('tech') || q.includes('technology') || q.includes('stack') || q.includes('tensorflow') || q.includes('flutter') || q.includes('node') || q.includes('python')) {
     return `
       <div class="space-y-1.5 text-xs">
@@ -782,9 +985,9 @@ function generateNutriAIResponse(query) {
         </h5>
         <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
           <li><strong>UI Frontend:</strong> Flutter (Mobile) + Modern HTML5/Tailwind Web Portal</li>
-          <li><strong>Backend Services:</strong> Node.js, Express &amp; Supabase Cloud Auth</li>
+          <li><strong>Backend Services:</strong> Node.js, Express &amp; Supabase Cloud Database</li>
           <li><strong>Database:</strong> Cloud PostgreSQL (Supabase) / MySQL / Firestore</li>
-          <li><strong>AI Engine:</strong> Python with TensorFlow (CNN / Transfer Learning)</li>
+          <li><strong>Audio Synthesizer:</strong> Web Audio API (Zero-Asset Realtime Chimes)</li>
         </ul>
       </div>
     `;
@@ -793,7 +996,7 @@ function generateNutriAIResponse(query) {
   // Fallback Catch-All
   return `
     <div class="space-y-1.5 text-xs text-slate-300">
-      <p class="text-white font-bold">NutriAssist AI • Team 18 (G18) • SDG 3</p>
+      <p class="text-white font-bold">NutriAware Socratic AI • Team 18 (G18) • SDG 3</p>
       <p>I can help answer questions from our official project specification document:</p>
       <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-400">
         <li><strong>Team 18 &amp; SDG 3</strong> (Team members &amp; University info)</li>
@@ -801,7 +1004,7 @@ function generateNutriAIResponse(query) {
         <li><strong>10 Core Features</strong> (Detailed specifications)</li>
         <li><strong>Canteen Swaps &amp; Food Labels</strong> (Practical dining advice)</li>
         <li><strong>Student Survey Results</strong> (5 questions &amp; expected analysis)</li>
-        <li><strong>Login &amp; Registration</strong> (Secure authentication guide)</li>
+        <li><strong>Plate Portions &amp; Socratic Diet Debugger</strong> (Why you get tired after eating)</li>
       </ul>
     </div>
   `;

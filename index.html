@@ -1139,82 +1139,207 @@
   </div>
 
 
-  <!-- CUSTOM INTERACTIVE ELEMENT: FLOATING AI CHATBOT SMART ASSISTANT WIDGET -->
-  <div id="chatWidget" class="fixed bottom-16 md:bottom-6 right-6 z-50 flex flex-col items-end">
-    <div id="chatBox" class="hidden w-[360px] sm:w-[420px] bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-emerald-500/40 overflow-hidden flex-col mb-4 transition-all text-white">
-      
-      <!-- Chatbot Header -->
-      <div class="bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-700 p-4 text-white flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <div>
-            <h4 class="font-bold text-sm flex items-center gap-1.5">
-              NutriAssist AI • Team 18 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            </h4>
-            <p class="text-[10px] text-brand-100 font-medium">Nutrition & Healthy Food Awareness Platform</p>
-          </div>
+  <!-- ==========================================================================
+       LOGICQ-STYLE FLOATING RADIAL QUICK HUB & SOCRATIC AI CHATBOT TRIGGER
+       ========================================================================== -->
+  <div id="radialHubContainer" class="fixed bottom-20 md:bottom-6 right-6 z-[9999] select-none">
+    
+    <!-- Onboarding Popover Guide Card (LogicQ style) -->
+    <div id="radialGuidePopover" class="hidden absolute bottom-20 right-0 w-[310px] sm:w-[340px] rounded-3xl bg-slate-900/98 backdrop-blur-2xl border border-emerald-500/50 shadow-[0_20px_60px_-10px_rgba(16,185,129,0.35)] p-5 text-white animate-float z-50">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🥗</span>
+          <h4 class="font-bold text-sm text-emerald-400">Student Health Hub 🚀</h4>
         </div>
-        <button onclick="toggleChatWidget()" class="text-white/80 hover:text-white text-lg p-1">
-          <i class="fa-solid fa-xmark"></i>
+        <button onclick="dismissRadialGuide()" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
-
-      <!-- Quick Suggestion Chips Bar -->
-      <div class="px-3 py-2 bg-slate-950/80 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto text-[10px] scrollbar-none">
-        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          👥 Team 18 & SDG 3
-        </button>
-        <button onclick="sendQuickPrompt('What is the Problem Statement and Mission?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🎯 Problem & Mission
-        </button>
-        <button onclick="sendQuickPrompt('Explain Food Label Guidance')" class="bg-amber-950/80 text-amber-300 hover:bg-amber-900 border border-amber-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🏷️ Food Label Guide
-        </button>
-        <button onclick="sendQuickPrompt('Show Canteen Healthy Swaps')" class="bg-teal-950/80 text-teal-300 hover:bg-teal-900 border border-teal-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🥗 Canteen Swaps
-        </button>
-        <button onclick="sendQuickPrompt('What are the 10 Core Features?')" class="bg-indigo-950/80 text-indigo-300 hover:bg-indigo-900 border border-indigo-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          ✨ 10 Features
-        </button>
-        <button onclick="sendQuickPrompt('Tell me about the Student Survey Results')" class="bg-purple-950/80 text-purple-300 hover:bg-purple-900 border border-purple-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          📊 Survey Insights
-        </button>
-        <button onclick="sendQuickPrompt('Explain the Healthy Plate portion tips')" class="bg-teal-950/80 text-teal-300 hover:bg-teal-900 border border-teal-700/50 px-2.5 py-1 rounded-full whitespace-nowrap transition font-semibold">
-          🍽️ Plate Portions
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Meet your <strong>NutriAware Socratic AI Mentor</strong>! Tap this button to explore healthy canteen swaps, food comparison, quizzes, and instant nutrition guidance.
+      </p>
+      <div class="mt-3 flex justify-end">
+        <button onclick="dismissRadialGuide()" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow hover:scale-105 transition">
+          Explore Hub ✨
         </button>
       </div>
-
-      <!-- Chat Message Thread -->
-      <div id="chatMessages" class="p-4 h-80 overflow-y-auto space-y-3 bg-slate-950/90 text-xs">
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <p class="font-bold text-brand-400 flex items-center gap-1">
-            <i class="fa-solid fa-sparkles text-xs"></i> NutriAssist Pro AI
-          </p>
-          <p class="text-slate-300 leading-relaxed">
-            Welcome to the <strong>Nutrition and Healthy Food Awareness System</strong> (Team 18 / G18 — SDG 3)! 👋 This platform is completely open-access with no login required. I can explain our problem statement, WHO-WHAT-WHY matrix, 10 core features, canteen swaps, food label guidance, student survey findings, and portion balance tips. Click any chip above or ask me anything!
-          </p>
-        </div>
-      </div>
-
-      <!-- Chat Input Form with Voice Mic -->
-      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
-        <input type="text" id="chatInput" placeholder="Ask NutriAssist AI or click mic..." class="flex-1 bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-brand-500" required />
-        
-        <button type="button" onclick="startVoiceChatInput()" title="Voice AI Speech Input" class="bg-slate-800 hover:bg-slate-700 text-brand-400 p-2.5 rounded-xl border border-slate-700 transition">
-          <i class="fa-solid fa-microphone"></i>
-        </button>
-        
-        <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold p-2.5 px-3.5 rounded-xl shadow-md transition">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </form>
+      <!-- Triangle Arrow Pointing Down -->
+      <div class="absolute -bottom-2 right-6 w-4 h-4 bg-slate-900 border-r border-b border-emerald-500/50 rotate-45"></div>
     </div>
 
-    <button onclick="toggleChatWidget()" class="bg-gradient-to-tr from-brand-600 to-emerald-500 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition border-2 border-emerald-400 flex items-center justify-center group">
-      <i class="fa-solid fa-comment-dots text-2xl group-hover:rotate-12 transition-transform"></i>
+    <!-- Radial Menu Items (Arc from -90° to -180°) -->
+    <div id="radialMenuArc" class="relative">
+      <!-- 1. Socratic AI Mentor (Chatbot) -->
+      <button onclick="openChatModalFromRadial()" id="radialBtnChat" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-xl shadow-emerald-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-emerald-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          🤖 Socratic AI Mentor
+        </span>
+      </button>
+
+      <!-- 2. Canteen Swaps Guide -->
+      <button onclick="selectRadialTab('canteen')" id="radialBtnCanteen" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-600 to-cyan-500 hover:from-teal-500 hover:to-cyan-400 text-white shadow-xl shadow-teal-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-utensils text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-teal-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          🥗 Canteen Swaps Guide
+        </span>
+      </button>
+
+      <!-- 3. Food Compare Tool -->
+      <button onclick="selectRadialTab('compare')" id="radialBtnCompare" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-500 hover:from-cyan-500 hover:to-blue-400 text-white shadow-xl shadow-cyan-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-scale-balanced text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-cyan-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          ⚖️ Food Compare Tool
+        </span>
+      </button>
+
+      <!-- 4. Student Survey -->
+      <button onclick="selectRadialTab('survey')" id="radialBtnSurvey" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-500 hover:from-purple-500 hover:to-indigo-400 text-white shadow-xl shadow-purple-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-square-poll-vertical text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-purple-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          📝 Student Survey
+        </span>
+      </button>
+
+      <!-- 5. 30-Q Quiz Portal -->
+      <button onclick="selectRadialTab('quizzes')" id="radialBtnQuiz" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white shadow-xl shadow-amber-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-brain text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-amber-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          🧠 30-Question Quiz
+        </span>
+      </button>
+
+      <!-- 6. Hydration Tracker -->
+      <button onclick="selectRadialTab('tracker')" id="radialBtnTracker" class="radial-item absolute bottom-0 right-0 w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white shadow-xl shadow-sky-600/40 border border-white/20 flex items-center justify-center transition-all duration-300 pointer-events-none opacity-0 scale-50 group">
+        <i class="fa-solid fa-droplet text-lg"></i>
+        <span class="radial-tooltip absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-xl bg-slate-900/95 text-white text-[11px] font-semibold whitespace-nowrap shadow-xl border border-sky-500/30 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          💧 Hydration Tracker
+        </span>
+      </button>
+    </div>
+
+    <!-- Main Central FAB (56x56px) with Pulse & Rotating Plus/X -->
+    <button id="radialMainFab" onclick="toggleRadialMenu()" class="relative w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-2xl shadow-emerald-500/35 border border-white/25 flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 group z-50">
+      
+      <!-- Pulsing Ring Behind (Discovery State) -->
+      <span id="fabPingRing" class="absolute -inset-1 rounded-2xl bg-emerald-500 opacity-60 animate-ping pointer-events-none"></span>
+      <span class="absolute -inset-2 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-400 opacity-25 blur-md pointer-events-none"></span>
+
+      <!-- Floating "NEW" Badge -->
+      <span id="fabNewBadge" class="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-400 text-slate-950 shadow-md animate-bounce pointer-events-none z-10 border border-white">
+        NEW
+      </span>
+
+      <!-- Morphing Plus / X Icon (Rotates 135 deg) -->
+      <i id="fabIcon" class="fa-solid fa-plus text-xl transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></i>
     </button>
+  </div>
+
+
+  <!-- ==========================================================================
+       LOGICQ-STYLE FULL CHATBOT MODAL WINDOW ("SOCRATIC AI MENTOR")
+       ========================================================================== -->
+  <div id="chatModalBackdrop" class="fixed inset-0 z-[10000] hidden bg-slate-950/70 backdrop-blur-sm items-center justify-center p-3 sm:p-4 transition-all duration-300">
+    
+    <div id="chatModalContainer" class="w-full max-w-2xl h-[650px] max-h-[92vh] bg-slate-900/98 backdrop-blur-2xl rounded-3xl border border-emerald-500/40 shadow-2xl flex flex-col overflow-hidden text-white relative animate-modal">
+      
+      <!-- Header Section -->
+      <div class="p-4 sm:px-6 sm:py-4.5 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3">
+          <!-- Avatar with Gradient & Status Dot -->
+          <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0 border border-emerald-400/30">
+            <i class="fa-solid fa-brain text-white text-lg"></i>
+            <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-slate-900 animate-pulse"></span>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white text-base tracking-tight">NutriAware Socratic AI</h3>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold text-[10px] tracking-wide border border-emerald-500/20">
+                SDG 3 Mentor
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
+              <span>Conceptual nutrition guidance &amp; smart swaps</span>
+              <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+              <span class="text-emerald-400 font-semibold text-[10px]">Team 18 (G18)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Controls: Reset Chat & Close -->
+        <div class="flex items-center gap-1">
+          <button onclick="resetChatConversation()" title="Clear Chat History" class="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+            <i class="fa-solid fa-rotate-left text-sm"></i>
+          </button>
+          <button onclick="closeChatModal()" title="Close Assistant" class="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+            <i class="fa-solid fa-xmark text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Prompt Chips Carousel -->
+      <div class="px-4 sm:px-6 py-2.5 border-b border-slate-800/80 bg-slate-950/60 flex items-center gap-2 overflow-x-auto scrollbar-none shrink-0">
+        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          👥 Team 18 & SDG 3
+        </button>
+        <button onclick="sendQuickPrompt('Show Top Canteen Healthy Swaps')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          🥗 Canteen Food Swaps
+        </button>
+        <button onclick="sendQuickPrompt('Explain Food Label Guidance')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          🏷️ Decode Food Labels
+        </button>
+        <button onclick="sendQuickPrompt('Explain the Healthy Plate portion tips')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          🍽️ 50/25/25 Plate Model
+        </button>
+        <button onclick="sendQuickPrompt('What are the 10 Core Features?')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          ✨ 10 Core Features
+        </button>
+        <button onclick="sendQuickPrompt('Tell me about the Student Survey Results')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          📊 Student Survey Stats
+        </button>
+        <button onclick="sendQuickPrompt('Why do I feel sleepy after canteen lunch?')" class="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-700/80 bg-slate-800/80 text-slate-200 hover:border-emerald-500/50 hover:text-emerald-400 transition cursor-pointer whitespace-nowrap shadow-sm active:scale-95">
+          ⚡ Socratic Diet Debugger
+        </button>
+      </div>
+
+      <!-- Messages Thread Container -->
+      <div id="chatMessages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-slate-900/90 text-sm">
+        <!-- Rendered dynamically with welcome message -->
+      </div>
+
+      <!-- Input Bar with Send Button & Speech Recognition -->
+      <div class="p-3 sm:p-4 border-t border-slate-800/80 bg-slate-950/90 shrink-0">
+        <form id="chatForm" onsubmit="handleChatSubmit(event)" class="relative flex items-center">
+          <input 
+            type="text" 
+            id="chatInput" 
+            placeholder="Ask a question about food choices, canteen swaps, or nutrients..." 
+            class="w-full pl-4 pr-24 py-3.5 rounded-2xl border border-slate-700/80 bg-slate-900/90 focus:bg-slate-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 text-sm text-slate-100 placeholder:text-slate-400 transition outline-none" 
+            required 
+            autocomplete="off"
+          />
+          
+          <div class="absolute right-2 flex items-center gap-1.5">
+            <!-- Voice Input Mic -->
+            <button type="button" onclick="startVoiceChatInput()" title="Voice Speech Input" class="p-2 rounded-xl text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition">
+              <i class="fa-solid fa-microphone text-sm"></i>
+            </button>
+            
+            <!-- Send Button -->
+            <button type="submit" class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm shadow-emerald-600/30 hover:scale-105 active:scale-95 disabled:opacity-40 transition flex items-center justify-center">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Academic / Health Integrity Disclaimer -->
+        <p class="text-[10px] text-center text-slate-400 pt-2 font-medium">
+          🌱 NutriAware Socratic AI adheres to UN SDG 3. It offers guidance, food swaps, and label education for informed daily choices.
+        </p>
+      </div>
+
+    </div>
   </div>
 
   <script src="script.js"></script>
