@@ -171,3 +171,33 @@
 .taskbar-slot:hover {
   transform: translateY(-1px);
 }
+
+/* Animated Multi-Page Reference Dashboard Orbit & Floating Plate */
+.orbit-ring {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border: 1.5px dashed rgba(52, 211, 153, 0.25);
+  border-radius: 50%;
+  animation: orbitRotate 22s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes orbitRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.float-bob {
+  animation: floatBob 4s ease-in-out infinite;
+}
+
+.float-bob-delay {
+  animation: floatBob 4s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}

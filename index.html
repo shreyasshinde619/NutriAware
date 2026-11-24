@@ -248,84 +248,199 @@
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        <!-- Hero Section with Project Details -->
-        <div class="relative overflow-hidden rounded-3xl dark-glass-card p-8 md:p-12 border border-emerald-500/40 shadow-2xl">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- ==========================================================================
+             REFERENCE DASHBOARD: HERO SECTION ("Eat smart. Live better.")
+             ========================================================================== -->
+        <div class="relative overflow-hidden rounded-3xl dark-glass-card p-8 md:p-14 border border-emerald-500/40 shadow-2xl bg-gradient-to-br from-emerald-950/40 via-slate-900/90 to-teal-950/30">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
-            <div class="lg:col-span-8 space-y-5 text-left">
+            <div class="lg:col-span-7 space-y-6 text-left">
               <div class="flex flex-wrap items-center gap-2">
-                <span class="bg-emerald-600 text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
-                  Team No.: 18 | Team Name: G18
+                <span class="text-xs font-black tracking-widest text-emerald-400 uppercase bg-emerald-950/80 px-3.5 py-1 rounded-full border border-emerald-700/60 shadow-sm">
+                  Small choices. Healthier you. • Team 18 (G18) • SDG 3
                 </span>
-                <span class="bg-brand-950 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-700/60 flex items-center gap-1.5">
-                  <i class="fa-solid fa-heart-pulse text-emerald-400"></i> SDG 3 – Good Health and Well-Being
-                </span>
-                <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">
+                <span class="bg-slate-800/90 text-slate-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">
                   Target: Students, Canteens, Messes &amp; Hostels
                 </span>
               </div>
 
-              <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
-                Nutrition and Healthy Food <br class="hidden sm:inline">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-emerald-300 to-teal-200">Awareness System</span>
+              <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight">
+                Eat smart.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-green-300">Live better.</span>
               </h1>
 
-              <p class="text-emerald-400 font-display font-semibold text-lg">
-                A Smart Awareness Platform for Better Food Choices
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                Understand what is on your plate. Explore nutrition facts, discover balanced Indian meal ideas and build healthier everyday habits.
               </p>
 
-              <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
-                Students often choose meals based on taste, convenience, cost, or availability without knowing whether the food provides a balanced amount of nutrients. In college canteens, hostels and messes, students may also have limited awareness about nutrients, food labels, portion balance and healthier alternatives. The Nutrition and Healthy Food Awareness System aims to make nutrition information simple, accessible and useful for everyday food decisions.
-              </p>
-
-              <!-- Quick Navigation Chips to Platform Modules -->
-              <div class="flex flex-wrap items-center gap-2 pt-2">
-                <button onclick="switchTab('canteen')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                  <i class="fa-solid fa-utensils"></i> Explore Canteen Guide
+              <!-- Actions matching reference website + project shortcuts -->
+              <div class="flex flex-wrap items-center gap-3 pt-2">
+                <button onclick="switchTab('canteen')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-lg shadow-emerald-900/40 hover:scale-105 active:scale-95 transition flex items-center gap-2">
+                  <span>Check a Food</span>
+                  <i class="fa-solid fa-arrow-right"></i>
                 </button>
-                <button onclick="switchTab('compare')" class="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                  <i class="fa-solid fa-scale-balanced"></i> Food Comparison Tool
+                <button onclick="switchTab('compare')" class="bg-slate-900/90 hover:bg-slate-800 text-emerald-300 border border-emerald-600/40 font-bold text-xs sm:text-sm px-4 py-3 rounded-2xl hover:scale-105 active:scale-95 transition flex items-center gap-2">
+                  <i class="fa-solid fa-scale-balanced"></i> Food Compare
                 </button>
-                <button onclick="switchTab('survey')" class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                  <i class="fa-solid fa-clipboard-question"></i> Take Student Survey
-                </button>
-                <button onclick="switchTab('quizzes')" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700/60 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                  <i class="fa-solid fa-brain"></i> 30-Q Nutrition Quiz
+                <button onclick="switchTab('doomscrolling')" class="bg-slate-900/90 hover:bg-slate-800 text-rose-300 border border-rose-700/50 font-bold text-xs sm:text-sm px-4 py-3 rounded-2xl hover:scale-105 active:scale-95 transition flex items-center gap-2">
+                  <i class="fa-solid fa-mobile-screen-button"></i> Doom Scrolling
                 </button>
               </div>
             </div>
 
-            <!-- Floating Hero Card -->
-            <div class="lg:col-span-4 flex justify-center">
-              <div class="w-full bg-slate-900/90 p-6 rounded-3xl border border-emerald-500/40 shadow-xl space-y-4">
-                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
-                  <div class="w-12 h-12 rounded-2xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40">
-                    <i class="fa-solid fa-bullseye"></i>
-                  </div>
-                  <div>
-                    <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">Selected Core Problem</span>
-                    <h4 class="font-bold text-sm text-white">Student Nutrition Guidance</h4>
-                  </div>
+            <!-- Hero Art with Rotating Orbit & Floating Plate (Animated Multi-page Reference Style) -->
+            <div class="lg:col-span-5 flex justify-center items-center relative py-6">
+              <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+                
+                <!-- Animated Orbit Ring from Multi-Page Reference -->
+                <div class="orbit-ring"></div>
+
+                <!-- Floating Bubble 1 (Top Left) -->
+                <div class="absolute -top-1 -left-3 sm:-left-5 z-20 bg-slate-900/95 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-emerald-500/40 shadow-xl text-xs font-bold text-white flex items-center gap-2 float-bob">
+                  <span>🥗</span> <span>Balanced plate</span>
                 </div>
 
-                <div class="space-y-2 text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                  <p class="font-bold text-white">🎯 Selected Focus:</p>
-                  <p class="italic text-emerald-300">"Students need simple and practical guidance to understand nutrition and choose healthier, balanced meals."</p>
+                <!-- Center Floating 3D Plate with Avocado / Health Emoji -->
+                <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-tr from-slate-900 via-slate-850 to-slate-800 border-8 border-slate-950/80 shadow-2xl flex items-center justify-center text-7xl sm:text-8xl shadow-emerald-500/25 float-bob select-none cursor-pointer hover:scale-105 transition-transform" onclick="playChime('success')" title="Click for health chime!">
+                  🥑
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 text-center text-xs">
-                  <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
-                    <span class="text-[10px] text-slate-400 block">Team</span>
-                    <span class="font-bold text-emerald-300">18 (G18)</span>
-                  </div>
-                  <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
-                    <span class="text-[10px] text-slate-400 block">UN Goal</span>
-                    <span class="font-bold text-emerald-300">SDG 3</span>
-                  </div>
+                <!-- Floating Bubble 2 (Bottom Right) with Offset Delay -->
+                <div class="absolute -bottom-2 -right-3 sm:-right-4 z-20 bg-slate-900/95 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-sky-500/40 shadow-xl text-xs font-bold text-white flex items-center gap-2 float-bob-delay">
+                  <span>💧</span> <span>Stay hydrated</span>
                 </div>
+
+                <!-- Floating Student Session Pill (Bottom Left) -->
+                <div class="absolute bottom-5 -left-4 z-20 bg-slate-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-emerald-600/30 text-[10px] font-black text-emerald-300 flex items-center gap-1.5 shadow-lg">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>1 ACTIVE STUDENT</span>
+                </div>
+
               </div>
             </div>
 
+          </div>
+        </div>
+
+        <!-- ==========================================================================
+             REFERENCE STATS BAR (3 TILES: VARIETY, HYDRATION, HABITS)
+             ========================================================================== -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/40 rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-lg transition">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-800/60 shrink-0">
+              🥦
+            </div>
+            <div>
+              <strong class="block text-white font-bold text-sm sm:text-base">Eat a variety</strong>
+              <small class="text-slate-400 text-xs">Choose different food groups daily</small>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-800/90 hover:border-sky-500/40 rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-lg transition cursor-pointer" onclick="switchTab('tracker')">
+            <div class="w-12 h-12 rounded-2xl bg-sky-950/80 text-sky-400 flex items-center justify-center text-2xl border border-sky-800/60 shrink-0">
+              💧
+            </div>
+            <div>
+              <strong class="block text-white font-bold text-sm sm:text-base">Stay hydrated</strong>
+              <small class="text-slate-400 text-xs">Drink water throughout the day (8 glasses / 2,500ml)</small>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-800/90 hover:border-purple-500/40 rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-lg transition cursor-pointer" onclick="switchTab('doomscrolling')">
+            <div class="w-12 h-12 rounded-2xl bg-purple-950/80 text-purple-400 flex items-center justify-center text-2xl border border-purple-800/60 shrink-0">
+              🏃
+            </div>
+            <div>
+              <strong class="block text-white font-bold text-sm sm:text-base">Build habits</strong>
+              <small class="text-slate-400 text-xs">Move more, break late-night doom scrolling</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================================================
+             REFERENCE DASHBOARD: EXPLORE NUTRIAWARE (6 FEATURE CARDS GRID)
+             ========================================================================== -->
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">What you can do</span>
+              <h3 class="font-display text-2xl font-extrabold text-white">Explore NutriAware</h3>
+            </div>
+            <p class="text-xs text-slate-400 max-w-md">Easy-to-use features designed to make nutrition information more understandable.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Card 1: Food Nutrition Checker -->
+            <div onclick="switchTab('canteen')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800 group-hover:scale-105 transition-transform">
+                🔎
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-emerald-400 transition-colors">Food nutrition checker</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Search common canteen foods and view estimated calories, protein, carbohydrates and fat.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Open Canteen Guide →</span>
+            </div>
+
+            <!-- Card 2: Healthy Food Comparison -->
+            <div onclick="switchTab('compare')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800 group-hover:scale-105 transition-transform">
+                ⚖️
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-emerald-400 transition-colors">Healthy food comparison</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Compare everyday choices and learn how their nutrition values and visual sugar spoons differ.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Compare Foods Now →</span>
+            </div>
+
+            <!-- Card 3: Balanced Meal Ideas & Swaps -->
+            <div onclick="switchTab('canteen')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800 group-hover:scale-105 transition-transform">
+                🥗
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-emerald-400 transition-colors">Balanced meal ideas</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Explore simple Indian meal ideas with grains, vegetables and clean protein sources.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-emerald-400 uppercase tracking-wider">View Meal Swaps →</span>
+            </div>
+
+            <!-- Card 4: Doom Scrolling Buster -->
+            <div onclick="switchTab('doomscrolling')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-rose-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-rose-950 text-rose-400 flex items-center justify-center text-xl border border-rose-800 group-hover:scale-105 transition-transform">
+                📱
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-rose-400 transition-colors">Doom scrolling buster</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Intercept late-night screen scrolling and mindless midnight junk calorie surges with the HALT test.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-rose-400 uppercase tracking-wider">Stop Mindless Snacking →</span>
+            </div>
+
+            <!-- Card 5: Water Tracker -->
+            <div onclick="switchTab('tracker')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-sky-950 text-sky-400 flex items-center justify-center text-xl border border-sky-800 group-hover:scale-105 transition-transform">
+                💧
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-sky-400 transition-colors">Water tracker</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Keep a simple count of the glasses of water you drink today with interactive check-in alerts.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-sky-400 uppercase tracking-wider">Track Hydration →</span>
+            </div>
+
+            <!-- Card 6: Nutrition Quiz -->
+            <div onclick="switchTab('quizzes')" class="bg-slate-900/90 hover:bg-slate-800/90 p-5 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition cursor-pointer space-y-3 group shadow-md">
+              <div class="w-11 h-11 rounded-2xl bg-amber-950 text-amber-400 flex items-center justify-center text-xl border border-amber-800 group-hover:scale-105 transition-transform">
+                🧠
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm group-hover:text-amber-400 transition-colors">Nutrition quiz</h4>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Test your nutrition knowledge with an interactive 30-question quiz and generate your certificate.</p>
+              </div>
+              <span class="inline-block text-[10px] font-bold text-amber-400 uppercase tracking-wider">Take Quiz &amp; Certificate →</span>
+            </div>
           </div>
         </div>
 
@@ -400,46 +515,6 @@
 
         </div>
 
-
-        <!-- SECTION 3: WHO • WHAT • WHY (PAGE 1) -->
-        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
-          <div class="text-center max-w-2xl mx-auto space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Project Diagnostic Matrix</span>
-            <h3 class="font-display text-2xl font-extrabold text-white">WHO • WHAT • WHY</h3>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-                <span class="w-8 h-8 rounded-lg bg-emerald-950 flex items-center justify-center border border-emerald-800 text-xs">WHO</span>
-                <h4>Target Stakeholders</h4>
-              </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                College students, hostel students, school and college-going young people, canteen/mess users, parents and hostel/mess management.
-              </p>
-            </div>
-
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="flex items-center gap-2 text-sky-400 font-bold text-sm">
-                <span class="w-8 h-8 rounded-lg bg-sky-950 flex items-center justify-center border border-sky-800 text-xs">WHAT</span>
-                <h4>The Core Struggle</h4>
-              </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Students struggle to understand nutrition and identify balanced, healthier food choices in their everyday environment.
-              </p>
-            </div>
-
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
-                <span class="w-8 h-8 rounded-lg bg-amber-950 flex items-center justify-center border border-amber-800 text-xs">WHY</span>
-                <h4>Root Cause</h4>
-              </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Nutrition information can be difficult to understand, while daily food choices are often based on convenience and availability.
-              </p>
-            </div>
-          </div>
-        </div>
 
 
         <!-- SECTION 4: MISSION STATEMENT & VALUE PROPOSITION (PAGE 1 & 2) -->
