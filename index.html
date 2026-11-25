@@ -442,19 +442,229 @@
           </div>
         </div>
 
+        <!-- ==========================================================================
+             REFERENCE DASHBOARD: INTERACTIVE WELLNESS TOOLS HUB (CHECK & TRACK)
+             ========================================================================== -->
+        <div class="space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 border-b border-white/10 pb-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Simple Wellness Tools</span>
+              <h3 class="font-display text-2xl font-bold text-white tracking-tight">Check &amp; Track on Dashboard</h3>
+            </div>
+            <p class="text-xs text-slate-400 max-w-md">Live interactive tools to look up food nutrition, track hydration, explore meal ideas, and calculate BMI right from your dashboard.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            
+            <!-- Tool 1: Instant Food Nutrition Finder -->
+            <div class="dark-glass-card p-6 md:p-7 rounded-3xl border border-white/10 space-y-4 shadow-xl flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-lg border border-emerald-800/80">
+                      🔎
+                    </div>
+                    <div>
+                      <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Instant Lookup</span>
+                      <h4 class="font-semibold text-white text-base">Food Nutrition Finder</h4>
+                    </div>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-medium">Per 100g sample</span>
+                </div>
+
+                <div class="relative">
+                  <input id="dashFoodSearch" type="text" oninput="searchDashboardFood()" placeholder="Try: poha, samosa, idli, rice, dal, apple, curd..." class="w-full bg-neutral-900/90 border border-white/10 rounded-full px-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500/50 transition">
+                </div>
+
+                <div id="dashFoodResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                  <!-- Rendered dynamically by searchDashboardFood() -->
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <small class="text-[11px] text-slate-400">Values are approximate for campus awareness.</small>
+                <button onclick="switchTab('canteen')" class="apple-link text-xs">
+                  <span>Open Full Canteen Guide</span>
+                  <span>›</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tool 2: Daily Hydration Quick Tracker -->
+            <div class="dark-glass-card p-6 md:p-7 rounded-3xl border border-white/10 space-y-4 shadow-xl flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-sky-950 text-sky-400 flex items-center justify-center text-lg border border-sky-800/80">
+                      💧
+                    </div>
+                    <div>
+                      <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400">Daily Goal</span>
+                      <h4 class="font-semibold text-white text-base">Quick Water Tracker</h4>
+                    </div>
+                  </div>
+                  <button onclick="triggerWaterReminder()" class="px-3 py-1 rounded-full text-[10px] font-semibold bg-sky-950/80 hover:bg-sky-900 border border-sky-700/60 text-sky-300 transition">
+                    🔔 Check-in Alert
+                  </button>
+                </div>
+
+                <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 text-center">
+                  <div class="text-xs text-slate-400 font-medium">Logged Hydration Today</div>
+                  <div id="dashWaterCount" class="text-3xl font-mono font-bold text-white tracking-tight">1250 ml</div>
+                  
+                  <div class="w-full bg-neutral-950 rounded-full h-2.5 overflow-hidden border border-white/5">
+                    <div id="dashWaterBar" class="bg-gradient-to-r from-sky-500 to-teal-400 h-2.5 rounded-full transition-all duration-300" style="width: 50%;"></div>
+                  </div>
+                  <div id="dashWaterMsg" class="text-[11px] text-slate-400">5 of 10 glasses logged today (Target: 2,500ml)</div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <button onclick="quickUpdateDashboardWater(250)" class="py-2 px-3 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-semibold transition active:scale-95">
+                    + 250ml Glass
+                  </button>
+                  <button onclick="quickUpdateDashboardWater(-250)" class="py-2 px-3 rounded-full bg-neutral-800 hover:bg-neutral-700 text-slate-300 border border-white/10 text-xs font-semibold transition active:scale-95">
+                    - 250ml Glass
+                  </button>
+                  <button onclick="respondHydration('remind5')" class="py-2 px-3 rounded-full bg-white/10 hover:bg-white/15 text-slate-200 border border-white/15 text-xs font-semibold transition active:scale-95">
+                    ⏱️ Remind in 5m
+                  </button>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <small class="text-[11px] text-slate-400">Standard guidance: 8-10 glasses / 2.5L daily.</small>
+                <button onclick="switchTab('tracker')" class="apple-link text-xs">
+                  <span>Open Full Tracker</span>
+                  <span>›</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tool 3: Campus Balanced Meal Ideas -->
+            <div class="dark-glass-card p-6 md:p-7 rounded-3xl border border-white/10 space-y-4 shadow-xl flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-950 text-amber-400 flex items-center justify-center text-lg border border-amber-800/80">
+                      🥗
+                    </div>
+                    <div>
+                      <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400">Daily Balance</span>
+                      <h4 class="font-semibold text-white text-base">Campus Meal Ideas &amp; Swaps</h4>
+                    </div>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-medium">Indian Student Diet</span>
+                </div>
+
+                <!-- Meal category pill buttons -->
+                <div class="flex flex-wrap gap-1.5">
+                  <button id="dashMealBtn-breakfast" onclick="selectDashboardMeal('breakfast')" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 text-white shadow-sm transition">
+                    🍳 Breakfast
+                  </button>
+                  <button id="dashMealBtn-lunch" onclick="selectDashboardMeal('lunch')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 transition">
+                    🍛 Canteen Lunch
+                  </button>
+                  <button id="dashMealBtn-snack" onclick="selectDashboardMeal('snack')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 transition">
+                    🥜 5 PM Snack
+                  </button>
+                  <button id="dashMealBtn-dinner" onclick="selectDashboardMeal('dinner')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 transition">
+                    🥗 Dinner
+                  </button>
+                </div>
+
+                <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong id="dashMealTitle" class="text-sm font-semibold text-white">Veggie Poha + Plain Curd + Seasonal Fruit</strong>
+                    <div class="flex items-center gap-2">
+                      <span id="dashMealCal" class="text-xs font-bold text-emerald-400">320 kcal</span>
+                      <span id="dashMealProt" class="text-[10px] font-medium bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-800">11g Protein</span>
+                    </div>
+                  </div>
+                  <p id="dashMealDesc" class="text-xs text-slate-300 leading-relaxed">
+                    Light, iron-rich flattened rice topped with roasted peanuts and fresh lemon, paired with probiotic curd for calm morning digestion.
+                  </p>
+                  <div class="mt-2 pt-2 border-t border-white/5 flex items-center gap-1.5 text-[11px] text-emerald-300">
+                    <i class="fa-solid fa-repeat text-emerald-400"></i>
+                    <span><strong>Campus Swap:</strong> <span id="dashMealSwap">Swap deep-fried medu vada for poha or steamed idlis.</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <small class="text-[11px] text-slate-400">Balanced plates prevent the 2 PM study slump.</small>
+                <button onclick="switchTab('canteen')" class="apple-link text-xs">
+                  <span>Explore All Meal Swaps</span>
+                  <span>›</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tool 4: Smart BMI & Adult Health Screener -->
+            <div class="dark-glass-card p-6 md:p-7 rounded-3xl border border-white/10 space-y-4 shadow-xl flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-teal-950 text-teal-400 flex items-center justify-center text-lg border border-teal-800/80">
+                      📏
+                    </div>
+                    <div>
+                      <span class="text-[10px] font-bold uppercase tracking-widest text-teal-400">Health Screening</span>
+                      <h4 class="font-semibold text-white text-base">Quick BMI Calculator</h4>
+                    </div>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-medium">WHO Reference Metric</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label for="dashHeight" class="block text-xs font-semibold text-slate-300 mb-1">Height (cm)</label>
+                    <input id="dashHeight" type="number" min="1" placeholder="e.g. 170" value="170" class="w-full bg-neutral-900/90 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/50 transition">
+                  </div>
+                  <div>
+                    <label for="dashWeight" class="block text-xs font-semibold text-slate-300 mb-1">Weight (kg)</label>
+                    <input id="dashWeight" type="number" min="1" placeholder="e.g. 65" value="65" class="w-full bg-neutral-900/90 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/50 transition">
+                  </div>
+                </div>
+
+                <button onclick="quickCalcDashboardBMI()" class="w-full py-2.5 px-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold text-xs transition shadow-sm active:scale-95 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-calculator text-xs"></i>
+                  <span>Calculate Body Mass Index</span>
+                </button>
+
+                <div id="dashBmiResult" class="p-3.5 rounded-2xl bg-neutral-900/90 border border-white/10 text-xs text-slate-200">
+                  <div class="flex items-center justify-between">
+                    <span>Your BMI: <strong class="text-white text-base">22.5</strong></span>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border text-emerald-400 border-emerald-500/40 bg-emerald-950/60">Healthy Adult Range</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1">Adult BMI is a screening indicator. Pair with whole-food canteen choices and hydration.</p>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <small class="text-[11px] text-slate-400">Reference: 18.5 – 24.9 is normal adult BMI.</small>
+                <button onclick="switchTab('tracker')" class="apple-link text-xs">
+                  <span>Advanced BMR &amp; TDEE</span>
+                  <span>›</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
 
         <!-- SECTION 2: PROBLEM STATEMENT & BRAINSTORMING (PAGE 1) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           <!-- Problem Statement Card -->
-          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-white/10 pb-3">
               <div class="w-10 h-10 rounded-xl bg-red-950/80 text-red-400 flex items-center justify-center text-lg border border-red-800">
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold tracking-wider text-red-400">Official Problem Statement</span>
-                <h3 class="font-display text-lg font-extrabold text-white">What Students Face Daily</h3>
+                <h3 class="font-display text-lg font-bold text-white tracking-tight">What Students Face Daily</h3>
               </div>
             </div>
 
@@ -462,45 +672,45 @@
               Students face difficulty understanding whether their regular food choices are nutritionally balanced. Limited nutrition awareness, confusing food labels, lack of simple guidance and dependence on easily available canteen or mess food can lead to poor food choices. There is a need for a simple system that helps students understand nutrition and make more informed food choices.
             </p>
 
-            <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-xs text-slate-400">
+            <div class="bg-neutral-900/80 p-3.5 rounded-2xl border border-white/10 text-xs text-slate-400">
               <strong class="text-emerald-400">Key Observation:</strong> Canteen menus and hostel messes default to taste, convenience, and refined carbs over nutrient density.
             </div>
           </div>
 
           <!-- Brainstorming Points -->
-          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-white/10 pb-3">
               <div class="w-10 h-10 rounded-xl bg-amber-950/80 text-amber-400 flex items-center justify-center text-lg border border-amber-800">
                 <i class="fa-solid fa-lightbulb"></i>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Brainstorming Analysis</span>
-                <h3 class="font-display text-lg font-extrabold text-white">Core Nutrition Challenges</h3>
+                <h3 class="font-display text-lg font-bold text-white tracking-tight">Core Nutrition Challenges</h3>
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-300">
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Low awareness about essential nutrients</span>
               </div>
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Difficulty understanding food labels</span>
               </div>
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Unbalanced meal choices</span>
               </div>
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Limited healthy options in canteens and messes</span>
               </div>
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Confusion about portion balance</span>
               </div>
-              <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-start gap-2">
+              <div class="bg-neutral-900/80 p-2.5 rounded-xl border border-white/10 flex items-start gap-2">
                 <i class="fa-solid fa-circle-xmark text-red-400 mt-0.5"></i>
                 <span>Lack of simple nutrition guidance</span>
               </div>
@@ -519,14 +729,14 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           <!-- Mission Statement -->
-          <div class="lg:col-span-5 dark-glass-card p-6 md:p-8 rounded-3xl border border-emerald-700/50 space-y-4 shadow-xl flex flex-col justify-between">
+          <div class="lg:col-span-5 dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl flex flex-col justify-between">
             <div class="space-y-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/40">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-lg border border-emerald-800/80">
                 <i class="fa-solid fa-flag"></i>
               </div>
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Guiding Purpose</span>
-              <h3 class="font-display text-2xl font-extrabold text-white">Mission Statement</h3>
-              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed bg-slate-900/90 p-4 rounded-2xl border border-slate-800 italic">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Guiding Purpose</span>
+              <h3 class="font-display text-2xl font-bold text-white tracking-tight">Mission Statement</h3>
+              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed bg-neutral-900/80 p-4 rounded-2xl border border-white/10 italic">
                 "Our mission is to create a simple and student-friendly system that spreads nutrition awareness, helps users understand food choices and encourages balanced and healthier eating habits."
               </p>
             </div>
@@ -537,15 +747,15 @@
           </div>
 
           <!-- Value Proposition: Pains, Gains, Solution -->
-          <div class="lg:col-span-7 dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
-            <div class="border-b border-slate-800 pb-3">
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Value Proposition</span>
-              <h3 class="font-display text-xl font-extrabold text-white">Student Pains vs. Gains</h3>
+          <div class="lg:col-span-7 dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl">
+            <div class="border-b border-white/10 pb-3">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Value Proposition</span>
+              <h3 class="font-display text-xl font-bold text-white tracking-tight">Student Pains vs. Gains</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <!-- Student Pains -->
-              <div class="bg-red-950/30 p-4 rounded-2xl border border-red-900/50 space-y-2">
+              <div class="bg-red-950/20 p-4 rounded-2xl border border-red-900/40 space-y-2">
                 <h4 class="font-bold text-xs text-red-300 flex items-center gap-1.5">
                   <i class="fa-solid fa-circle-exclamation text-red-400"></i> Student Pains
                 </h4>
@@ -559,7 +769,7 @@
               </div>
 
               <!-- Student Gains -->
-              <div class="bg-emerald-950/30 p-4 rounded-2xl border border-emerald-900/50 space-y-2">
+              <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-900/40 space-y-2">
                 <h4 class="font-bold text-xs text-emerald-300 flex items-center gap-1.5">
                   <i class="fa-solid fa-circle-check text-emerald-400"></i> Student Gains
                 </h4>
@@ -574,7 +784,7 @@
             </div>
 
             <!-- Solution -->
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-1">
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 text-xs text-slate-300 space-y-1">
               <strong class="text-white">The Solution:</strong> A central awareness system that presents easy-to-understand nutrition information, healthy food guidance, meal-balance tips and personalized educational suggestions.
             </div>
           </div>
@@ -583,71 +793,71 @@
 
 
         <!-- SECTION 5: 10 CORE FEATURES (PAGE 2) -->
-        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-6 shadow-xl">
           <div class="text-center max-w-2xl mx-auto space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">System Capabilities</span>
-            <h3 class="font-display text-2xl font-extrabold text-white">10 Core Features</h3>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">System Capabilities</span>
+            <h3 class="font-display text-2xl font-bold text-white tracking-tight">10 Core Features</h3>
             <p class="text-xs text-slate-400">Everything needed for practical, everyday student nutrition awareness</p>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">📊</span>
-              <h5 class="font-bold text-xs text-white">1. Nutrition Information</h5>
+              <h5 class="font-semibold text-xs text-white">1. Nutrition Information</h5>
               <p class="text-[11px] text-slate-400">Calories, macros, minerals and simple nutrient facts.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🥦</span>
-              <h5 class="font-bold text-xs text-white">2. Healthy Food Awareness</h5>
+              <h5 class="font-semibold text-xs text-white">2. Healthy Food Awareness</h5>
               <p class="text-[11px] text-slate-400">Educating on wholesome, unprocessed food benefits.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🏷️</span>
-              <h5 class="font-bold text-xs text-white">3. Food Label Guidance</h5>
+              <h5 class="font-semibold text-xs text-white">3. Food Label Guidance</h5>
               <p class="text-[11px] text-slate-400">Decodes serving size, sugars, sodium and chemical additives.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🍱</span>
-              <h5 class="font-bold text-xs text-white">4. Balanced Meal Suggestions</h5>
+              <h5 class="font-semibold text-xs text-white">4. Balanced Meal Suggestions</h5>
               <p class="text-[11px] text-slate-400">Complete combos matching Indian collegiate diets.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🍽️</span>
-              <h5 class="font-bold text-xs text-white">5. Portion Balance Tips</h5>
+              <h5 class="font-semibold text-xs text-white">5. Portion Balance Tips</h5>
               <p class="text-[11px] text-slate-400">50% veg/fruit, 25% protein, 25% whole grain plate method.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">⚖️</span>
-              <h5 class="font-bold text-xs text-white">6. Food Comparison</h5>
+              <h5 class="font-semibold text-xs text-white">6. Food Comparison</h5>
               <p class="text-[11px] text-slate-400">Side-by-side comparison of 2 common food choices.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🔄</span>
-              <h5 class="font-bold text-xs text-white">7. Healthy Alternatives</h5>
+              <h5 class="font-semibold text-xs text-white">7. Healthy Alternatives</h5>
               <p class="text-[11px] text-slate-400">Smart swaps for deep-fried canteen and processed foods.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">💡</span>
-              <h5 class="font-bold text-xs text-white">8. Daily Nutrition Tips</h5>
+              <h5 class="font-semibold text-xs text-white">8. Daily Nutrition Tips</h5>
               <p class="text-[11px] text-slate-400">Bite-sized health reminders to stay focused and energized.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🏢</span>
-              <h5 class="font-bold text-xs text-white">9. Canteen/Mess Awareness</h5>
+              <h5 class="font-semibold text-xs text-white">9. Canteen/Mess Awareness</h5>
               <p class="text-[11px] text-slate-400">Practical tips when eating in hostel messes and canteens.</p>
             </div>
 
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2">
+            <div class="bg-neutral-900/70 hover:bg-neutral-900/90 p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition space-y-2">
               <span class="text-2xl block">🎯</span>
-              <h5 class="font-bold text-xs text-white">10. Personalized Recs</h5>
+              <h5 class="font-semibold text-xs text-white">10. Personalized Recs</h5>
               <p class="text-[11px] text-slate-400">Tailored suggestions based on student dietary interests.</p>
             </div>
           </div>
@@ -655,41 +865,41 @@
 
 
         <!-- SECTION 6: HOW THE SYSTEM WORKS (5 STEPS) (PAGE 2) -->
-        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-6 shadow-xl">
           <div class="text-center max-w-2xl mx-auto space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">System Workflow</span>
-            <h3 class="font-display text-2xl font-extrabold text-white">How the System Works</h3>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">System Workflow</span>
+            <h3 class="font-display text-2xl font-bold text-white tracking-tight">How the System Works</h3>
             <p class="text-xs text-slate-400">5 simple steps designed for student ease-of-use</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
-              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">1</span>
-              <h5 class="font-bold text-xs text-white">Create Profile</h5>
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">1</span>
+              <h5 class="font-semibold text-xs text-white">Create Profile</h5>
               <p class="text-[11px] text-slate-400">Student opens the system and creates a basic profile.</p>
             </div>
 
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
-              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">2</span>
-              <h5 class="font-bold text-xs text-white">Select Interests</h5>
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">2</span>
+              <h5 class="font-semibold text-xs text-white">Select Interests</h5>
               <p class="text-[11px] text-slate-400">Student selects food interests or nutrition topics they want to learn about.</p>
             </div>
 
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
-              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">3</span>
-              <h5 class="font-bold text-xs text-white">Nutrient Info</h5>
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">3</span>
+              <h5 class="font-semibold text-xs text-white">Nutrient Info</h5>
               <p class="text-[11px] text-slate-400">The system provides simple information about nutrients and food choices.</p>
             </div>
 
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
-              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">4</span>
-              <h5 class="font-bold text-xs text-white">Smart Suggestions</h5>
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">4</span>
+              <h5 class="font-semibold text-xs text-white">Smart Suggestions</h5>
               <p class="text-[11px] text-slate-400">The system suggests balanced meal combinations and healthier alternatives.</p>
             </div>
 
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-2 relative">
-              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs">5</span>
-              <h5 class="font-bold text-xs text-white">Apply in Canteen</h5>
+            <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 relative">
+              <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">5</span>
+              <h5 class="font-semibold text-xs text-white">Apply in Canteen</h5>
               <p class="text-[11px] text-slate-400">Students can use the information while choosing food in the canteen, mess or hostel.</p>
             </div>
           </div>
@@ -697,38 +907,38 @@
 
 
         <!-- SECTION 7: STAKEHOLDER BENEFITS (PAGE 2 & 3) -->
-        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+        <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-6 shadow-xl">
           <div class="text-center max-w-2xl mx-auto space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand-400">Impact &amp; Outreach</span>
-            <h3 class="font-display text-2xl font-extrabold text-white">Stakeholder Benefits</h3>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Impact &amp; Outreach</span>
+            <h3 class="font-display text-2xl font-bold text-white tracking-tight">Stakeholder Benefits</h3>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800">
+            <div class="bg-neutral-900/80 p-5 rounded-2xl border border-white/10 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-xl border border-emerald-800/80">
                 🎓
               </div>
-              <h4 class="font-bold text-sm text-white">Students</h4>
+              <h4 class="font-semibold text-sm text-white">Students</h4>
               <p class="text-xs text-slate-300 leading-relaxed">
                 Better nutrition awareness, easier food decisions, improved understanding of balanced meals and healthier alternatives.
               </p>
             </div>
 
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="w-10 h-10 rounded-xl bg-sky-950 text-sky-400 flex items-center justify-center text-xl border border-sky-800">
+            <div class="bg-neutral-900/80 p-5 rounded-2xl border border-white/10 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-sky-950 text-sky-400 flex items-center justify-center text-xl border border-sky-800/80">
                 🏫
               </div>
-              <h4 class="font-bold text-sm text-white">College / Canteen</h4>
+              <h4 class="font-semibold text-sm text-white">College / Canteen</h4>
               <p class="text-xs text-slate-300 leading-relaxed">
                 Better nutrition communication, awareness among students and scope for promoting healthier food options.
               </p>
             </div>
 
-            <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2.5">
-              <div class="w-10 h-10 rounded-xl bg-purple-950 text-purple-400 flex items-center justify-center text-xl border border-purple-800">
+            <div class="bg-neutral-900/80 p-5 rounded-2xl border border-white/10 space-y-2.5">
+              <div class="w-10 h-10 rounded-xl bg-purple-950 text-purple-400 flex items-center justify-center text-xl border border-purple-800/80">
                 👨‍👩‍👧
               </div>
-              <h4 class="font-bold text-sm text-white">Parents / Guardians</h4>
+              <h4 class="font-semibold text-sm text-white">Parents / Guardians</h4>
               <p class="text-xs text-slate-300 leading-relaxed">
                 Better visibility of nutrition awareness needs and educational support for young people.
               </p>
@@ -741,14 +951,14 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           <!-- Future Scope -->
-          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-slate-800 space-y-4 shadow-xl">
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
-              <div class="w-10 h-10 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center text-lg border border-indigo-800">
+          <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-white/10 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center text-lg border border-indigo-800/80">
                 <i class="fa-solid fa-rocket"></i>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold tracking-wider text-indigo-400">Roadmap</span>
-                <h3 class="font-display text-lg font-extrabold text-white">Future Scope</h3>
+                <h3 class="font-display text-lg font-bold text-white tracking-tight">Future Scope</h3>
               </div>
             </div>
 
@@ -765,13 +975,13 @@
 
           <!-- Conclusion -->
           <div class="dark-glass-card p-6 md:p-8 rounded-3xl border border-emerald-700/60 space-y-4 shadow-xl">
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-950/80 text-emerald-400 flex items-center justify-center text-lg border border-emerald-800">
+            <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-lg border border-emerald-800/80">
                 <i class="fa-solid fa-award"></i>
               </div>
               <div>
                 <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">SDG 3 Alignment</span>
-                <h3 class="font-display text-lg font-extrabold text-white">Conclusion</h3>
+                <h3 class="font-display text-lg font-bold text-white tracking-tight">Conclusion</h3>
               </div>
             </div>
 

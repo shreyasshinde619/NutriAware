@@ -1936,12 +1936,13 @@ function updateWaterUI() {
   const barEl = document.getElementById('waterProgressBar');
   const pctEl = document.getElementById('waterPercentage');
 
-  if (!valEl || !barEl || !pctEl) return;
-
-  valEl.textContent = currentWaterIntake;
-  const pct = Math.round((currentWaterIntake / targetWaterIntake) * 100);
-  barEl.style.width = `${pct}%`;
-  pctEl.textContent = `${pct}% Goal Reached`;
+  if (valEl) valEl.textContent = currentWaterIntake;
+  if (barEl && pctEl) {
+    const pct = Math.round((currentWaterIntake / targetWaterIntake) * 100);
+    barEl.style.width = `${pct}%`;
+    pctEl.textContent = `${pct}% Goal Reached`;
+  }
+  updateDashboardWaterUI();
 }
 
 function initProgressChart() {
@@ -1969,3 +1970,166 @@ function initProgressChart() {
     }
   });
 }
+
+/* ==========================================================================
+   10. INTERACTIVE DASHBOARD WELLNESS SUITE (REFERENCE WEBSITE ENGINE)
+   ========================================================================== */
+const dashboardFoodsData = [
+  { name: 'Veggie Poha', cal: 180, protein: 4.2, carbs: 32, fat: 3.8, sugar: 1.2, sugarSpoons: 0.3 },
+  { name: 'Idli (2 Pcs) + Sambar', cal: 130, protein: 4.5, carbs: 26, fat: 0.6, sugar: 0.4, sugarSpoons: 0.1 },
+  { name: 'Canteen Fried Samosa', cal: 262, protein: 3.5, carbs: 24, fat: 17.0, sugar: 2.1, sugarSpoons: 0.5 },
+  { name: 'Sprouted Moong Chaat', cal: 145, protein: 12.0, carbs: 22, fat: 1.2, sugar: 1.5, sugarSpoons: 0.3 },
+  { name: 'Cooked Rice (1 Bowl)', cal: 130, protein: 2.7, carbs: 28, fat: 0.3, sugar: 0.1, sugarSpoons: 0.0 },
+  { name: 'Yellow Dal Tadka', cal: 140, protein: 9.0, carbs: 20, fat: 2.4, sugar: 0.8, sugarSpoons: 0.2 },
+  { name: 'Plain Probiotic Curd', cal: 98, protein: 5.5, carbs: 7.0, fat: 4.0, sugar: 4.5, sugarSpoons: 1.0 },
+  { name: 'Fresh Apple', cal: 95, protein: 0.5, carbs: 25, fat: 0.3, sugar: 19.0, sugarSpoons: 4.5 },
+  { name: 'Boiled Egg (1 Pc)', cal: 78, protein: 6.3, carbs: 0.6, fat: 5.3, sugar: 0.6, sugarSpoons: 0.1 },
+  { name: 'Roasted Chana', cal: 160, protein: 9.5, carbs: 24, fat: 2.8, sugar: 1.1, sugarSpoons: 0.2 }
+];
+
+const dashboardMealsData = {
+  breakfast: {
+    title: 'Veggie Poha + Plain Curd + Seasonal Fruit',
+    calories: '320 kcal',
+    protein: '11g Protein',
+    desc: 'Light, iron-rich flattened rice topped with roasted peanuts and fresh lemon, paired with probiotic curd for calm morning digestion.',
+    swap: 'Swap deep-fried medu vada for poha or steamed idlis.'
+  },
+  lunch: {
+    title: '2 Whole Wheat Rotis + Dal + Mixed Sabzi + Salad',
+    calories: '440 kcal',
+    protein: '18g Protein',
+    desc: 'Complex carbohydrate energy that prevents the 2:00 PM post-lunch lecture crash while providing balanced amino acids.',
+    swap: 'Swap oily canteen gravies for yellow dal and cucumber salad.'
+  },
+  snack: {
+    title: 'Roasted Chana + Spiced Lemon Chaas / Green Tea',
+    calories: '180 kcal',
+    protein: '10g Protein',
+    desc: 'Clean 5:00 PM hostel snack that crushes evening sugar urges and sustains evening study focus without trans fats.',
+    swap: 'Swap packaged potato chips or samosas for roasted chana.'
+  },
+  dinner: {
+    title: 'Vegetable Khichdi / Roti + Paneer Bhurji + Cucumber',
+    calories: '390 kcal',
+    protein: '19g Protein',
+    desc: 'Easy-to-digest light evening plate that supports natural sleep melatonin release and restorative muscle repair.',
+    swap: 'Swap midnight instant noodles for light vegetable khichdi.'
+  }
+};
+
+function searchDashboardFood() {
+  const input = document.getElementById('dashFoodSearch');
+  const container = document.getElementById('dashFoodResults');
+  if (!container) return;
+  const q = (input?.value || '').toLowerCase().trim();
+  const list = q 
+    ? dashboardFoodsData.filter(f => f.name.toLowerCase().includes(q))
+    : dashboardFoodsData.slice(0, 4);
+
+  if (!list.length) {
+    container.innerHTML = '<p class="text-xs text-slate-400 col-span-1 sm:col-span-2 py-4 text-center">No matching food found. Try: poha, idli, samosa, dal, apple, curd...</p>';
+    return;
+  }
+
+  container.innerHTML = list.map(f => `
+    <div class="bg-neutral-900/80 p-3.5 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition">
+      <div class="flex justify-between items-start">
+        <strong class="text-xs font-semibold text-white">${f.name}</strong>
+        <span class="text-xs font-bold text-emerald-400">${f.cal} kcal</span>
+      </div>
+      <div class="text-[11px] text-slate-400 mt-1">
+        P ${f.protein}g • C ${f.carbs}g • F ${f.fat}g
+      </div>
+      <div class="mt-2 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400">
+        <span>Sugar: ${f.sugar}g</span>
+        <span class="text-amber-400 font-medium">🥄 × ${f.sugarSpoons} spoons</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectDashboardMeal(mealKey) {
+  const data = dashboardMealsData[mealKey];
+  const titleEl = document.getElementById('dashMealTitle');
+  const calEl = document.getElementById('dashMealCal');
+  const protEl = document.getElementById('dashMealProt');
+  const descEl = document.getElementById('dashMealDesc');
+  const swapEl = document.getElementById('dashMealSwap');
+
+  if (!data || !titleEl) return;
+
+  titleEl.textContent = data.title;
+  if (calEl) calEl.textContent = data.calories;
+  if (protEl) protEl.textContent = data.protein;
+  if (descEl) descEl.textContent = data.desc;
+  if (swapEl) swapEl.textContent = data.swap;
+
+  ['breakfast', 'lunch', 'snack', 'dinner'].forEach(key => {
+    const btn = document.getElementById(`dashMealBtn-${key}`);
+    if (btn) {
+      if (key === mealKey) {
+        btn.className = 'px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 text-white shadow-sm transition';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 transition';
+      }
+    }
+  });
+
+  playChime('general');
+}
+
+function quickUpdateDashboardWater(amount) {
+  currentWaterIntake = Math.max(0, Math.min(targetWaterIntake, currentWaterIntake + amount));
+  updateWaterUI();
+  updateDashboardWaterUI();
+  playChime('water');
+}
+
+function updateDashboardWaterUI() {
+  const val = document.getElementById('dashWaterCount');
+  const bar = document.getElementById('dashWaterBar');
+  const msg = document.getElementById('dashWaterMsg');
+  if (val) val.textContent = `${currentWaterIntake} ml`;
+  if (bar) {
+    const pct = Math.min(100, Math.round((currentWaterIntake / targetWaterIntake) * 100));
+    bar.style.width = `${pct}%`;
+  }
+  if (msg) {
+    const glasses = Math.floor(currentWaterIntake / 250);
+    msg.textContent = `${glasses} of 10 glasses logged today (Target: ${targetWaterIntake}ml)`;
+  }
+}
+
+function quickCalcDashboardBMI() {
+  const h = Number(document.getElementById('dashHeight')?.value);
+  const w = Number(document.getElementById('dashWeight')?.value);
+  const res = document.getElementById('dashBmiResult');
+  if (!res) return;
+
+  if (!h || !w || h <= 0 || w <= 0) {
+    res.innerHTML = '<span class="text-rose-400">Please enter a valid height (cm) and weight (kg).</span>';
+    res.classList.remove('hidden');
+    return;
+  }
+
+  const bmi = w / ((h / 100) ** 2);
+  let cat = bmi < 18.5 ? 'Below Reference Range' : bmi < 24.9 ? 'Healthy Adult Range' : bmi < 29.9 ? 'Above Reference Range' : 'Higher Range';
+  let badgeColor = bmi < 18.5 ? 'text-amber-400 border-amber-500/40 bg-amber-950/60' : bmi < 24.9 ? 'text-emerald-400 border-emerald-500/40 bg-emerald-950/60' : 'text-rose-400 border-rose-500/40 bg-rose-950/60';
+
+  res.innerHTML = `
+    <div class="flex items-center justify-between">
+      <span>Your BMI: <strong class="text-white text-base">${bmi.toFixed(1)}</strong></span>
+      <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${badgeColor}">${cat}</span>
+    </div>
+    <p class="text-[11px] text-slate-400 mt-1">Adult BMI is a screening indicator. Pair with whole-food canteen choices and hydration.</p>
+  `;
+  res.classList.remove('hidden');
+  playChime('success');
+}
+
+// Initialise dashboard widgets
+document.addEventListener('DOMContentLoaded', () => {
+  searchDashboardFood();
+  updateDashboardWaterUI();
+});
