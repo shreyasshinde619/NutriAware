@@ -1,6 +1,28 @@
-/* NutriAware Platform Stylesheet - 3D Cinematic & Health-Tech Edition
-   Presented by Lead Developer: @shreyasshinde619
+/* NutriAware Platform Stylesheet - Apple Minimalist & Health-Tech Edition
+   Team 18 (G18) • SDG 3: Good Health and Well-Being
+   Inspired by Apple (apple.com) High-Contrast Clean Aesthetics
 */
+
+:root {
+  --apple-bg: #000000;
+  --apple-surface: #161617;
+  --apple-surface-elevated: #1d1d1f;
+  --apple-border: rgba(255, 255, 255, 0.08);
+  --apple-border-hover: rgba(255, 255, 255, 0.2);
+  --apple-text-primary: #f5f5f7;
+  --apple-text-secondary: #86868b;
+  --apple-accent: #10b981;
+  --apple-accent-hover: #34d399;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", -apple-system-subheadline, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #050507;
+  color: #f5f5f7;
+  letter-spacing: -0.01em;
+}
 
 /* 3D Background Canvas Layer */
 #bg3dCanvas {
@@ -11,6 +33,7 @@
   height: 100vh;
   z-index: -1;
   pointer-events: none;
+  opacity: 0.65;
 }
 
 /* Custom Lively Animations */
@@ -26,7 +49,7 @@
 
 @keyframes splashPulse {
   0%, 100% { transform: scale(1); box-shadow: 0 16px 45px -10px rgba(16, 185, 129, 0.4); }
-  50% { transform: scale(1.06); box-shadow: 0 25px 60px -5px rgba(52, 211, 153, 0.55); }
+  50% { transform: scale(1.04); box-shadow: 0 25px 60px -5px rgba(52, 211, 153, 0.55); }
 }
 
 .splash-logo-box {
@@ -36,16 +59,16 @@
 /* Floating Card Ambient Animation */
 @keyframes floatCard {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(0.5deg); }
+  50% { transform: translateY(-8px) rotate(0.4deg); }
 }
 
 .animate-float {
-  animation: floatCard 4s ease-in-out infinite;
+  animation: floatCard 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 @keyframes pulseGlow {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 0.75; transform: scale(1.1); }
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.08); }
 }
 
 .animate-glow {
@@ -62,19 +85,81 @@
   animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Glassmorphism Card Utility */
+/* Apple-Grade Glassmorphism Surfaces */
 .glass-card {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(209, 250, 229, 0.8);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .dark-glass-card {
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(22, 22, 23, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Apple-Inspired Minimalist Pill Controls */
+.apple-pill {
+  border-radius: 980px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-pill-primary {
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 980px;
+  padding: 10px 22px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-pill-primary:hover {
+  background: #059669;
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+.apple-pill-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 980px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-pill-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Apple Style Text Link with Chevron */
+.apple-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #34d399;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.apple-link:hover {
+  color: #6ee7b7;
+  text-decoration: underline;
 }
 
 /* Custom Scrollbar for Chat & Modals */
@@ -86,23 +171,28 @@
 
 #chatMessages::-webkit-scrollbar-track,
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #0d0d0f;
   border-radius: 8px;
 }
 
 #chatMessages::-webkit-scrollbar-thumb,
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #059669;
+  background: #27272a;
   border-radius: 8px;
+}
+
+#chatMessages::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
 }
 
 /* Smooth Tab Fade Effect */
 .tab-page {
-  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: appleFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+@keyframes appleFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -110,7 +200,7 @@
 .google-btn {
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  color: #334155;
+  color: #1d1d1f;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -121,7 +211,7 @@
   transform: translateY(-1px);
 }
 
-/* Live Camera Video Feed Responsive Frame */
+/* Live Camera Video Feed Frame */
 #webcamVideo {
   width: 100%;
   height: 100%;
@@ -154,15 +244,15 @@
 
 /* Modal Entry Animation */
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .animate-modal {
-  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Sleek High-Tech Navigation Taskbar */
+/* Sleek Apple-Style Navigation Taskbar */
 .taskbar-slot {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
@@ -177,7 +267,7 @@
   position: absolute;
   width: 320px;
   height: 320px;
-  border: 1.5px dashed rgba(52, 211, 153, 0.25);
+  border: 1.5px dashed rgba(52, 211, 153, 0.2);
   border-radius: 50%;
   animation: orbitRotate 22s linear infinite;
   pointer-events: none;
@@ -199,5 +289,5 @@
 
 @keyframes floatBob {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); }
 }
