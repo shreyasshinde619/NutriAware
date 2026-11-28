@@ -495,30 +495,147 @@ function confirmSwitchStudent() {
 }
 
 // --------------------------------------------------------------------------
-// INTERACTIVE HYDRATION SYSTEM WITH 3 USER CHOICES (YES / SNOOZE / NO)
+// EXAM-STYLE FULL-SCREEN HYDRATION AUTO-LOCK & 4X DAILY NOTIFICATION SYSTEM
 // --------------------------------------------------------------------------
+let isHydrationScreenLocked = false;
+let hydrationAutoCheckTimer = null;
+
+// 4 Mandatory Daily Hydration Windows for Academic Focus:
+// 1) 10:00 AM (Morning Study Focus)
+// 2) 1:00 PM (Post-Lunch Fatigue Prevention)
+// 3) 4:30 PM (Evening Pre-Study Session)
+// 4) 8:00 PM (Night Hydration & Recovery)
+const DAILY_HYDRATION_SLOTS = [
+  { id: 'morning', hour: 10, minute: 0, label: '10:00 AM Morning Study Focus' },
+  { id: 'midday',  hour: 13, minute: 0, label: '1:00 PM Post-Lunch Focus' },
+  { id: 'evening', hour: 16, minute: 30, label: '4:30 PM Pre-Study Hydration' },
+  { id: 'night',   hour: 20, minute: 0, label: '8:00 PM Night Hydration' }
+];
+
 function initNotificationSystem() {
   if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
     setTimeout(() => { Notification.requestPermission(); }, 4000);
   }
 
-  // Periodic reminder interval: triggers hydration or protein check
-  setInterval(() => {
-    Math.random() > 0.4 ? triggerWaterReminder() : triggerProteinReminder();
-  }, 240000);
+  // 1. Check for 4x daily scheduled hydration windows every 15 seconds
+  if (hydrationAutoCheckTimer) clearInterval(hydrationAutoCheckTimer);
+  hydrationAutoCheckTimer = setInterval(checkHydrationSchedule, 15000);
+
+  // 2. Initial Automatic Session Check (Trigger 10s after opening page if water not logged recently)
+  setTimeout(() => {
+    const lastDrank = localStorage.getItem('nutriaware_last_water_drank_at');
+    const elapsedMinutes = lastDrank ? (Date.now() - parseInt(lastDrank, 10)) / (1000 * 60) : 999;
+    if (elapsedMinutes >= 45 && !isHydrationScreenLocked) {
+      triggerWaterReminder('Automatic Daily Study Hydration Alert');
+    }
+  }, 10000); // Locks automatically 10 seconds after user opens the site!
 
   // Check for 5:00 PM evening snack nudge
   check5PMSnackSchedule();
 }
 
-function triggerWaterReminder() {
+function checkHydrationSchedule() {
+  if (isHydrationScreenLocked) return;
+
+  const now = new Date();
+  const todayDateStr = now.toDateString();
+  const currentMinutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+
+  // If user drank water within the last 45 minutes, DO NOT alert ("by drinking water only notification will not come")
+  const lastDrankStr = localStorage.getItem('nutriaware_last_water_drank_at');
+  if (lastDrankStr) {
+    const elapsedMinutes = (Date.now() - parseInt(lastDrankStr, 10)) / (1000 * 60);
+    if (elapsedMinutes < 45) {
+      return; // Hydration satisfied, suppress all notifications/locks!
+    }
+  }
+
+  // Check the 4 mandatory daily slots
+  for (const slot of DAILY_HYDRATION_SLOTS) {
+    const slotTimeVal = slot.hour * 60 + slot.minute;
+    const slotKey = `nutriaware_slot_${slot.id}_${todayDateStr}`;
+
+    // If current time is at or past slot time and user has not completed this slot today
+    if (currentMinutesSinceMidnight >= slotTimeVal && !localStorage.getItem(slotKey)) {
+      triggerWaterReminder(slot.label);
+      return;
+    }
+  }
+}
+
+// Exam-Style Fullscreen Lockdown Helper
+function enterExamLockdown() {
+  isHydrationScreenLocked = true;
+  const docEl = document.documentElement;
+  try {
+    if (docEl.requestFullscreen) {
+      docEl.requestFullscreen().catch(() => {});
+    } else if (docEl.webkitRequestFullscreen) {
+      docEl.webkitRequestFullscreen();
+    } else if (docEl.msRequestFullscreen) {
+      docEl.msRequestFullscreen();
+    }
+  } catch (err) {
+    console.log('Fullscreen lockdown handled:', err);
+  }
+
+  // Lock scrolling
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
+
+  // Key & mouse restrictions (exam lockdown mode)
+  window.addEventListener('keydown', handleLockdownKeydown, true);
+  window.addEventListener('contextmenu', handleLockdownContextMenu, true);
+}
+
+function exitExamLockdown() {
+  isHydrationScreenLocked = false;
+  try {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  } catch (err) {
+    console.log('Exit fullscreen handled:', err);
+  }
+
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
+
+  window.removeEventListener('keydown', handleLockdownKeydown, true);
+  window.removeEventListener('contextmenu', handleLockdownContextMenu, true);
+}
+
+function handleLockdownKeydown(e) {
+  if (!isHydrationScreenLocked) return;
+  // Block escape, tab, F11 navigation during exam-style lock
+  if (e.key === 'Escape' || e.key === 'F11' || e.key === 'Tab') {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}
+
+function handleLockdownContextMenu(e) {
+  if (isHydrationScreenLocked) {
+    e.preventDefault();
+  }
+}
+
+function triggerWaterReminder(slotLabel = 'Mandatory Hydration Alert') {
+  if (isHydrationScreenLocked) return;
+
   const student = getActiveStudent();
   const studentFirst = student ? student.name.split(' ')[0] : 'Student';
   const target = student ? student.target : 2500;
   const currentWater = (typeof waterConsumed !== 'undefined') ? waterConsumed : 1250;
   const percent = Math.min(100, Math.round((currentWater / target) * 100));
 
-  // 1. Activate Full-Screen Strict Hydration Lock (Cannot exit until water is logged)
+  // 1. Activate Full-Screen Strict Hydration Lock (Exam Lockdown Mode)
+  enterExamLockdown();
+
   const lockScreen = document.getElementById('fullScreenHydrationLock');
   const lockText = document.getElementById('lockWaterText');
   const lockBar = document.getElementById('lockWaterBar');
@@ -526,36 +643,24 @@ function triggerWaterReminder() {
 
   if (lockText) lockText.textContent = `${currentWater} ml / ${target} ml (${percent}%)`;
   if (lockBar) lockBar.style.width = `${percent}%`;
-  if (lockMsg) lockMsg.textContent = `${student ? student.name : 'Active Student'} (Target: ${Math.round(target / 250)} glasses)`;
+  if (lockMsg) lockMsg.textContent = `${student ? student.name : 'Active Student'} • ${slotLabel}`;
 
   if (lockScreen) {
     lockScreen.classList.remove('hidden');
     lockScreen.classList.add('flex');
-    document.body.style.overflow = 'hidden'; // STRICT AUTO-LOCK: Lock background scrolling
-  }
-
-  // 2. Also populate top notification card
-  const card = document.getElementById('hydrationPromptCard');
-  const badgeEl = document.getElementById('hydrationStudentBadge');
-  if (badgeEl && student) {
-    badgeEl.textContent = `Student: ${studentFirst}`;
-  }
-  if (card) {
-    card.classList.remove('hidden');
-    card.classList.add('animate-toast');
   }
 
   playChime('general');
 
-  // 3. Voice Out Loud Notification
+  // 2. Voice Out Loud Notification
   if (typeof isSpeechEnabled !== 'undefined' && isSpeechEnabled && typeof speakText === 'function') {
-    speakText(`Hydration Alert! Screen locked for ${studentFirst}. Please drink a glass of water to unlock your screen and stay energized.`);
+    speakText(`Hydration lockdown active! To maintain cognitive focus and avoid fatigue, please drink one glass of water to unlock your screen.`);
   }
 
-  // 4. Browser System Notification
+  // 3. Browser System Notification
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification('💧 Hydration Screen Lock Active', {
-      body: `Did you drink a glass of water, ${studentFirst}? Screen is locked until you drink a glass!`,
+      body: `Did you drink a glass of water, ${studentFirst}? Screen is locked until you drink water!`,
       icon: 'app-icon.svg'
     });
   }
@@ -565,30 +670,46 @@ function unlockHydrationLockWithWater() {
   const student = getActiveStudent();
   const studentFirst = student ? student.name.split(' ')[0] : 'Student';
 
-  // Log 250ml water to student tracker
+  // 1. Log 250ml water to student tracker
   if (typeof addWater === 'function') {
     addWater(250);
   }
 
-  // Release Full-Screen Lock Overlay
+  // 2. Mark current time and slots as completed ("by drinking water only notification will not come")
+  const now = new Date();
+  const todayDateStr = now.toDateString();
+  const currentMinutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+
+  localStorage.setItem('nutriaware_last_water_drank_at', Date.now().toString());
+
+  // Mark all slots up to current time as completed for today
+  for (const slot of DAILY_HYDRATION_SLOTS) {
+    const slotTimeVal = slot.hour * 60 + slot.minute;
+    if (currentMinutesSinceMidnight >= slotTimeVal - 30) {
+      localStorage.setItem(`nutriaware_slot_${slot.id}_${todayDateStr}`, 'completed');
+    }
+  }
+
+  // 3. Release Exam Lockdown Mode
+  exitExamLockdown();
+
   const lockScreen = document.getElementById('fullScreenHydrationLock');
   if (lockScreen) {
     lockScreen.classList.add('hidden');
     lockScreen.classList.remove('flex');
   }
-  document.body.style.overflow = ''; // Restore normal scrolling
 
   dismissHydrationPrompt();
 
   playChime('success');
   showToastNotification(
     '💧 Hydration Logged • Screen Unlocked!',
-    `Awesome, ${studentFirst}! +250 ml recorded. Your screen has been unlocked. Keep up the great focus!`,
+    `Awesome, ${studentFirst}! +250 ml recorded. Your screen is unlocked. Notifications are silenced until your next hydration window!`,
     'water'
   );
 
   if (typeof isSpeechEnabled !== 'undefined' && isSpeechEnabled && typeof speakText === 'function') {
-    speakText(`Screen unlocked! Great job drinking water, ${studentFirst}. Two hundred fifty milliliters added to your tracker.`);
+    speakText(`Screen unlocked! Great job drinking water, ${studentFirst}. Notifications will not disturb you while you study.`);
   }
 }
 
@@ -596,25 +717,26 @@ function snoozeHydrationLock(minutes = 5) {
   const student = getActiveStudent();
   const studentFirst = student ? student.name.split(' ')[0] : 'Student';
 
-  // Temporarily release full-screen lock for the snooze window
+  // Temporarily release exam lockdown for the grace window
+  exitExamLockdown();
+
   const lockScreen = document.getElementById('fullScreenHydrationLock');
   if (lockScreen) {
     lockScreen.classList.add('hidden');
     lockScreen.classList.remove('flex');
   }
-  document.body.style.overflow = '';
 
   dismissHydrationPrompt();
 
   if (hydrationSnoozeTimer) clearTimeout(hydrationSnoozeTimer);
   hydrationSnoozeTimer = setTimeout(() => {
-    triggerWaterReminder();
+    triggerWaterReminder('Snoozed Hydration Check-In');
   }, minutes * 60 * 1000);
 
   playChime('general');
   showToastNotification(
     '⏰ Hydration Lock Snoozed',
-    `Lock suspended for ${minutes} minutes. We will lock your screen again at the end of the break to ensure you hydrate!`,
+    `Lock suspended for ${minutes} minutes. Screen will lock again after the break unless water is logged!`,
     'water'
   );
 
@@ -1383,12 +1505,9 @@ function generateNutriAIResponse(query) {
             <strong>🔒 Strict Full-Screen Auto-Lock Enforcement:</strong> When a hydration reminder triggers, your entire screen locks with a full-viewport blur overlay (z-index 999999). Scrolling is disabled. You must drink 1 glass of water and tap <em>"I Drank 1 Glass of Water"</em> to release the screen!
           </p>
         </div>
-        <div class="flex gap-2">
-          <button onclick="triggerWaterReminder()" class="flex-1 py-1.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition text-[11px]">
-            🔒 Test Full-Screen Lock Now
-          </button>
-          <button onclick="switchTab('tracker')" class="py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition text-[11px]">
-            💧 Open Water Tracker
+        <div class="pt-1">
+          <button onclick="switchTab('tracker')" class="w-full py-1.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition text-[11px]">
+            💧 Open Daily Hydration Tracker
           </button>
         </div>
       </div>

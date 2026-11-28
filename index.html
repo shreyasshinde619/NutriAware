@@ -275,16 +275,6 @@
             <i class="fa-solid fa-cookie-bite"></i>
           </button>
 
-          <!-- Interactive Full-Screen Hydration Auto-Lock Trigger -->
-          <button onclick="triggerWaterReminder()" title="Full-Screen Hydration Auto-Lock Enforcement (SDG 3)" class="w-9 h-9 rounded-full bg-neutral-900 text-sky-400 hover:bg-neutral-800 border border-white/15 flex items-center justify-center font-bold text-xs transition relative">
-            <i class="fa-solid fa-droplet"></i>
-            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-sky-500 text-[8px] font-black text-slate-950 flex items-center justify-center border border-slate-900">🔒</span>
-          </button>
-
-          <button onclick="triggerProteinReminder()" title="Test Protein Reminder Notification" class="w-9 h-9 rounded-full bg-neutral-900 text-emerald-400 hover:bg-neutral-800 border border-white/15 flex items-center justify-center font-bold text-xs transition">
-            <i class="fa-solid fa-drumstick-bite"></i>
-          </button>
-
           <div class="hidden xl:flex items-center gap-2 bg-neutral-900/80 border border-white/10 px-3 py-1.5 rounded-full ml-1 text-slate-300">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span class="text-xs font-medium">SDG 3 Platform</span>
@@ -308,9 +298,6 @@
         <button onclick="openChatModalFromRadial(); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-neutral-800 text-emerald-400 font-bold flex items-center justify-between">
           <span>🤖 NutriAI Voice Chatbot</span>
           <span class="text-[10px] bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-700/50 text-emerald-300">Speaks</span>
-        </button>
-        <button onclick="triggerWaterReminder(); toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded-xl hover:bg-neutral-800 text-sky-400 font-bold">
-          🔒 Test Hydration Screen Lock
         </button>
       </div>
     </header>
@@ -582,9 +569,10 @@
                       <h4 class="font-semibold text-white text-base">Quick Water Tracker</h4>
                     </div>
                   </div>
-                  <button onclick="triggerWaterReminder()" class="px-3 py-1 rounded-full text-[10px] font-semibold bg-sky-950/80 hover:bg-sky-900 border border-sky-700/60 text-sky-300 transition">
-                    🔔 Check-in Alert
-                  </button>
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-950/80 border border-sky-700/60 text-sky-300 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                    <span>4x Daily Auto-Lock Active</span>
+                  </span>
                 </div>
 
                 <div class="bg-neutral-900/80 p-4 rounded-2xl border border-white/10 space-y-2 text-center">
