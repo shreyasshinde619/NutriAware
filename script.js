@@ -513,13 +513,33 @@ function initNotificationSystem() {
 
 function triggerWaterReminder() {
   const student = getActiveStudent();
-  const card = document.getElementById('hydrationPromptCard');
-  const badgeEl = document.getElementById('hydrationStudentBadge');
+  const studentFirst = student ? student.name.split(' ')[0] : 'Student';
+  const target = student ? student.target : 2500;
+  const currentWater = (typeof waterConsumed !== 'undefined') ? waterConsumed : 1250;
+  const percent = Math.min(100, Math.round((currentWater / target) * 100));
 
-  if (badgeEl && student) {
-    badgeEl.textContent = `Student: ${student.name.split(' ')[0]}`;
+  // 1. Activate Full-Screen Strict Hydration Lock (Cannot exit until water is logged)
+  const lockScreen = document.getElementById('fullScreenHydrationLock');
+  const lockText = document.getElementById('lockWaterText');
+  const lockBar = document.getElementById('lockWaterBar');
+  const lockMsg = document.getElementById('lockStudentMsg');
+
+  if (lockText) lockText.textContent = `${currentWater} ml / ${target} ml (${percent}%)`;
+  if (lockBar) lockBar.style.width = `${percent}%`;
+  if (lockMsg) lockMsg.textContent = `${student ? student.name : 'Active Student'} (Target: ${Math.round(target / 250)} glasses)`;
+
+  if (lockScreen) {
+    lockScreen.classList.remove('hidden');
+    lockScreen.classList.add('flex');
+    document.body.style.overflow = 'hidden'; // STRICT AUTO-LOCK: Lock background scrolling
   }
 
+  // 2. Also populate top notification card
+  const card = document.getElementById('hydrationPromptCard');
+  const badgeEl = document.getElementById('hydrationStudentBadge');
+  if (badgeEl && student) {
+    badgeEl.textContent = `Student: ${studentFirst}`;
+  }
   if (card) {
     card.classList.remove('hidden');
     card.classList.add('animate-toast');
@@ -527,11 +547,79 @@ function triggerWaterReminder() {
 
   playChime('general');
 
+  // 3. Voice Out Loud Notification
+  if (typeof isSpeechEnabled !== 'undefined' && isSpeechEnabled && typeof speakText === 'function') {
+    speakText(`Hydration Alert! Screen locked for ${studentFirst}. Please drink a glass of water to unlock your screen and stay energized.`);
+  }
+
+  // 4. Browser System Notification
   if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification('💧 Hydration Check-In', {
-      body: `Did you drink a glass of water, ${student ? student.name.split(' ')[0] : 'Student'}? Keep hydrated!`,
+    new Notification('💧 Hydration Screen Lock Active', {
+      body: `Did you drink a glass of water, ${studentFirst}? Screen is locked until you drink a glass!`,
       icon: 'app-icon.svg'
     });
+  }
+}
+
+function unlockHydrationLockWithWater() {
+  const student = getActiveStudent();
+  const studentFirst = student ? student.name.split(' ')[0] : 'Student';
+
+  // Log 250ml water to student tracker
+  if (typeof addWater === 'function') {
+    addWater(250);
+  }
+
+  // Release Full-Screen Lock Overlay
+  const lockScreen = document.getElementById('fullScreenHydrationLock');
+  if (lockScreen) {
+    lockScreen.classList.add('hidden');
+    lockScreen.classList.remove('flex');
+  }
+  document.body.style.overflow = ''; // Restore normal scrolling
+
+  dismissHydrationPrompt();
+
+  playChime('success');
+  showToastNotification(
+    '💧 Hydration Logged • Screen Unlocked!',
+    `Awesome, ${studentFirst}! +250 ml recorded. Your screen has been unlocked. Keep up the great focus!`,
+    'water'
+  );
+
+  if (typeof isSpeechEnabled !== 'undefined' && isSpeechEnabled && typeof speakText === 'function') {
+    speakText(`Screen unlocked! Great job drinking water, ${studentFirst}. Two hundred fifty milliliters added to your tracker.`);
+  }
+}
+
+function snoozeHydrationLock(minutes = 5) {
+  const student = getActiveStudent();
+  const studentFirst = student ? student.name.split(' ')[0] : 'Student';
+
+  // Temporarily release full-screen lock for the snooze window
+  const lockScreen = document.getElementById('fullScreenHydrationLock');
+  if (lockScreen) {
+    lockScreen.classList.add('hidden');
+    lockScreen.classList.remove('flex');
+  }
+  document.body.style.overflow = '';
+
+  dismissHydrationPrompt();
+
+  if (hydrationSnoozeTimer) clearTimeout(hydrationSnoozeTimer);
+  hydrationSnoozeTimer = setTimeout(() => {
+    triggerWaterReminder();
+  }, minutes * 60 * 1000);
+
+  playChime('general');
+  showToastNotification(
+    '⏰ Hydration Lock Snoozed',
+    `Lock suspended for ${minutes} minutes. We will lock your screen again at the end of the break to ensure you hydrate!`,
+    'water'
+  );
+
+  if (typeof isSpeechEnabled !== 'undefined' && isSpeechEnabled && typeof speakText === 'function') {
+    speakText(`Hydration lock snoozed for ${minutes} minutes. Please drink a glass of water soon.`);
   }
 }
 
@@ -541,36 +629,14 @@ function dismissHydrationPrompt() {
 }
 
 function respondHydration(choice) {
-  dismissHydrationPrompt();
-  const student = getActiveStudent();
-  const studentFirst = student ? student.name.split(' ')[0] : 'Student';
-
   if (choice === 'yes') {
-    // 1. Yes, I drank water (+250ml)
-    if (typeof addWater === 'function') {
-      addWater(250);
-    }
-    playChime('success');
-    showToastNotification(
-      '💧 Hydration Recorded!',
-      `Awesome job, ${studentFirst}! +250 ml added to your daily tracker.`,
-      'water'
-    );
+    unlockHydrationLockWithWater();
   } else if (choice === 'snooze') {
-    // 2. Remind me after 5 mins
-    if (hydrationSnoozeTimer) clearTimeout(hydrationSnoozeTimer);
-    hydrationSnoozeTimer = setTimeout(() => {
-      triggerWaterReminder();
-    }, 5 * 60 * 1000); // 5 minutes
-
-    playChime('general');
-    showToastNotification(
-      '⏰ Reminder Snoozed',
-      `Got it, ${studentFirst}! We'll prompt you again in 5 minutes with a fresh glass reminder.`,
-      'water'
-    );
+    snoozeHydrationLock(5);
   } else if (choice === 'no') {
-    // 3. No, not yet
+    dismissHydrationPrompt();
+    const student = getActiveStudent();
+    const studentFirst = student ? student.name.split(' ')[0] : 'Student';
     playChime('general');
     showToastNotification(
       '💡 Study Hydration Tip',
@@ -887,6 +953,120 @@ function handleChatSubmit(event) {
   }, 600);
 }
 
+// ==========================================================================
+// WEB SPEECH SYNTHESIS ENGINE (VOICE SPEAKING FOR NUTRI-AI CHATBOT)
+// ==========================================================================
+let isSpeechEnabled = true;
+let currentSpeechUtterance = null;
+let isSpeakingNow = false;
+
+function stripHtmlToPlainText(html) {
+  if (!html) return '';
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  // Remove interactive buttons, icons, and hidden badges
+  temp.querySelectorAll('button, i, svg, .radial-tooltip, script, style').forEach(el => el.remove());
+  return (temp.textContent || temp.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function updateSpeechIndicator(isSpeaking) {
+  isSpeakingNow = isSpeaking;
+  const indicator = document.getElementById('aiSpeakingIndicator');
+  const stopBtn = document.getElementById('stopVoiceBtn');
+  if (indicator) {
+    if (isSpeaking) {
+      indicator.classList.remove('hidden');
+    } else {
+      indicator.classList.add('hidden');
+    }
+  }
+  if (stopBtn) {
+    if (isSpeaking) {
+      stopBtn.classList.remove('hidden');
+    } else {
+      stopBtn.classList.add('hidden');
+    }
+  }
+}
+
+function stopSpeaking() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  updateSpeechIndicator(false);
+}
+
+function toggleSpeechOutput() {
+  isSpeechEnabled = !isSpeechEnabled;
+  const toggleBtn = document.getElementById('toggleVoiceBtn');
+  if (toggleBtn) {
+    if (isSpeechEnabled) {
+      toggleBtn.className = 'p-2 sm:px-3 sm:py-2 rounded-xl text-emerald-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5';
+      toggleBtn.innerHTML = '<i class="fa-solid fa-volume-high text-sm"></i><span class="text-[10px] font-bold hidden sm:inline">Voice ON</span>';
+      toggleBtn.title = 'Voice Speech Output is ON (Click to Mute)';
+      showToastNotification('🔊 Voice Output Enabled', 'NutriAI will speak out answers aloud.');
+      speakText('Voice output enabled. I will read your answers aloud!');
+    } else {
+      stopSpeaking();
+      toggleBtn.className = 'p-2 sm:px-3 sm:py-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5';
+      toggleBtn.innerHTML = '<i class="fa-solid fa-volume-xmark text-sm"></i><span class="text-[10px] font-bold hidden sm:inline">Voice OFF</span>';
+      toggleBtn.title = 'Voice Speech Output is MUTED (Click to Enable)';
+      showToastNotification('🔇 Voice Output Muted', 'NutriAI will not speak automatically.');
+    }
+  }
+}
+
+function speakText(rawText) {
+  if (!('speechSynthesis' in window)) {
+    console.warn('SpeechSynthesis is not supported in this browser.');
+    return;
+  }
+  const plainText = stripHtmlToPlainText(rawText).trim();
+  if (!plainText) return;
+
+  // Cancel any previous speech
+  window.speechSynthesis.cancel();
+
+  // Create utterance
+  const utterance = new SpeechSynthesisUtterance(plainText);
+  currentSpeechUtterance = utterance;
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.lang = 'en-US';
+
+  // Select suitable voice if available
+  const voices = window.speechSynthesis.getVoices();
+  if (voices && voices.length > 0) {
+    const englishVoice = voices.find(v => (v.lang.startsWith('en') || v.lang.includes('US') || v.lang.includes('GB')) && !v.name.includes('Google UK English Male')) || voices[0];
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+    }
+  }
+
+  utterance.onstart = () => {
+    updateSpeechIndicator(true);
+  };
+  utterance.onend = () => {
+    updateSpeechIndicator(false);
+  };
+  utterance.onerror = (e) => {
+    console.warn('Speech synthesis utterance error:', e);
+    updateSpeechIndicator(false);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function speakMessageContent(buttonEl) {
+  const messageCard = buttonEl.closest('.rounded-2xl');
+  if (messageCard) {
+    const contentEl = messageCard.querySelector('.bot-response-content');
+    if (contentEl) {
+      speakText(contentEl.innerHTML);
+    }
+  }
+}
+
 function appendChatMessage(sender, text) {
   const messagesContainer = document.getElementById('chatMessages');
   if (!messagesContainer) return;
@@ -913,15 +1093,30 @@ function appendChatMessage(sender, text) {
         <i class="fa-solid fa-brain text-xs"></i>
       </div>
       <div class="rounded-2xl rounded-tl-sm px-4 py-3.5 bg-slate-800/90 border border-slate-700/60 text-slate-200 text-sm leading-relaxed shadow-sm space-y-2 flex-1">
-        <p class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
-          <i class="fa-solid fa-sparkles"></i> NutriAware Socratic AI Mentor
-        </p>
+        <div class="flex items-center justify-between">
+          <p class="font-bold text-emerald-400 flex items-center gap-1.5 text-xs">
+            <i class="fa-solid fa-sparkles"></i> NutriAware Socratic AI Mentor
+          </p>
+          <span class="text-[9px] text-slate-400">${timeStr}</span>
+        </div>
         <div class="bot-response-content space-y-2">${text}</div>
-        <span class="block text-[9px] text-slate-400 text-right pt-1">${timeStr}</span>
+        <div class="pt-2 border-t border-slate-700/40 flex items-center justify-between">
+          <button onclick="speakMessageContent(this)" class="px-2.5 py-1 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 hover:text-white text-[10px] font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm">
+            <i class="fa-solid fa-volume-high text-[10px]"></i> Listen Out Loud
+          </button>
+          <button onclick="stopSpeaking()" class="text-slate-400 hover:text-white text-[10px] px-2 py-1 rounded-lg hover:bg-slate-700/50 transition">
+            <i class="fa-solid fa-stop text-[9px]"></i> Stop
+          </button>
+        </div>
       </div>
     `;
     messagesContainer.appendChild(messageWrapper);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Speak answer automatically if speech is enabled
+    if (isSpeechEnabled) {
+      speakText(text);
+    }
   }
 }
 
@@ -976,33 +1171,41 @@ function generateNutriAIResponse(query) {
   // 1. Greetings & Friendly Small Talk
   if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ') || q.startsWith('hey ') || q.includes('good morning') || q.includes('good evening') || q.includes('good afternoon') || q === 'yo' || q === 'sup') {
     return `
-      <p>Hello! 👋 Welcome to the <strong>Nutrition & Healthy Food Awareness System</strong> (Team 18 / G18 • SDG 3)!</p>
-      <p class="mt-1">I am your official assistant aligned with our project document. Ask me about <strong>Team 18</strong>, <em>SDG 3</em>, <em>Problem Statement</em>, <em>10 Features</em>, <em>Canteen Swaps</em>, <em>Food Label Guide</em>, <em>Survey Results</em>, or <em>Plate Portions</em>!</p>
+      <p>Hello! 👋 I am your <strong>NutriAware Socratic AI Voice Assistant</strong> (Team 18 / G18 • SDG 3)!</p>
+      <p class="mt-1">I can answer <strong>ANYTHING</strong> from our website and speak it out loud! Ask me about:</p>
+      <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-300">
+        <li><strong>Any food calories &amp; macros</strong> (Samosa, Poha, Vada Pav, Moong Salad, Maggi, Chaas...)</li>
+        <li><strong>Sugar Spoons Rule &amp; WHO Guidelines</strong> (25g sugar / 2000mg sodium)</li>
+        <li><strong>50/25/25 Healthy Plate Model</strong> &amp; Socratic Diet Debugger</li>
+        <li><strong>Daily Hydration Tracker</strong> &amp; Strict Full-Screen Auto-Lock</li>
+        <li><strong>30-Question Nutrition Quiz &amp; Student Survey</strong></li>
+        <li><strong>Team 18 (G18) &amp; UN SDG 3 Mission</strong> at Sanjivani University</li>
+      </ul>
       <div class="pt-2 flex flex-wrap gap-1.5">
-        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-xl text-[10px]">👥 Team 18 & SDG 3</button>
-        <button onclick="sendQuickPrompt('What is the Problem Statement and Mission?')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-xl text-[10px]">🎯 Problem & Mission</button>
+        <button onclick="sendQuickPrompt('How many calories in samosa?')" class="bg-emerald-950/80 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/50 px-2.5 py-1 rounded-xl text-[10px]">🥟 Samosa Calories</button>
+        <button onclick="sendQuickPrompt('Explain sugar spoons rule')" class="bg-amber-950/80 text-amber-300 hover:bg-amber-900 border border-amber-700/50 px-2.5 py-1 rounded-xl text-[10px]">🥄 Sugar Spoons Rule</button>
+        <button onclick="sendQuickPrompt('Tell me about hydration auto-lock')" class="bg-sky-950/80 text-sky-300 hover:bg-sky-900 border border-sky-700/50 px-2.5 py-1 rounded-xl text-[10px]">💧 Hydration Auto-Lock</button>
+        <button onclick="sendQuickPrompt('Tell me about Team 18 and SDG 3')" class="bg-purple-950/80 text-purple-300 hover:bg-purple-900 border border-purple-700/50 px-2.5 py-1 rounded-xl text-[10px]">👥 Team 18 & SDG 3</button>
       </div>
     `;
   }
 
-  // 1b. No Login or Registration Required Notice
-  if (q.includes('register') || q.includes('registration') || q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('create account') || q.includes('google account') || q.includes('portal') || q.includes('password')) {
+  // 1b. No Login or Registration Required Notice & Single-Student Session Lock
+  if (q.includes('register') || q.includes('registration') || q.includes('sign in') || q.includes('log in') || q.includes('login') || q.includes('create account') || q.includes('google account') || q.includes('portal') || q.includes('password') || q.includes('single student') || q.includes('one student') || q.includes('lock user')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-unlock-keyhole text-emerald-400"></i> Open Access Platform (No Login Required)
+          <i class="fa-solid fa-unlock-keyhole text-emerald-400"></i> Open Access Platform & Single-Student Session Lock
         </h5>
         <p class="text-slate-300">
-          The login portal has been <strong>completely removed</strong>! NutriAware is now 100% open-access. You don't need to register or sign in to explore any feature.
+          The login barrier has been <strong>completely removed</strong>! NutriAware is 100% open-access with no passwords.
         </p>
-        <p class="text-emerald-300 font-semibold">You have immediate access to:</p>
-        <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
-          <li><strong>Canteen Nutrition Guide &amp; Swaps</strong></li>
-          <li><strong>Food Comparison Side-by-Side Tool</strong></li>
-          <li><strong>Interactive Student Survey</strong></li>
-          <li><strong>Daily Hydration &amp; Water Tracker</strong></li>
-          <li><strong>30-Question Nutrition Quiz &amp; Certificates</strong></li>
-        </ul>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-300 space-y-1">
+          <p class="font-bold">🔒 LogicQ Single-Student Rule:</p>
+          <p class="text-[11px] text-slate-300">
+            Exactly <strong>1 student profile</strong> can be active on this device at a time. This keeps daily hydration goals and quiz certificates strictly tied to one active learner. To switch students, use the <em>Switch Student</em> button in Profile.
+          </p>
+        </div>
       </div>
     `;
   }
@@ -1014,12 +1217,12 @@ function generateNutriAIResponse(query) {
         <h5 class="font-bold text-white flex items-center gap-1.5">
           <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel Notice
         </h5>
-        <p class="text-slate-300">The Admin Panel option has been completely removed from the platform. The platform is now fully accessible directly without any login credentials.</p>
+        <p class="text-slate-300">The Admin Panel has been completely removed to make NutriAware 100% open and student-first. All features are directly accessible.</p>
       </div>
     `;
   }
 
-  // 2. Team 18 / G18 & SDG 3
+  // 2. Team 18 / G18 & SDG 3 & Sanjivani University
   if (q.includes('team 18') || q.includes('g18') || q.includes('sdg 3') || q.includes('sustainable development') || q.includes('sanjivani') || q.includes('who developed') || q.includes('who created') || q.includes('who made') || q.includes('team') || q.includes('developer') || q.includes('members') || q.includes('shreyas') || q.includes('sarthak') || q.includes('kunal') || q.includes('gayatri') || q.includes('ayush') || q.includes('vaishnavi')) {
     return `
       <div class="space-y-2 text-xs">
@@ -1038,13 +1241,13 @@ function generateNutriAIResponse(query) {
           <li><strong>Vaishnavi Bongane:</strong> Team Member</li>
           <li><strong>Gayatri Bhuse:</strong> Team Member</li>
         </ul>
-        <p class="text-[11px] text-slate-400">Institution: Sanjivani University, Department of Integrated MTech AI & ML.</p>
+        <p class="text-[11px] text-slate-400">Institution: Sanjivani University, Department of Integrated MTech AI &amp; ML.</p>
       </div>
     `;
   }
 
   // 3. Problem Statement & Brainstorming Pain Points
-  if (q.includes('problem') || q.includes('problem statement') || q.includes('brainstorm') || q.includes('pain point') || q.includes('selected problem')) {
+  if (q.includes('problem') || q.includes('pain point') || q.includes('selected problem') || q.includes('brainstorm')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
@@ -1056,11 +1259,11 @@ function generateNutriAIResponse(query) {
         <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
           <p class="font-bold text-emerald-400">6 Brainstorming Pain Points:</p>
           <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
-            <li>1. Junk food reliance due to convenience & schedules.</li>
+            <li>1. Junk food reliance due to convenience &amp; tight schedules.</li>
             <li>2. Lack of understanding about balanced diets.</li>
             <li>3. Difficulty reading and interpreting packaged food nutrition labels.</li>
             <li>4. Limited healthy choices in college canteens and messes.</li>
-            <li>5. Skipping meals & irregular eating routines.</li>
+            <li>5. Skipping meals &amp; irregular eating routines.</li>
             <li>6. Low awareness of long-term impact on academics and energy.</li>
           </ul>
         </div>
@@ -1072,7 +1275,7 @@ function generateNutriAIResponse(query) {
   }
 
   // 4. WHO - WHAT - WHY Diagnostic Framework
-  if (q.includes('who') && (q.includes('what') || q.includes('why')) || q.includes('diagnostic') || q.includes('framework')) {
+  if ((q.includes('who') && (q.includes('what') || q.includes('why'))) || q.includes('diagnostic') || q.includes('framework')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
@@ -1081,11 +1284,11 @@ function generateNutriAIResponse(query) {
         <div class="space-y-1.5 text-slate-300">
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
             <span class="text-emerald-400 font-bold uppercase text-[10px]">WHO (Stakeholders):</span>
-            <p class="text-[11px]">College & university students, young adults living in hostels/PGs, canteen operators, mess managers, and youth in transition to independent living.</p>
+            <p class="text-[11px]">College &amp; university students, young adults living in hostels/PGs, canteen operators, mess managers, and youth in transition to independent living.</p>
           </div>
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
             <span class="text-amber-400 font-bold uppercase text-[10px]">WHAT (The Challenge):</span>
-            <p class="text-[11px]">Lack of practical nutrition awareness, confusion decoding packaged labels, default reliance on high-sugar & fried foods, and no simple mechanism to balance canteen meals.</p>
+            <p class="text-[11px]">Lack of practical nutrition awareness, confusion decoding packaged labels, default reliance on high-sugar &amp; fried foods, and no simple mechanism to balance canteen meals.</p>
           </div>
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
             <span class="text-sky-400 font-bold uppercase text-[10px]">WHY (The Root Cause):</span>
@@ -1101,7 +1304,7 @@ function generateNutriAIResponse(query) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-bullseye text-rose-400"></i> Mission Statement & Value Proposition
+          <i class="fa-solid fa-bullseye text-rose-400"></i> Mission Statement &amp; Value Proposition
         </h5>
         <p class="text-slate-300 leading-relaxed">
           <strong class="text-emerald-400">Mission:</strong> To empower students with practical nutritional knowledge, simple food label guidance, and smart canteen meal alternatives to make healthier everyday choices.
@@ -1161,17 +1364,421 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  // 8. Student Survey Results (Page 2)
-  if (q.includes('survey') || q.includes('question') || q.includes('research') || q.includes('survey result')) {
+  // 8. Hydration Tracker & Strict Full-Screen Auto-Lock
+  if (q.includes('hydration') || q.includes('water') || q.includes('auto lock') || q.includes('auto-lock') || q.includes('screen lock') || q.includes('lock screen') || q.includes('drink water')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-droplet text-sky-400"></i> Daily Hydration Tracker &amp; Strict Auto-Lock
+        </h5>
+        <p class="text-slate-300">
+          Adequate water intake is essential for student cognitive function, memory recall, and avoiding afternoon headaches.
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-sky-500/40 space-y-1.5">
+          <div class="flex justify-between items-center text-sky-300 font-bold">
+            <span>🎯 Daily Goal: 2,500 ml / day</span>
+            <span>🥛 10 Glasses (250ml each)</span>
+          </div>
+          <p class="text-[11px] text-slate-300">
+            <strong>🔒 Strict Full-Screen Auto-Lock Enforcement:</strong> When a hydration reminder triggers, your entire screen locks with a full-viewport blur overlay (z-index 999999). Scrolling is disabled. You must drink 1 glass of water and tap <em>"I Drank 1 Glass of Water"</em> to release the screen!
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="triggerWaterReminder()" class="flex-1 py-1.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition text-[11px]">
+            🔒 Test Full-Screen Lock Now
+          </button>
+          <button onclick="switchTab('tracker')" class="py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition text-[11px]">
+            💧 Open Water Tracker
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // 9. Sugar Spoons Rule & WHO Sugar Guidelines
+  if (q.includes('sugar spoon') || q.includes('spoon') || q.includes('who sugar') || (q.includes('sugar') && !q.includes('sleepy'))) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-spoon text-amber-400"></i> The Sugar Spoons Rule &amp; WHO Limits
+        </h5>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-amber-500/40 space-y-1 text-slate-300 text-[11px]">
+          <p class="font-bold text-amber-400 text-xs">🥄 The Golden Formula: 4 Grams of Sugar = 1 Teaspoon</p>
+          <p>Whenever you read a nutrition label, divide the total sugar in grams by <strong>4</strong> to visualize actual teaspoons of sugar:</p>
+          <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 space-y-0.5 font-mono text-[11px]">
+            <p>• Sugary Cola (39g sugar) ➡️ <strong>9.75 spoons (🥄 × 10)</strong> ⚠️ DANGER</p>
+            <p>• Energy Drink (27g sugar) ➡️ <strong>6.75 spoons (🥄 × 7)</strong> ⚠️ DANGER</p>
+            <p>• Masala Chai with sugar ➡️ <strong>3.0 spoons (🥄 × 3)</strong></p>
+            <p>• Spiced Chaas (Buttermilk) ➡️ <strong>0 added spoons (🥄 × 0)</strong> ✅ HEALTHY</p>
+          </div>
+        </div>
+        <div class="p-2 rounded-xl bg-rose-950/40 border border-rose-700/50 text-[11px] text-rose-200">
+          <strong>WHO Guideline:</strong> Maximum recommended intake of added sugars for adults is <strong>25 grams per day</strong> (~6 teaspoons). One single 300ml bottle of soft drink exceeds your entire daily allowance!
+        </div>
+      </div>
+    `;
+  }
+
+  // 10. Sodium & Salt Guidelines
+  if (q.includes('sodium') || q.includes('salt') || q.includes('bp') || q.includes('blood pressure')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-mortar-pestle text-sky-400"></i> WHO Sodium &amp; Salt Guidelines
+        </h5>
+        <p class="text-slate-300">
+          Excess sodium causes water retention, elevated blood pressure, and strains kidney function.
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-[11px] text-slate-300">
+          <p><strong class="text-amber-400">WHO Daily Ceiling:</strong> Maximum <strong>2,000 mg sodium</strong> per day (equivalent to less than 5g of salt, or 1 level teaspoon).</p>
+          <p><strong class="text-rose-400">Packaged Snack Warning:</strong> One pack of instant noodles contains ~980 mg sodium (nearly 50% of your entire day's quota in 2 minutes)!</p>
+          <p><strong class="text-emerald-400">Rule of Thumb:</strong> Choose snacks with less than 200mg sodium per single serving.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 11. Healthy Plate Model (50/25/25 Rule)
+  if (q.includes('plate') || q.includes('50/25/25') || q.includes('portion') || q.includes('balanced meal')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-circle-notch text-emerald-400"></i> The 50/25/25 Healthy Plate Model
+        </h5>
+        <div class="space-y-1.5 text-[11px] text-slate-300">
+          <div class="p-2 rounded-xl bg-emerald-950/50 border border-emerald-500/40">
+            <span class="text-emerald-400 font-bold">🥗 50% Half Plate: Vegetables, Salads &amp; Greens</span>
+            <p>Fiber, micronutrients, digestive enzymes. Slows gastric emptying, prevents insulin spikes.</p>
+          </div>
+          <div class="p-2 rounded-xl bg-sky-950/50 border border-sky-500/40">
+            <span class="text-sky-400 font-bold">🍗 25% Quarter Plate: Lean Protein</span>
+            <p>Sprouted moong, boiled eggs, paneer, dal, chana, tofu, curd. Muscle recovery &amp; high satiety.</p>
+          </div>
+          <div class="p-2 rounded-xl bg-amber-950/50 border border-amber-500/40">
+            <span class="text-amber-400 font-bold">🍚 25% Quarter Plate: Complex Carbohydrates</span>
+            <p>Brown rice, whole wheat roti, oats, millets. Steady cognitive fuel without crashes.</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 12. Socratic Diet Debugger (Post-Lunch Sleepiness)
+  if (q.includes('sleepy') || q.includes('tired') || q.includes('afternoon') || q.includes('slump') || q.includes('crash') || q.includes('debugger') || q.includes('socratic') || q.includes('fog')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-bolt text-amber-400"></i> Socratic Diet Debugger • The 2:00 PM Energy Crash
+        </h5>
+        <p class="text-slate-300 leading-relaxed">
+          Why do afternoon college lectures feel so draining? Let's analyze the physiological root cause:
+        </p>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+          <p class="font-bold text-rose-400">🔍 Root Cause Hypothesis:</p>
+          <p class="text-slate-300 text-[11px]">
+            Did your lunch consist mostly of <strong>refined white rice, maida rotis, fried samosas/pakoras, or sugary tea/soda</strong>?
+          </p>
+        </div>
+        <p class="text-slate-300 leading-relaxed text-[11px]">
+          High-glycemic simple carbohydrates trigger an acute surge in blood glucose, prompting excessive insulin release. This causes a steep drop in blood glucose (<em>reactive hypoglycemia</em>), depriving your brain of steady energy and triggering brain fog and sleepiness.
+        </p>
+        <div class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200 space-y-1">
+          <p class="font-bold text-emerald-400">💡 The Socratic Fix (The 50/25/25 Plate Model):</p>
+          <p>Swap half of your simple starch for fiber and protein: enjoy a glass of <strong>Spiced Chaas (Buttermilk)</strong> and a cup of <strong>Sprouted Moong Salad</strong> before having grains. This slows digestion and keeps your mental focus sharp!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 13. Specific Foods Database (Calories, Macros, Sugar Spoons, Verdict)
+  // Samosa
+  if (q.includes('samosa')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥟 Canteen Samosa (1 piece / ~100g)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-700/50">High Fat</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">262 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">3.5g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">24g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-rose-400">17g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> ~0.3 spoons (1.2g sugar).</p>
+          <p>⚠️ <strong>Verdict:</strong> Deep-fried in reused refined oil; low protein and fiber; leads to sluggish digestion.</p>
+          <p>✅ <strong>Smart Canteen Swap:</strong> Swap for <strong>Sprouted Moong Salad</strong> or <strong>Roasted Chana</strong> to get 12g protein with zero fry guilt!</p>
+        </div>
+        <button onclick="compareSpecificFoods('samosa', 'sprouts')" class="w-full py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition text-[11px]">
+          ⚖️ Compare Samosa vs Sprouted Moong
+        </button>
+      </div>
+    `;
+  }
+
+  // Poha
+  if (q.includes('poha')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥣 Veggie Poha (1 medium bowl / ~150g)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Clean Carb</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">180 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">4.5g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">32g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-sky-400">4.0g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> ~0.5 spoons (2.0g natural sugar).</p>
+          <p>🌾 <strong>Fiber:</strong> 4.0g dietary fiber with peanuts and peas.</p>
+          <p>✅ <strong>Verdict:</strong> Light, iron-rich, easily digestible breakfast. Pair with a boiled egg or a glass of chaas for complete protein balance!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Vada Pav
+  if (q.includes('vada pav') || q.includes('vadapav')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🍔 Canteen Vada Pav (1 piece / ~120g)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-700/50">Starch Bomb</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">290 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">4.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">38g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-rose-400">14g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> ~0.75 spoons (3.0g sugar).</p>
+          <p>⚠️ <strong>Verdict:</strong> Double carbohydrate hit (maida pav + potato patty deep fried in oil). Causes severe afternoon brain fog.</p>
+          <p>✅ <strong>Smart Swap:</strong> Veggie sandwich with brown bread or steamed Idli-Sambar!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Sprouted Moong Salad
+  if (q.includes('sprout') || q.includes('moong')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥗 Sprouted Moong Salad (1 bowl / ~150g)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Superfood ⭐</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">145 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">12.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">22g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-sky-400">1.2g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> 0 added sugar (🥄 × 0).</p>
+          <p>🌿 <strong>Fiber:</strong> 7.0g of rich prebiotic fiber!</p>
+          <p>✅ <strong>Verdict:</strong> Highest protein-per-calorie ratio in student dining. Excellent for sustained study focus and muscle health.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Maggi / Instant Noodles
+  if (q.includes('maggi') || q.includes('noodle') || q.includes('instant noodle')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🍜 Instant Noodles / Maggi (1 pack / 70g)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-700/50">High Sodium</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">380 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">7.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">52g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-rose-400">16g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🧂 <strong>Sodium:</strong> 980 mg (almost 50% of WHO daily ceiling)!</p>
+          <p>⚠️ <strong>Verdict:</strong> Flash-fried in palm oil; high refined carbohydrates with very little fiber. Causes water retention and cravings.</p>
+          <p>✅ <strong>Smart Swap:</strong> Veggie oats khichdi or homemade dal rice!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Sugary Cola / Cold Drinks
+  if (q.includes('cola') || q.includes('pepsi') || q.includes('coke') || q.includes('soda') || q.includes('soft drink') || q.includes('cold drink')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥤 Sugary Carbonated Soda (300ml bottle)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-700/50">Sugar Bomb 💣</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">140 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-slate-500">0.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">39g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Sugar</span><strong class="text-rose-400">39g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> <strong>9.75 teaspoons of pure sugar (🥄 × 10)</strong>!</p>
+          <p>⚠️ <strong>WHO Violation:</strong> Completely shatters the WHO 25g/day limit in one drink!</p>
+          <p>✅ <strong>Smart Swap:</strong> <strong>Spiced Chaas (Buttermilk)</strong> or Fresh Coconut Water (0 added sugar, natural electrolytes).</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Spiced Chaas (Buttermilk)
+  if (q.includes('chaas') || q.includes('buttermilk') || q.includes('mattha')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥛 Spiced Chaas / Buttermilk (1 glass / 200ml)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Probiotic Star ⭐</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">45 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">3.2g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">4.8g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-sky-400">1.5g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🥄 <strong>Sugar Spoons:</strong> 0 added sugar (natural lactose only).</p>
+          <p>🦠 <strong>Gut Health:</strong> Contains live lactic acid bacteria, jeera, and rock salt.</p>
+          <p>✅ <strong>Verdict:</strong> The #1 beverage for college students! Hydrates, aids digestion, and keeps body cool.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Idli & Dosa
+  if (q.includes('idli') || q.includes('dosa')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥞 Idli-Sambar vs Masala Dosa</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Fermented</span>
+        </h5>
+        <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="font-bold text-emerald-400 block">2 Steamed Idlis + Sambar</span>
+            <p>• <strong>165 kcal</strong> • 6.8g Protein • 1.5g Fat</p>
+            <p>• Steamed, zero oil, fermented probiotic batter.</p>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="font-bold text-amber-400 block">1 Masala Dosa</span>
+            <p>• <strong>320 kcal</strong> • 6.0g Protein • 12g Fat</p>
+            <p>• Pan-roasted with butter/oil + potato masala.</p>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-400">💡 <em>Tip:</em> Choose Idli over Dosa for an ultra-clean, easy-to-digest study breakfast!</p>
+      </div>
+    `;
+  }
+
+  // Egg / Eggs / Egg Bhurji
+  if (q.includes('egg') || q.includes('bhurji') || q.includes('boiled egg') || q.includes('omelette')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🥚 Eggs (2 Boiled Eggs or Veggie Bhurji)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">High Protein</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">155 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">13.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">1.1g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-sky-400">10.5g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🧠 <strong>Choline &amp; B12:</strong> Rich in brain-boosting choline for memory recall during exams.</p>
+          <p>✅ <strong>Verdict:</strong> Complete protein with all 9 essential amino acids. One of the cheapest superfoods for hostel students!</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Paneer
+  if (q.includes('paneer')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>🧀 Paneer (100g Cottage Cheese)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700/50">Veg Protein</span>
+        </h5>
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Calories</span><strong class="text-white">265 kcal</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Protein</span><strong class="text-emerald-400">18.0g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Carbs</span><strong class="text-amber-400">3.5g</strong></div>
+          <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800"><span class="text-slate-400 block">Fat</span><strong class="text-sky-400">20.0g</strong></div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>🦴 <strong>Calcium:</strong> Provides ~480mg calcium (nearly 50% of daily requirement).</p>
+          <p>✅ <strong>Tip:</strong> Opt for grilled or raw paneer cubes in salads rather than deep-fried or oily butter masala gravies.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Tea / Chai / Coffee
+  if (q.includes('tea') || q.includes('chai') || q.includes('coffee')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center justify-between text-sm">
+          <span>☕ Canteen Cutting Chai / Coffee (1 small cup / 100ml)</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-700/50">Sugar Watch</span>
+        </h5>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] space-y-1 text-slate-300">
+          <p>• <strong>Calories:</strong> ~90 - 120 kcal per cup (due to full-fat buffalo milk &amp; sugar).</p>
+          <p>• <strong>Sugar Content:</strong> 12 - 16g sugar (<strong>3 to 4 teaspoons 🥄 × 3</strong> per cup!).</p>
+          <p>⚠️ <strong>Hostel Student Trap:</strong> Drinking 3 to 4 cutting chais during exam study sessions adds <strong>45-60g of hidden sugar</strong>!</p>
+          <p>✅ <strong>Clean Fix:</strong> Request chai with half-sugar, or switch to black coffee/green tea for alertness without the sugar crash.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 14. 30-Question Nutrition Quiz Portal
+  if (q.includes('quiz') || q.includes('quizzes') || q.includes('test') || q.includes('certificate')) {
+    return `
+      <div class="space-y-2 text-xs">
+        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+          <i class="fa-solid fa-brain text-amber-400"></i> 30-Question Comprehensive Nutrition Quiz
+        </h5>
+        <p class="text-slate-300">
+          Test your nutrition literacy with our interactive 30-question bank spanning:
+        </p>
+        <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
+          <li>Macronutrients &amp; Micronutrients</li>
+          <li>Packaged Food Labels &amp; 5/20 Rule</li>
+          <li>Canteen Food Swaps &amp; Portion Models</li>
+          <li>Hydration, Sleep &amp; Exam Performance</li>
+        </ul>
+        <div class="p-2 rounded-xl bg-amber-950/40 border border-amber-700/50 text-[11px] text-amber-200">
+          🏆 Score 80%+ to unlock the official <strong>NutriAware Gold Certified Badge</strong>!
+        </div>
+        <button onclick="switchTab('quizzes')" class="w-full py-1.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition text-[11px]">
+          🧠 Start the 30-Question Quiz Now
+        </button>
+      </div>
+    `;
+  }
+
+  // 15. Student Survey Results (Page 2)
+  if (q.includes('survey') || q.includes('research') || q.includes('survey result') || q.includes('statistics')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
           <i class="fa-solid fa-square-poll-vertical text-purple-400"></i> Student Survey Insights (PDF Page 2)
         </h5>
-        <p class="text-slate-300">5 Survey Questions &amp; Expected Analysis:</p>
+        <p class="text-slate-300">5 Key Findings from Sanjivani Student Cohort:</p>
         <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
           <li><strong>Q1 Balanced Meals:</strong> >70% of students struggle to determine if their daily meals are balanced.</li>
-          <li><strong>Q2 Food Labels:</strong> >65% find packaged food labels confusing and difficult to interpret.</li>
+          <li><strong>Q2 Food Labels:</strong> >65% find packaged food labels confusing and hard to interpret.</li>
           <li><strong>Q3 Food Choice Driver:</strong> >80% default to taste, cost, or convenience over nutrition.</li>
           <li><strong>Q4 Simple Nutrition Tool:</strong> >90% would actively use an app explaining nutrition in simple language.</li>
           <li><strong>Q5 Canteen Alternatives:</strong> >85% expressed high interest in healthy canteen alternatives.</li>
@@ -1183,114 +1790,29 @@ function generateNutriAIResponse(query) {
     `;
   }
 
-  // 9. Stakeholder Benefits
-  if (q.includes('benefit') || q.includes('stakeholder') || q.includes('parent') || q.includes('college')) {
+  // 16. Budget Meals on Campus (< ₹50 / ₹100)
+  if (q.includes('budget') || q.includes('cheap') || q.includes('cost') || q.includes('money') || q.includes('hostel food') || q.includes('50') || q.includes('100')) {
     return `
       <div class="space-y-2 text-xs">
         <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-award text-amber-400"></i> Stakeholder Benefits (PDF Page 2 & 3)
+          <i class="fa-solid fa-wallet text-emerald-400"></i> Healthy Budget Meals for College Students
         </h5>
         <div class="space-y-1.5 text-[11px] text-slate-300">
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-            <strong class="text-emerald-400">👨‍🎓 For Students:</strong> Better energy, sharper academic focus, sustainable lifelong dietary habits, and immunity boost.
+            <strong class="text-emerald-400">Under ₹30:</strong> Spiced Chaas (₹15) + Roasted Chana (₹15) = 10g protein, high fiber, zero oil.
           </div>
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-            <strong class="text-sky-400">🏫 For Colleges & Canteens:</strong> Healthier campus dining culture, demand data for nutritious meal items, improved student well-being.
+            <strong class="text-sky-400">Under ₹50:</strong> 2 Boiled Eggs (₹16) + Veggie Poha / 2 Bananas (₹30) = Complete amino acids and steady study fuel.
           </div>
           <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-            <strong class="text-purple-400">👨‍👩‍👧 For Parents:</strong> Peace of mind knowing their children have reliable guidance for hostel dining nutrition.
+            <strong class="text-purple-400">Under ₹80:</strong> Mess Dal Khichdi + Cup of Curd + Cucumber slices = The complete 50/25/25 balanced plate.
           </div>
         </div>
       </div>
     `;
   }
 
-  // 10. Future Scope & Conclusion
-  if (q.includes('future') || q.includes('scope') || q.includes('conclusion') || q.includes('roadmap')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-rocket text-indigo-400"></i> Future Scope & Conclusion (Page 3)
-        </h5>
-        <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
-          <li><strong>AI Smart Recommendations:</strong> Deep learning model tailored to regional Indian student diets.</li>
-          <li><strong>Personalized Meal Planning:</strong> Budget-conscious hostel grocery and mess meal planners.</li>
-          <li><strong>Campus Canteen Rating:</strong> Student-driven digital nutrition scorecards for cafeteria menus.</li>
-          <li><strong>Smartwatch Sync:</strong> Automatic synchronization with fitness wearables.</li>
-        </ul>
-        <div class="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200">
-          <strong>Conclusion:</strong> NutriAware directly advances <em>SDG 3 (Good Health and Well-Being)</em> by shifting youth dining from reactive illness treatment to proactive nutritional literacy.
-        </div>
-      </div>
-    `;
-  }
-
-  // 11. Canteen Swaps & Food Label Guidance
-  if (q.includes('swap') || q.includes('canteen') || q.includes('mess') || q.includes('samosa') || q.includes('sprout') || q.includes('chaas') || q.includes('poha')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-utensils text-emerald-400"></i> Top Canteen Healthy Swaps
-        </h5>
-        <div class="space-y-1 text-[11px] text-slate-300">
-          <p>🥟 <strong>Samosa (262 kcal, 17g fat)</strong> ➡️ <strong>Sprouted Moong Salad (145 kcal, 12g protein)</strong></p>
-          <p>🍜 <strong>Instant Noodles (380 kcal, 980mg sodium)</strong> ➡️ <strong>Veggie Poha (180 kcal, 4g fiber)</strong></p>
-          <p>🥤 <strong>Sugary Cola (140 kcal, 39g sugar)</strong> ➡️ <strong>Spiced Chaas (45 kcal, natural probiotic)</strong></p>
-        </div>
-        <button onclick="switchTab('canteen')" class="w-full mt-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 rounded-xl transition text-[11px]">
-          🥗 Open Canteen Guide Tab
-        </button>
-      </div>
-    `;
-  }
-
-  if (q.includes('label') || q.includes('sugar') || q.includes('sodium') || q.includes('trans fat')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-tag text-amber-400"></i> Food Label Quick Tips (Feature 3)
-        </h5>
-        <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
-          <li><strong>Check Serving Size:</strong> Packets often hide high calories by splitting into 3 servings.</li>
-          <li><strong>5/20 Rule:</strong> 5% DV or less is LOW; 20% DV or more is HIGH.</li>
-          <li><strong>Sodium Warning:</strong> Keep single snack under 200mg sodium (Daily max: 2,000mg).</li>
-          <li><strong>Added Sugars:</strong> WHO cap is 25g/day. One soda has 39g!</li>
-        </ul>
-        <button onclick="switchTab('canteen')" class="w-full mt-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 rounded-xl transition text-[11px]">
-          🏷️ Open Interactive Label Decoder
-        </button>
-      </div>
-    `;
-  }
-
-  // 12. Socratic Diet Debugger (LogicQ-Style Conceptual Guidance)
-  if (q.includes('sleepy') || q.includes('tired') || q.includes('afternoon') || q.includes('slump') || q.includes('crash') || q.includes('debugger') || q.includes('socratic')) {
-    return `
-      <div class="space-y-2 text-xs">
-        <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
-          <i class="fa-solid fa-bolt text-amber-400"></i> Socratic Diet Debugger • The 2:00 PM Energy Crash
-        </h5>
-        <p class="text-slate-300 leading-relaxed">
-          Let's analyze why afternoon college lectures feel so draining. Consider your usual lunch:
-        </p>
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-          <p class="font-bold text-rose-400">🔍 Root Cause Hypothesis:</p>
-          <p class="text-slate-300 text-[11px]">
-            Did your meal consist predominantly of <strong>refined rice, maida rotis, fried samosas/pakoras, or sweet tea/soda</strong>?
-          </p>
-        </div>
-        <p class="text-slate-300 leading-relaxed text-[11px]">
-          High-glycemic simple carbohydrates cause a rapid surge in blood glucose, prompting the pancreas to release high levels of insulin. This triggers a sharp blood glucose drop (<em>reactive hypoglycemia</em>), starving your brain of steady glucose and causing sudden brain fog and sleepiness.
-        </p>
-        <div class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200 space-y-1">
-          <p class="font-bold text-emerald-400">💡 The Socratic Fix (The 50/25/25 Plate Model):</p>
-          <p>Swap half of your simple starch for fiber and protein: enjoy a glass of <strong>Spiced Chaas (Buttermilk)</strong> and a cup of <strong>Sprouted Moong Salad</strong> before having grains. This slows gastric emptying and keeps your academic focus razor-sharp!</p>
-        </div>
-      </div>
-    `;
-  }
-
-  // 13. Tech Stack
+  // 17. Tech Stack
   if (q.includes('tech') || q.includes('technology') || q.includes('stack') || q.includes('tensorflow') || q.includes('flutter') || q.includes('node') || q.includes('python')) {
     return `
       <div class="space-y-1.5 text-xs">
@@ -1298,28 +1820,39 @@ function generateNutriAIResponse(query) {
           <i class="fa-solid fa-microchip text-sky-400"></i> Technology Stack
         </h5>
         <ul class="list-disc pl-4 space-y-0.5 text-slate-300 text-[11px]">
-          <li><strong>UI Frontend:</strong> Flutter (Mobile) + Modern HTML5/Tailwind Web Portal</li>
-          <li><strong>Backend Services:</strong> Node.js, Express &amp; Supabase Cloud Database</li>
-          <li><strong>Database:</strong> Cloud PostgreSQL (Supabase) / MySQL / Firestore</li>
-          <li><strong>Audio Synthesizer:</strong> Web Audio API (Zero-Asset Realtime Chimes)</li>
+          <li><strong>UI Frontend:</strong> Modern HTML5, Tailwind CSS, Apple Minimalist Aesthetics</li>
+          <li><strong>Speech Engine:</strong> Web Speech Synthesis API (Realtime Voice Readout)</li>
+          <li><strong>Speech Input:</strong> Web Speech Recognition API (Microphone Voice Commands)</li>
+          <li><strong>Audio Synthesizer:</strong> Web Audio API (Chimes &amp; Alerts without external audio files)</li>
+          <li><strong>Storage:</strong> HTML5 LocalStorage with Single-Student Session Lock</li>
+          <li><strong>SDG Alignment:</strong> UN Sustainable Development Goal 3 (Good Health and Well-Being)</li>
         </ul>
       </div>
     `;
   }
 
-  // Fallback Catch-All
+  // 18. Smart Fallback for any other food or health query
   return `
-    <div class="space-y-1.5 text-xs text-slate-300">
-      <p class="text-white font-bold">NutriAware Socratic AI • Team 18 (G18) • SDG 3</p>
-      <p>I can help answer questions from our official project specification document:</p>
-      <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-400">
-        <li><strong>Team 18 &amp; SDG 3</strong> (Team members &amp; University info)</li>
-        <li><strong>Problem Statement &amp; Mission</strong> (6 pain points &amp; WHO-WHAT-WHY)</li>
-        <li><strong>10 Core Features</strong> (Detailed specifications)</li>
-        <li><strong>Canteen Swaps &amp; Food Labels</strong> (Practical dining advice)</li>
-        <li><strong>Student Survey Results</strong> (5 questions &amp; expected analysis)</li>
-        <li><strong>Plate Portions &amp; Socratic Diet Debugger</strong> (Why you get tired after eating)</li>
-      </ul>
+    <div class="space-y-2 text-xs text-slate-300">
+      <h5 class="font-bold text-white flex items-center gap-1.5 text-sm">
+        <i class="fa-solid fa-brain text-emerald-400"></i> NutriAware Nutrition Knowledge Base
+      </h5>
+      <p class="leading-relaxed">
+        You asked about <strong>"${escapeHTML(query)}"</strong>. NutriAware provides full nutritional science, canteen comparisons, and portion guidance!
+      </p>
+      <div class="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/30 text-[11px] space-y-1">
+        <p class="font-bold text-emerald-400">💡 Key Advice for Students:</p>
+        <p>• Aim for <strong>1.0g to 1.2g protein per kg</strong> of bodyweight daily.</p>
+        <p>• Follow the <strong>50/25/25 plate rule</strong>: 50% fiber salad, 25% protein, 25% complex carbs.</p>
+        <p>• Cap added sugar at <strong>25g/day (~6 spoons)</strong> and sodium at <strong>2,000mg/day</strong>.</p>
+        <p>• Keep a water bottle handy and hit your <strong>2,500 ml daily hydration goal</strong>.</p>
+      </div>
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        <button onclick="switchTab('canteen')" class="px-2.5 py-1 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-700/50 hover:bg-emerald-900 text-[10px]">🥗 Canteen Swaps</button>
+        <button onclick="switchTab('compare')" class="px-2.5 py-1 rounded-xl bg-cyan-950/80 text-cyan-300 border border-cyan-700/50 hover:bg-cyan-900 text-[10px]">⚖️ Compare Foods</button>
+        <button onclick="switchTab('tracker')" class="px-2.5 py-1 rounded-xl bg-sky-950/80 text-sky-300 border border-sky-700/50 hover:bg-sky-900 text-[10px]">💧 Water Tracker</button>
+        <button onclick="switchTab('quizzes')" class="px-2.5 py-1 rounded-xl bg-amber-950/80 text-amber-300 border border-amber-700/50 hover:bg-amber-900 text-[10px]">🧠 30-Q Quiz</button>
+      </div>
     </div>
   `;
 }
